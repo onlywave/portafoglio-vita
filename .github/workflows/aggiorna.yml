@@ -29,6 +29,8 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Genera i dati
         run: python genera.py data
+      - name: Rinfresca l'impronta degli asset nelle pagine
+        run: python versiona.py
       - name: Verifica che i JSON siano validi
         run: |
           for f in data/*.json; do python -c "import json,sys; json.load(open('$f'))"; done
@@ -36,6 +38,6 @@ jobs:
         run: |
           git config user.name "vita-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data
+          git add -A
           git diff --cached --quiet || git commit -m "Dati al $(date -u +%F)"
           git push

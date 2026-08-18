@@ -44,6 +44,9 @@ con le stesse quantità e gli stessi prezzi di carico.
 - `portafogli/*.json` — composizione: quantità, prezzi di carico, ticker Yahoo, ISIN
 - `genera.py` — costruisce il NAV giornaliero e scrive `data/*.json`
 - `analitica.py` — metriche di performance, rischio, distribuzione, benchmark, bootstrap
+- `versiona.py` — appende al nome degli asset l'impronta del contenuto, così un rilascio
+  non può far combinare al browser HTML nuovo e JavaScript vecchio (Pages li serve con
+  `cache-control: max-age=600`)
 - `.github/workflows/aggiorna.yml` — automazione giornaliera
 
 ## Rigenerare in locale
@@ -51,6 +54,7 @@ con le stesse quantità e gli stessi prezzi di carico.
 ```bash
 python -m venv .venv && ./.venv/bin/pip install -r requirements.txt
 ./.venv/bin/python genera.py data
+python3 versiona.py
 python -m http.server 8899   # poi apri http://localhost:8899
 ```
 

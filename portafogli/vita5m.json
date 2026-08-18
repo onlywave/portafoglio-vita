@@ -1,0 +1,17 @@
+{
+ "portfolio": "vita5m",
+ "label": "VITA 5M",
+ "google_portfolio_id": "560ad9f3-5549-45cb-bbc3-29aa06774c03",
+ "base_currency": "CHF",
+ "inception": "2024-05-01",
+ "sync_date": "2026-08-18",
+ "methodology": "Portafoglio buy & hold di 6 ETF UCITS ad accumulazione, base CHF, costruito il 01/05/2024 con un unico acquisto per strumento e nessuna transazione successiva. Quote fisse da inception; NAV EOD ricostruito dai prezzi di chiusura nella valuta di quotazione e convertito in CHF ai cambi del giorno. Composizione sincronizzata dal portafoglio Google Finance omonimo; prezzi e metriche aggiornati automaticamente ogni giorno di borsa. Nessun ribilanciamento: i pesi correnti sono il risultato della sola deriva di mercato.",
+ "holdings": [
+  {"symbol":"WRDUSW-USD","yf":"UETW.DE","name":"UBS Core MSCI World UCITS ETF USD acc","isin":"IE00BD4TXV59","group":"Azionario sviluppato","kind":"etf","ccy":"EUR","quote_ccy_google":"USD","shares":27748,"cost_px":29.56,"cost_ccy":"USD","cost_amount":820230.88},
+  {"symbol":"IWMO","yf":"IWMO.L","name":"iShares Edge MSCI World Momentum Factor UCITS ETF USD acc","isin":"IE00BP3QZ825","group":"Azionario momentum sviluppati","kind":"etf","ccy":"USD","quote_ccy_google":"USD","shares":11791,"cost_px":70.40,"cost_ccy":"USD","cost_amount":830086.40},
+  {"symbol":"EIMI","yf":"EIMI.L","name":"iShares Core MSCI EM IMI UCITS ETF USD acc","isin":"IE00BKM4GZ66","group":"Azionario emergenti","kind":"etf","ccy":"USD","quote_ccy_google":"USD","shares":20915,"cost_px":32.69,"cost_ccy":"USD","cost_amount":683606.78},
+  {"symbol":"ZGLD","yf":"ZGLD.SW","name":"Swisscanto (CH) Gold ETF EA CHF","isin":"CH0139101593","group":"Oro fisico CHF","kind":"etf","ccy":"CHF","quote_ccy_google":"CHF","shares":857,"cost_px":625.90,"cost_ccy":"CHF","cost_amount":536396.30},
+  {"symbol":"FWRA","yf":"FWRA.L","name":"Invesco FTSE All-World UCITS ETF Acc","isin":"IE000716YHJ7","group":"Azionario mondo intero","kind":"etf","ccy":"USD","quote_ccy_google":"USD","shares":28514,"cost_px":6.06,"cost_ccy":"USD","cost_amount":172723.56},
+  {"symbol":"EMVL","yf":"EMVL.L","name":"iShares Edge MSCI EM Value Factor UCITS ETF USD acc","isin":"IE00BG0SKF03","group":"Azionario emergenti value","kind":"etf","ccy":"USD","quote_ccy_google":"USD","shares":2646,"cost_px":46.84,"cost_ccy":"USD","cost_amount":123932.03}
+ ]
+}

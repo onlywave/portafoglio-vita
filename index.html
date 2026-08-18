@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PORTAFOGLIO VITA — cruscotto quantitativo</title>
+<meta name="description" content="Cruscotto di rischio e performance dei portafogli VITA 5M e VITA 5M-C40.">
+<style>
+  :root{
+    color-scheme: light;
+    --page:#f9f9f7; --surface:#fcfcfb; --surface2:#f3f3ef; --ink:#0b0b0b; --ink2:#52514e;
+    --muted:#898781; --grid:#e6e5df; --axis:#c3c2b7; --border:rgba(11,11,11,.10);
+    --s1:#2a78d6; --s2:#d98324; --s3:#6a5acd; --s4:#12876a; --s5:#b0478f;
+    --neg:#d93a38; --good:#0a7a29; --warn:#b8860b;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:where(:not([data-theme="light"])){
+      color-scheme: dark;
+      --page:#0d0d0d; --surface:#191918; --surface2:#212120; --ink:#fff; --ink2:#c3c2b7;
+      --muted:#8d8b85; --grid:#2c2c2a; --axis:#3d3d3a; --border:rgba(255,255,255,.11);
+      --s1:#4d95ea; --s2:#eda43f; --s3:#9186e8; --s4:#2bb08c; --s5:#d772b6;
+      --neg:#ef6b69; --good:#3fbb5c; --warn:#d9ae4a;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#191918; --surface2:#212120; --ink:#fff; --ink2:#c3c2b7;
+    --muted:#8d8b85; --grid:#2c2c2a; --axis:#3d3d3a; --border:rgba(255,255,255,.11);
+    --s1:#4d95ea; --s2:#eda43f; --s3:#9186e8; --s4:#2bb08c; --s5:#d772b6;
+    --neg:#ef6b69; --good:#3fbb5c; --warn:#d9ae4a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--ink);
+       font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+       -webkit-text-size-adjust:100%}
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 18px 70px}
+  header h1{font-size:27px;margin:0 0 3px;letter-spacing:-.01em}
+  header .sub{color:var(--ink2);margin:0 0 9px}
+  .pill{display:inline-block;font-size:12px;color:var(--ink2);background:var(--surface);
+        border:1px solid var(--border);border-radius:999px;padding:3px 11px;margin:2px 4px 2px 0}
+  .pill b{color:var(--ink)}
+  nav.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 6px;position:sticky;top:0;
+           background:var(--page);padding:10px 0;z-index:5;border-bottom:1px solid var(--border)}
+  nav.tabs button{font:inherit;font-size:13.5px;color:var(--ink2);background:var(--surface);
+        border:1px solid var(--border);border-radius:8px;padding:7px 13px;cursor:pointer}
+  nav.tabs button.on{background:var(--s1);border-color:var(--s1);color:#fff;font-weight:600}
+  h2{font-size:20px;margin:34px 0 4px;letter-spacing:-.01em}
+  h2 .meta{font-size:13px;color:var(--muted);font-weight:400;letter-spacing:0}
+  h3.sec{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+         margin:26px 0 9px;border-top:1px solid var(--border);padding-top:12px}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:9px;margin-bottom:12px}
+  .tile{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:9px 12px}
+  .tile .k{font-size:11.5px;color:var(--ink2);line-height:1.3}
+  .tile .v{font-size:19px;margin-top:3px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .tile .n{font-size:11px;color:var(--muted);margin-top:2px}
+  .tile.big .v{font-size:25px}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+         padding:13px 14px;margin-bottom:12px;position:relative}
+  .panel h4{margin:0 0 2px;font-size:13.5px;font-weight:600}
+  .panel .cap{margin:0 0 8px;font-size:12px;color:var(--muted)}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:12px}
+  svg{display:block;width:100%;height:auto;overflow:visible}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin:6px 0 2px}
+  .legend i{display:inline-block;width:11px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+  .tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--border);
+       border-radius:8px;padding:6px 9px;font-size:12.5px;box-shadow:0 3px 12px rgba(0,0,0,.16);
+       display:none;white-space:nowrap;z-index:9;font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{color:var(--ink2);font-weight:600;text-align:left;border-bottom:1px solid var(--axis);
+     padding:6px 8px;white-space:nowrap}
+  td{border-bottom:1px solid var(--grid);padding:5px 8px}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tbody tr:hover{background:var(--surface2)}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .scroll table{min-width:640px}
+  .scroll table.wide{min-width:1240px}
+  .up{color:var(--good)} .down{color:var(--neg)} .warnc{color:var(--warn)}
+  .note{color:var(--ink2);font-size:12.5px;line-height:1.6}
+  .flag{background:var(--surface2);border-left:3px solid var(--warn);border-radius:0 8px 8px 0;
+        padding:10px 13px;font-size:13px;color:var(--ink2);margin:10px 0}
+  .flag b{color:var(--ink)}
+  .foot{color:var(--muted);font-size:12px;margin-top:36px;line-height:1.65;
+        border-top:1px solid var(--border);padding-top:14px}
+  .kv{display:grid;grid-template-columns:1fr auto;gap:2px 12px;font-size:13px}
+  .kv div:nth-child(odd){color:var(--ink2)}
+  .kv div:nth-child(even){font-variant-numeric:tabular-nums;text-align:right}
+  .hide{display:none}
+  @media (max-width:640px){ .wrap{padding:18px 12px 50px} header h1{font-size:22px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>PORTAFOGLIO VITA</h1>
+    <p class="sub">Cruscotto quantitativo dei portafogli <b>VITA 5M</b> e <b>VITA 5M-C40</b> —
+       rischio, performance, distribuzione, attribuzione.</p>
+    <span class="pill" id="pAsof">—</span>
+    <span class="pill" id="pGen">—</span>
+    <span class="pill">Composizione da Google Finance · prezzi EOD pubblici</span>
+    <span class="pill">Ricerca · non è consulenza finanziaria</span>
+  </header>
+
+  <nav class="tabs" id="tabs"></nav>
+  <div id="app"></div>
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+/* ------------------------------------------------------------------ formati */
+const IT = "it-IT";
+const nf = (v,d=2) => (v===null||v===undefined||!isFinite(v)) ? "—"
+  : Number(v).toLocaleString(IT,{minimumFractionDigits:d,maximumFractionDigits:d});
+const pc = (v,d=2) => (v===null||v===undefined||!isFinite(v)) ? "—" : nf(v,d)+"%";
+const pcs= (v,d=2) => (v===null||v===undefined||!isFinite(v)) ? "—" : (v>0?"+":"")+nf(v,d)+"%";
+const n0 = v => (v===null||v===undefined||!isFinite(v)) ? "—" : Math.round(v).toLocaleString(IT);
+const cls= v => (v===null||v===undefined) ? "" : (v>=0?"up":"down");
+const MESI=["Gen","Feb","Mar","Apr","Mag","Giu","Lug","Ago","Set","Ott","Nov","Dic"];
+const COL=["var(--s1)","var(--s2)","var(--s3)","var(--s4)","var(--s5)","var(--neg)"];
+const el = (h) => { const t=document.createElement("template"); t.innerHTML=h.trim(); return t.content.firstChild; };
+
+/* --------------------------------------------------------- primitive grafiche */
+function frame(W,H,m){ return {W,H,m,
+  X:(t,x0,x1)=>m.l+(t-x0)/((x1-x0)||1)*(W-m.l-m.r),
+  Y:(v,y0,y1)=>H-m.b-(v-y0)/((y1-y0)||1)*(H-m.t-m.b)}; }
+
+function assiY(f,y0,y1,fmt,n=4){
+  let g="",l="";
+  for(let i=0;i<=n;i++){
+    const v=y0+(y1-y0)*i/n, y=f.Y(v,y0,y1);
+    const zero = Math.abs(v)<1e-9;
+    g+=`<line x1="${f.m.l}" x2="${f.W-f.m.r}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"
+         stroke="${zero?"var(--axis)":"var(--grid)"}" stroke-width="1"/>`;
+    l+=`<text x="${f.m.l-7}" y="${(y+4).toFixed(1)}" text-anchor="end" font-size="10.5"
+         fill="var(--muted)" font-variant-numeric="tabular-nums">${fmt(v)}</text>`;
+  }
+  return g+l;
+}
+function assiXdate(f,dates,x0,x1,max=9){
+  const mesi={};
+  dates.forEach(d=>{const k=String(d).slice(0,7); if(!(k in mesi)) mesi[k]=+new Date(d);});
+  const e=Object.entries(mesi), step=Math.max(1,Math.ceil(e.length/max));
+  let l="";
+  e.forEach(([k,t],i)=>{ if(i%step===0)
+    l+=`<text x="${f.X(t,x0,x1).toFixed(1)}" y="${f.H-6}" font-size="10.5" text-anchor="middle"
+         fill="var(--muted)">${k.slice(5)}/${k.slice(2,4)}</text>`;});
+  return l;
+}
+function legenda(series){
+  return `<div class="legend">${series.map((s,i)=>
+    `<span><i style="background:${s.color||COL[i%COL.length]}"></i>${s.name}</span>`).join("")}</div>`;
+}
+
+/* linea multipla su asse temporale */
+function lineChart(host, series, opt={}){
+  const W=1000,H=opt.h||280,m={t:12,r:14,b:24,l:opt.l||52};
+  const f=frame(W,H,m);
+  const all=series.flatMap(s=>s.data);
+  if(!all.length) return;
+  const ts=all.map(p=>+new Date(p[0])), vs=all.map(p=>p[1]).filter(v=>isFinite(v));
+  const x0=Math.min(...ts), x1=Math.max(...ts);
+  let y0=Math.min(...vs), y1=Math.max(...vs);
+  const pad=(y1-y0)*0.08||1; y0-=pad; y1+=pad;
+  if(opt.y0!==undefined) y0=opt.y0;        // limiti espliciti: nessun margine
+  if(opt.y1!==undefined) y1=opt.y1;
+  if(opt.zero){ y0=Math.min(y0,0); y1=Math.max(y1,0); }
+  const fmt=opt.fmt||(v=>nf(v,0));
+  let paths="";
+  series.forEach((s,i)=>{
+    const c=s.color||COL[i%COL.length];
+    const d=s.data.filter(p=>isFinite(p[1])).map((p,j)=>(j?"L":"M")+
+      f.X(+new Date(p[0]),x0,x1).toFixed(1)+" "+f.Y(p[1],y0,y1).toFixed(1)).join(" ");
+    paths+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="${s.w||1.9}"
+      stroke-linejoin="round" ${s.dash?`stroke-dasharray="${s.dash}"`:""} opacity="${s.op||1}"/>`;
+  });
+  host.insertAdjacentHTML("beforeend", legenda(series)+
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.aria||"grafico"}">
+      ${assiY(f,y0,y1,fmt)}${assiXdate(f,all.map(p=>p[0]),x0,x1)}${paths}
+      <line class="ch" y1="${m.t}" y2="${H-m.b}" stroke="var(--axis)" stroke-dasharray="3 3" style="display:none"/>
+      <rect x="${m.l}" y="${m.t}" width="${W-m.l-m.r}" height="${H-m.t-m.b}" fill="transparent" class="hov"/>
+    </svg><div class="tip"></div>`);
+  const svg=host.querySelector("svg:last-of-type"), tip=host.querySelector(".tip:last-of-type");
+  const ch=svg.querySelector(".ch");
+  svg.querySelector(".hov").addEventListener("mousemove",e=>{
+    const r=svg.getBoundingClientRect(), px=(e.clientX-r.left)*(W/r.width);
+    const base=series[0].data; let b=0,bd=1e18;
+    base.forEach((p,i)=>{const d=Math.abs(f.X(+new Date(p[0]),x0,x1)-px); if(d<bd){bd=d;b=i;}});
+    const key=base[b][0], x=f.X(+new Date(key),x0,x1);
+    ch.setAttribute("x1",x); ch.setAttribute("x2",x); ch.style.display="block";
+    const righe=series.map((s,i)=>{
+      const hit=s.data.find(p=>p[0]===key);
+      return hit? `<span style="color:${s.color||COL[i%COL.length]}">■</span> ${s.name}: <b>${
+        (opt.tfmt||fmt)(hit[1])}</b>`:null;}).filter(Boolean);
+    tip.style.display="block";
+    tip.style.left=Math.min(x/W*r.width+12, r.width-190)+"px";
+    tip.style.top="8px";
+    tip.innerHTML=`${key}<br>`+righe.join("<br>");
+  });
+  svg.addEventListener("mouseleave",()=>{tip.style.display="none";ch.style.display="none";});
+}
+
+/* area sotto lo zero (drawdown) */
+function areaChart(host, data, opt={}){
+  const W=1000,H=opt.h||210,m={t:10,r:14,b:24,l:52};
+  const f=frame(W,H,m);
+  if(!data.length) return;
+  const ts=data.map(p=>+new Date(p[0])), vs=data.map(p=>p[1]);
+  const x0=Math.min(...ts), x1=Math.max(...ts);
+  const y0=Math.min(...vs)*1.12, y1=0;
+  const pts=data.map(p=>`${f.X(+new Date(p[0]),x0,x1).toFixed(1)} ${f.Y(p[1],y0,y1).toFixed(1)}`);
+  const d=`M${f.X(ts[0],x0,x1).toFixed(1)} ${f.Y(0,y0,y1)} L`+pts.join(" L")+
+          ` L${f.X(ts[ts.length-1],x0,x1).toFixed(1)} ${f.Y(0,y0,y1)} Z`;
+  host.insertAdjacentHTML("beforeend",
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="drawdown">
+      ${assiY(f,y0,y1,v=>nf(v,1)+"%",4)}${assiXdate(f,data.map(p=>p[0]),x0,x1)}
+      <path d="${d}" fill="var(--neg)" fill-opacity=".22" stroke="var(--neg)" stroke-width="1.6"/>
+    </svg>`);
+}
+
+/* barre categoriali */
+function barChart(host, entries, opt={}){
+  const W=1000,H=opt.h||230,m={t:14,r:14,b:opt.b||30,l:56};
+  const f=frame(W,H,m);
+  if(!entries.length) return;
+  const vs=entries.map(e=>e[1]).filter(v=>isFinite(v));
+  const lim=Math.max(...vs.map(Math.abs))*1.16||1;
+  const y0=opt.pos?0:-lim, y1=lim;
+  const bw=Math.min(opt.bw||58,(W-m.l-m.r)/entries.length-6);
+  let bars="",lab="";
+  entries.forEach((e,i)=>{
+    const [k,v]=e;
+    if(!isFinite(v)) return;
+    const x=m.l+(i+0.5)*(W-m.l-m.r)/entries.length-bw/2;
+    const yz=f.Y(0,y0,y1), yv=f.Y(v,y0,y1);
+    const top=Math.min(yz,yv), h=Math.max(2,Math.abs(yv-yz));
+    const c=opt.color||(v>=0?"var(--s1)":"var(--neg)");
+    bars+=`<rect x="${x.toFixed(1)}" y="${top.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}"
+      rx="3" fill="${c}"/>`;
+    if(opt.valori) bars+=`<text x="${(x+bw/2).toFixed(1)}" y="${(v>=0?top-4:top+h+11).toFixed(1)}"
+      text-anchor="middle" font-size="10.5" fill="var(--ink2)"
+      font-variant-numeric="tabular-nums">${pcs(v,opt.vd??1)}</text>`;
+    lab+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="10.5"
+      fill="var(--muted)">${k}</text>`;
+  });
+  host.insertAdjacentHTML("beforeend",
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.aria||"barre"}">
+      ${assiY(f,y0,y1,v=>nf(v,1)+"%",4)}${bars}${lab}</svg>`);
+}
+
+/* barre orizzontali appaiate (peso vs quota di rischio) */
+function barPair(host, righe, opt={}){
+  const H=Math.max(120, righe.length*34+34), W=1000, m={t:8,r:60,b:22,l:150};
+  const max=Math.max(...righe.flatMap(r=>[r.a,r.b]))*1.1||1;
+  const larg=W-m.l-m.r;
+  let s="";
+  righe.forEach((r,i)=>{
+    const y=m.t+i*34;
+    s+=`<text x="${m.l-8}" y="${y+13}" text-anchor="end" font-size="11.5" fill="var(--ink2)">${r.k}</text>`;
+    s+=`<rect x="${m.l}" y="${y}" width="${(r.a/max*larg).toFixed(1)}" height="11" rx="2.5" fill="var(--s1)"/>`;
+    s+=`<rect x="${m.l}" y="${y+13}" width="${(r.b/max*larg).toFixed(1)}" height="11" rx="2.5" fill="var(--s2)"/>`;
+    s+=`<text x="${(m.l+Math.max(r.a,r.b)/max*larg+7).toFixed(1)}" y="${y+16}" font-size="11"
+         fill="var(--muted)" font-variant-numeric="tabular-nums">${pc(r.a,1)} / ${pc(r.b,1)}</text>`;
+  });
+  host.insertAdjacentHTML("beforeend",
+    legenda([{name:opt.a||"peso",color:"var(--s1)"},{name:opt.b||"quota di rischio",color:"var(--s2)"}])+
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="peso e rischio">${s}</svg>`);
+}
+
+/* istogramma con normale sovrapposta */
+function histChart(host, h){
+  const W=1000,H=250,m={t:12,r:14,b:28,l:48};
+  const f=frame(W,H,m);
+  const x0=Math.min(...h.centri_pct), x1=Math.max(...h.centri_pct);
+  const y1=Math.max(...h.conteggi, ...h.normale)*1.08;
+  const bw=(W-m.l-m.r)/h.centri_pct.length*0.86;
+  let bars="";
+  h.centri_pct.forEach((c,i)=>{
+    const x=f.X(c,x0,x1)-bw/2, y=f.Y(h.conteggi[i],0,y1);
+    bars+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}"
+      height="${(f.Y(0,0,y1)-y).toFixed(1)}" fill="${c<0?"var(--neg)":"var(--s1)"}" opacity=".72"/>`;
+  });
+  const norm=h.centri_pct.map((c,i)=>(i?"L":"M")+f.X(c,x0,x1).toFixed(1)+" "+f.Y(h.normale[i],0,y1).toFixed(1)).join(" ");
+  let lab="";
+  for(let i=0;i<=6;i++){
+    const v=x0+(x1-x0)*i/6;
+    lab+=`<text x="${f.X(v,x0,x1).toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="10.5"
+      fill="var(--muted)">${nf(v,1)}%</text>`;
+  }
+  host.insertAdjacentHTML("beforeend",
+    legenda([{name:"frequenza osservata",color:"var(--s1)"},{name:"normale con stessa media e σ",color:"var(--s3)"}])+
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="distribuzione dei rendimenti">
+      ${assiY(f,0,y1,v=>nf(v,0),4)}${bars}
+      <path d="${norm}" fill="none" stroke="var(--s3)" stroke-width="2"/>${lab}</svg>`);
+}
+
+/* dispersione (QQ, oppure portafoglio vs benchmark) */
+function scatter(host, punti, opt={}){
+  const W=1000,H=opt.h||280,m={t:12,r:14,b:30,l:52};
+  const f=frame(W,H,m);
+  const xs=punti.map(p=>p[0]), ys=punti.map(p=>p[1]);
+  const lo=Math.min(...xs,...ys)*1.05, hi=Math.max(...xs,...ys)*1.05;
+  const pts=punti.map(p=>`<circle cx="${f.X(p[0],lo,hi).toFixed(1)}" cy="${f.Y(p[1],lo,hi).toFixed(1)}"
+    r="2.2" fill="var(--s1)" opacity=".62"/>`).join("");
+  const diag=`M${f.X(lo,lo,hi)} ${f.Y(lo,lo,hi)} L${f.X(hi,lo,hi)} ${f.Y(hi,lo,hi)}`;
+  let lab="";
+  for(let i=0;i<=6;i++){
+    const v=lo+(hi-lo)*i/6;
+    lab+=`<text x="${f.X(v,lo,hi).toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="10.5"
+      fill="var(--muted)">${nf(v,1)}%</text>`;
+  }
+  host.insertAdjacentHTML("beforeend",
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.aria||"dispersione"}">
+      ${assiY(f,lo,hi,v=>nf(v,1)+"%",4)}
+      <path d="${diag}" stroke="var(--s3)" stroke-width="1.5" stroke-dasharray="5 4" fill="none"/>
+      ${pts}${lab}
+      <text x="${W/2}" y="${H+2}" text-anchor="middle" font-size="11" fill="var(--muted)">${opt.xl||""}</text>
+    </svg>`);
+}
+
+/* cono di volatilità: bande min–max, quartili, valore corrente */
+function conoVol(host, cono){
+  const W=1000,H=250,m={t:14,r:20,b:32,l:52};
+  const f=frame(W,H,m);
+  const y1=Math.max(...cono.map(c=>c.max_pct))*1.08, y0=0;
+  const passo=(W-m.l-m.r)/cono.length;
+  let s="";
+  cono.forEach((c,i)=>{
+    const x=m.l+passo*(i+0.5);
+    const w=passo*0.34;
+    s+=`<line x1="${x}" x2="${x}" y1="${f.Y(c.min_pct,y0,y1)}" y2="${f.Y(c.max_pct,y0,y1)}"
+         stroke="var(--axis)" stroke-width="1.4"/>`;
+    s+=`<rect x="${x-w}" y="${f.Y(c.p75_pct,y0,y1)}" width="${w*2}"
+         height="${(f.Y(c.p25_pct,y0,y1)-f.Y(c.p75_pct,y0,y1)).toFixed(1)}"
+         fill="var(--s1)" opacity=".2" stroke="var(--s1)" stroke-width="1"/>`;
+    s+=`<line x1="${x-w}" x2="${x+w}" y1="${f.Y(c.mediana_pct,y0,y1)}" y2="${f.Y(c.mediana_pct,y0,y1)}"
+         stroke="var(--s1)" stroke-width="2.2"/>`;
+    s+=`<circle cx="${x}" cy="${f.Y(c.corrente_pct,y0,y1)}" r="4.5" fill="var(--s2)"
+         stroke="var(--surface)" stroke-width="1.6"/>`;
+    s+=`<text x="${x}" y="${H-9}" text-anchor="middle" font-size="11" fill="var(--muted)">${c.finestra_gg} gg</text>`;
+  });
+  host.insertAdjacentHTML("beforeend",
+    legenda([{name:"intervallo min–max",color:"var(--axis)"},{name:"quartili e mediana",color:"var(--s1)"},
+             {name:"volatilità corrente",color:"var(--s2)"}])+
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="cono di volatilità">
+      ${assiY(f,y0,y1,v=>nf(v,0)+"%",4)}${s}</svg>`);
+}
+
+/* ventaglio delle proiezioni bootstrap */
+function fanChart(host, bs){
+  const chiavi=Object.keys(bs).filter(k=>k!=="_meta");
+  const W=1000,H=260,m={t:14,r:16,b:30,l:56};
+  const f=frame(W,H,m);
+  const tutti=chiavi.flatMap(k=>[bs[k].p05_pct,bs[k].p95_pct]);
+  const y0=Math.min(0,...tutti)*1.1, y1=Math.max(...tutti)*1.08;
+  const X=i=>m.l+(i+0.5)*(W-m.l-m.r)/chiavi.length;
+  const banda=(a,b,c,o)=>`<path d="M${X(0)} ${f.Y(bs[chiavi[0]][a],y0,y1)} `+
+    chiavi.map((k,i)=>`L${X(i)} ${f.Y(bs[k][a],y0,y1)}`).join(" ")+" "+
+    chiavi.slice().reverse().map((k,i)=>`L${X(chiavi.length-1-i)} ${f.Y(bs[k][b],y0,y1)}`).join(" ")+
+    `Z" fill="${c}" opacity="${o}"/>`;
+  const linea=(a,c,w)=>`<path d="${chiavi.map((k,i)=>(i?"L":"M")+X(i)+" "+f.Y(bs[k][a],y0,y1)).join(" ")}"
+    fill="none" stroke="${c}" stroke-width="${w}"/>`;
+  let lab="";
+  chiavi.forEach((k,i)=>{
+    lab+=`<text x="${X(i)}" y="${H-9}" text-anchor="middle" font-size="11.5" fill="var(--muted)">${k.replace("a"," anno"+(k[0]==="1"?"":"i"))}</text>`;
+    lab+=`<text x="${X(i)}" y="${f.Y(bs[k].mediana_pct,y0,y1)-8}" text-anchor="middle" font-size="11"
+      fill="var(--ink2)" font-variant-numeric="tabular-nums">${pcs(bs[k].mediana_pct,0)}</text>`;
+  });
+  host.insertAdjacentHTML("beforeend",
+    legenda([{name:"5°–95° percentile",color:"var(--s1)"},{name:"25°–75° percentile",color:"var(--s1)"},
+             {name:"mediana",color:"var(--s2)"}])+
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="proiezione bootstrap">
+      ${assiY(f,y0,y1,v=>nf(v,0)+"%",4)}
+      ${banda("p05_pct","p95_pct","var(--s1)",".14")}
+      ${banda("p25_pct","p75_pct","var(--s1)",".28")}
+      ${linea("mediana_pct","var(--s2)",2.4)}${lab}</svg>`);
+}
+
+/* mappa di calore delle correlazioni */
+function heatmap(host, labels, matrix){
+  const n=labels.length;
+  const cella=Math.min(64, 760/n), lato=cella*n, ml=Math.min(150, 106+n*2);
+  const W=ml+lato+16, H=56+lato;
+  const col=v=>{
+    const t=Math.max(-1,Math.min(1,v));
+    return t>=0 ? `rgba(42,120,214,${(0.10+0.72*t).toFixed(3)})`
+                : `rgba(217,58,56,${(0.10+0.72*-t).toFixed(3)})`;};
+  let s="";
+  labels.forEach((l,j)=>{
+    s+=`<text x="${ml+cella*(j+0.5)}" y="${44}" text-anchor="middle" font-size="10.5"
+      fill="var(--muted)" transform="rotate(-38 ${ml+cella*(j+0.5)} 44)">${l.length>13?l.slice(0,12)+"…":l}</text>`;});
+  labels.forEach((l,i)=>{
+    s+=`<text x="${ml-8}" y="${56+cella*(i+0.62)}" text-anchor="end" font-size="11"
+      fill="var(--ink2)">${l.length>17?l.slice(0,16)+"…":l}</text>`;
+    matrix[i].forEach((v,j)=>{
+      s+=`<rect x="${ml+cella*j}" y="${56+cella*i}" width="${cella-1.5}" height="${cella-1.5}"
+        rx="2.5" fill="${col(v)}"/>`;
+      s+=`<text x="${ml+cella*(j+0.5)}" y="${56+cella*(i+0.62)}" text-anchor="middle" font-size="${cella>44?11:9.5}"
+        fill="var(--ink)" font-variant-numeric="tabular-nums">${nf(v,2)}</text>`;});});
+  host.insertAdjacentHTML("beforeend",
+    `<div class="scroll"><svg viewBox="0 0 ${W} ${H}" style="min-width:${Math.max(340,W*0.62)}px"
+      role="img" aria-label="matrice di correlazione">${s}</svg></div>`);
+}
+
+/* ------------------------------------------------------------- costruzione */
+const tab=(k,v,c="",n="") => `<div class="tile"><div class="k">${k}</div>
+  <div class="v ${c}">${v}</div>${n?`<div class="n">${n}</div>`:""}</div>`;
+const tabB=(k,v,c="",n="") => `<div class="tile big"><div class="k">${k}</div>
+  <div class="v ${c}">${v}</div>${n?`<div class="n">${n}</div>`:""}</div>`;
+
+function pannello(titolo, cap, id){
+  return `<div class="panel"><h4>${titolo}</h4>${cap?`<p class="cap">${cap}</p>`:""}<div id="${id}"></div></div>`;
+}
+function tabella(intest, righe, nota="", cl=""){
+  return `<div class="panel"><div class="scroll"><table class="${cl}"><thead><tr>${
+    intest.map(h=>`<th class="${h.n?"num":""}">${h.t}</th>`).join("")}</tr></thead>
+    <tbody>${Array.isArray(righe)?righe.join(""):righe}</tbody></table></div>${nota?`<p class="cap" style="margin:8px 0 0">${nota}</p>`:""}</div>`;
+}
+
+let DATI={}, REG=null;
+
+async function main(){
+  REG = await (await fetch("data/registry.json?v="+Date.now())).json();
+  document.getElementById("pGen").innerHTML =
+    "Generato <b>"+REG.generated.slice(0,16).replace("T"," ")+" UTC</b>";
+  const tabs=document.getElementById("tabs");
+  for(const p of REG.portfolios) DATI[p.portfolio]=await (await fetch(`data/${p.portfolio}.json?v=${Date.now()}`)).json();
+  document.getElementById("pAsof").innerHTML =
+    "Dati al <b>"+REG.portfolios[0].asof+"</b> · inception "+REG.portfolios[0].inception;
+
+  const chiavi=REG.portfolios.map(p=>p.portfolio);
+  tabs.innerHTML = chiavi.map((k,i)=>
+    `<button data-k="${k}" class="${i?"":"on"}">${DATI[k].label}</button>`).join("")+
+    `<button data-k="__cmp">Confronto</button>`;
+  tabs.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{
+    tabs.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on"); mostra(b.dataset.k);
+  }));
+  document.getElementById("foot").textContent = REG.disclaimer+" · Ultimo aggiornamento "+
+    REG.generated.slice(0,10)+" · pagina generata automaticamente";
+  mostra(chiavi[0]);
+}
+
+function mostra(k){
+  const app=document.getElementById("app");
+  app.innerHTML="";
+  if(k==="__cmp") return confronto(app);
+  render(app, DATI[k]);
+}
+
+/* ------------------------------------------------------------------ scheda */
+function render(app, d){
+  const a=d.analitica, R=a.rendimento, K=a.rischio, E=a.efficienza,
+        D=a.distribuzione, C=a.campione, DR=a.decomposizione_rischio;
+  const ccy=d.base_currency;
+
+  app.insertAdjacentHTML("beforeend", `
+    <h2>${d.label} <span class="meta">${ccy} · inception ${d.inception} ·
+      dati al ${d.asof} · ${d.holdings.length} posizioni · buy &amp; hold</span></h2>
+    <div class="tiles">
+      ${tabB("Performance da inception", pcs(R.totale_pct), cls(R.totale_pct),
+             `capitale iniziale ${n0(d.capitale_iniziale)} ${ccy}`)}
+      ${tabB("Valore attuale", n0(d.metrics.nav_last)+" "+ccy, "",
+             `+${n0(d.metrics.nav_last-d.capitale_iniziale)} ${ccy}`)}
+      ${tabB("CAGR", pcs(R.cagr_pct), cls(R.cagr_pct), `su ${nf(C.anni,1)} anni`)}
+      ${tabB("Volatilità annua", pc(K.vol_ann_giornaliera_pct), "", "rendimenti giornalieri")}
+      ${tabB("Sharpe", nf(E.sharpe), "", `IC 95% ${nf(E.sharpe_ic95_min)} … ${nf(E.sharpe_ic95_max)}`)}
+      ${tabB("Max drawdown", pc(K.max_drawdown_pct), "down", K.max_dd_data)}
+    </div>`);
+
+  /* avvertenza statistica — sempre in evidenza */
+  app.insertAdjacentHTML("beforeend", `<div class="flag">
+    <b>Quanto vale statisticamente questo track.</b> Il campione è di
+    <b>${C.oss_giornaliere} giorni</b> (${nf(C.anni,1)} anni, ${C.oss_mensili} mesi):
+    sufficiente per descrivere, non per dimostrare un'abilità.
+    Lo Sharpe di <b>${nf(E.sharpe)}</b> ha un intervallo di confidenza al 95% che va da
+    <b>${nf(E.sharpe_ic95_min)}</b> a <b>${nf(E.sharpe_ic95_max)}</b>${
+      E.sharpe_ic95_min<0?" — <b>comprende lo zero</b>":""}.
+    Lo Sharpe probabilistico contro zero è ${pc(E.psr_vs_zero_pct,1)}; deflazionato per la
+    selezione fra ${C.n_prove_dsr} varianti scende a <b>${pc(E.dsr_pct,1)}</b>
+    ${E.dsr_pct<95?"(<b>sotto</b> la soglia convenzionale del 95%)":"(sopra il 95%)"}.
+    Tasso privo di rischio assunto pari a ${pc(C.rf_dichiarato_pct,1)} e dichiarato in ogni ratio.
+  </div>`);
+
+  /* --- curva e drawdown --- */
+  app.insertAdjacentHTML("beforeend", `<h3 class="sec">Andamento</h3>`);
+  const serieBench = Object.entries(d.bench_index_weekly||{});
+  app.insertAdjacentHTML("beforeend",
+    pannello(`Crescita del capitale, base 100 al ${d.inception}`,
+      "Portafoglio contro benchmark ricostruiti nella stessa valuta base. Passo settimanale.",
+      "g_nav_"+d.portfolio));
+  lineChart(document.getElementById("g_nav_"+d.portfolio),
+    [{name:d.label, data:d.index_weekly, color:"var(--s1)", w:2.4}].concat(
+      serieBench.map(([n,v],i)=>({name:n, data:v, color:COL[(i+1)%COL.length], w:1.5, op:.85}))),
+    {fmt:v=>nf(v,0), tfmt:v=>nf(v,1), h:300, aria:"crescita del capitale"});
+
+  app.insertAdjacentHTML("beforeend",
+    pannello(`Valore in ${ccy}`, "NAV settimanale ricostruito da prezzi di chiusura e cambi del giorno.",
+      "g_val_"+d.portfolio));
+  lineChart(document.getElementById("g_val_"+d.portfolio),
+    [{name:"NAV "+ccy, data:d.nav_weekly, color:"var(--s4)", w:2.2}],
+    {fmt:v=>nf(v/1e6,2)+"M", tfmt:v=>n0(v)+" "+ccy, h:230});
+
+  app.insertAdjacentHTML("beforeend",
+    pannello("Drawdown dal massimo precedente",
+      `Massimo ${pc(K.max_drawdown_pct)} il ${K.max_dd_data}. Il portafoglio è stato sotto il proprio
+       massimo il ${pc(a.sotto_acqua.quota_giorni_sotto_massimo_pct,1)} dei giorni.`,
+      "g_dd_"+d.portfolio));
+  areaChart(document.getElementById("g_dd_"+d.portfolio), d.drawdown_weekly);
+
+  /* --- rendimenti per periodo --- */
+  app.insertAdjacentHTML("beforeend", `<h3 class="sec">Rendimenti per periodo</h3>`);
+  app.insertAdjacentHTML("beforeend", `<div class="grid2">
+    ${pannello("Rendimenti annuali","Anni parziali contrassegnati con l'asterisco.","g_ann_"+d.portfolio)}
+    ${pannello("Rendimenti trimestrali","","g_tri_"+d.portfolio)}
+  </div>`);
+  barChart(document.getElementById("g_ann_"+d.portfolio),
+    d.annual.map(x=>[x.anno+(x.parziale?"*":""), x.ret_pct]), {valori:true, bw:88, h:230});
+  barChart(document.getElementById("g_tri_"+d.portfolio),
+    a.trimestrali.map(x=>[x.periodo.replace(" "," "), x.ret_pct]), {h:230, bw:44, b:32});
+
+  app.insertAdjacentHTML("beforeend",
+    pannello("Rendimenti mensili","Serie completa dall'inception.","g_mens_"+d.portfolio));
+  barChart(document.getElementById("g_mens_"+d.portfolio),
+    Object.entries(d.monthly_pct).map(([k,v])=>[k.slice(5)+"/"+k.slice(2,4), v]), {h:240, bw:26});
+
+  if((d.rolling.rolling12m||[]).length){
+    app.insertAdjacentHTML("beforeend", `<div class="grid2">
+      ${pannello("Rolling 12 mesi",
+        `Rendimento composto dei 12 mesi precedenti, passo mensile. Mediana
+         ${pc(d.metrics.rolling12_median_pct,1)}; finestre positive
+         ${pc(d.metrics.rolling12_positive_pct,0)} su ${d.metrics.rolling12_n}.`,
+        "g_r12_"+d.portfolio)}
+      ${pannello("Rolling 6 mesi","Stessa logica su finestra semestrale.","g_r6_"+d.portfolio)}
+    </div>`);
+    barChart(document.getElementById("g_r12_"+d.portfolio),
+      d.rolling.rolling12m.map(x=>[x[0].slice(5)+"/"+x[0].slice(2,4), x[1]]), {h:230, bw:30});
+    barChart(document.getElementById("g_r6_"+d.portfolio),
+      d.rolling.rolling6m.map(x=>[x[0].slice(5)+"/"+x[0].slice(2,4), x[1]]), {h:230, bw:24});
+  }
+
+  /* --- volatilità e rischio mobile --- */
+  app.insertAdjacentHTML("beforeend", `<h3 class="sec">Volatilità e rischio nel tempo</h3>`);
+  const sv=[];
+  [["vol_30gg","vol 30 gg"],["vol_60gg","vol 60 gg"],["vol_90gg","vol 90 gg"],
+   ["vol_252gg","vol 252 gg"],["vol_ewma","EWMA λ=0,94"]].forEach(([k,n],i)=>{
+    if((d.rolling[k]||[]).length) sv.push({name:n, data:d.rolling[k], color:COL[i%COL.length],
+      w:k==="vol_ewma"?2.2:1.6, dash:k==="vol_ewma"?"":""});});
+  if(sv.length){
+    app.insertAdjacentHTML("beforeend",
+      pannello("Volatilità realizzata mobile (annualizzata)",
+        `Corrente: 30 gg ${pc(K.vol_30gg_corrente_pct)} · 90 gg ${pc(K.vol_90gg_corrente_pct)} ·
+         EWMA ${pc(K.vol_ewma_corrente_pct)} · piena storia ${pc(K.vol_ann_giornaliera_pct)}.`,
+        "g_vol_"+d.portfolio));
+    lineChart(document.getElementById("g_vol_"+d.portfolio), sv,
+      {fmt:v=>nf(v,0)+"%", tfmt:v=>nf(v,1)+"%", h:280, y0:0});
+  }
+  if(a.cono_volatilita.length){
+    app.insertAdjacentHTML("beforeend",
+      pannello("Cono di volatilità",
+        "Distribuzione storica della volatilità realizzata per ampiezza di finestra; il punto arancione è il valore corrente.",
+        "g_cono_"+d.portfolio));
+    conoVol(document.getElementById("g_cono_"+d.portfolio), a.cono_volatilita);
+    app.insertAdjacentHTML("beforeend", tabella(
+      [{t:"Finestra"},{t:"Minimo",n:1},{t:"25°",n:1},{t:"Mediana",n:1},{t:"75°",n:1},
+       {t:"Massimo",n:1},{t:"Corrente",n:1}],
+      a.cono_volatilita.map(c=>`<tr><td>${c.finestra_gg} giorni</td>
+        <td class="num">${pc(c.min_pct,1)}</td><td class="num">${pc(c.p25_pct,1)}</td>
+        <td class="num">${pc(c.mediana_pct,1)}</td><td class="num">${pc(c.p75_pct,1)}</td>
+        <td class="num">${pc(c.max_pct,1)}</td>
+        <td class="num"><b>${pc(c.corrente_pct,1)}</b></td></tr>`).join("")));
+  }
+  const ss=[];
+  [["sharpe_126gg","Sharpe 126 gg"],["sharpe_252gg","Sharpe 252 gg"],["sortino_252gg","Sortino 252 gg"]]
+    .forEach(([k,n],i)=>{ if((d.rolling[k]||[]).length)
+      ss.push({name:n, data:d.rolling[k], color:COL[i%COL.length], w:1.9});});
+  if(ss.length){
+    app.insertAdjacentHTML("beforeend",
+      pannello("Efficienza mobile", "Sharpe e Sortino calcolati su finestra mobile, annualizzati, con tasso privo di rischio 0%.",
+        "g_sh_"+d.portfolio));
+    lineChart(document.getElementById("g_sh_"+d.portfolio), ss,
+      {fmt:v=>nf(v,1), tfmt:v=>nf(v,2), h:250, zero:true});
+  }
+
+  /* --- confronto con i benchmark --- */
+  const nb=Object.keys(a.benchmark||{});
+  if(nb.length){
+    app.insertAdjacentHTML("beforeend", `<h3 class="sec">Confronto con i benchmark</h3>`);
+    app.insertAdjacentHTML("beforeend", tabella(
+      [{t:"Benchmark"},{t:"Perf. bench.",n:1},{t:"CAGR bench.",n:1},{t:"Extra rend.",n:1},
+       {t:"Beta",n:1},{t:"Alfa ann.",n:1},{t:"Corr.",n:1},{t:"R²",n:1},
+       {t:"Tracking error",n:1},{t:"Info ratio",n:1},{t:"Cattura ↑",n:1},{t:"Cattura ↓",n:1},
+       {t:"β ↑",n:1},{t:"β ↓",n:1},{t:"M²",n:1}],
+      nb.map(n=>{const b=a.benchmark[n]; return `<tr><td><b>${n}</b></td>
+        <td class="num">${pcs(b.perf_bench_pct)}</td><td class="num">${pcs(b.cagr_bench_pct)}</td>
+        <td class="num ${cls(b.extra_rendimento_pct)}">${pcs(b.extra_rendimento_pct)}</td>
+        <td class="num">${nf(b.beta)}</td><td class="num ${cls(b.alpha_ann_pct)}">${pcs(b.alpha_ann_pct)}</td>
+        <td class="num">${nf(b.correlazione)}</td><td class="num">${nf(b.r_quadro)}</td>
+        <td class="num">${pc(b.tracking_error_pct,1)}</td><td class="num">${nf(b.information_ratio)}</td>
+        <td class="num">${pc(b.up_capture_pct,0)}</td><td class="num">${pc(b.down_capture_pct,0)}</td>
+        <td class="num">${nf(b.beta_up)}</td><td class="num">${nf(b.beta_down)}</td>
+        <td class="num">${pc(b.m2_ann_pct,1)}</td></tr>`;}).join(""),
+      "Alfa di Jensen annualizzata da regressione sui rendimenti giornalieri. Cattura ↑/↓ = rapporto fra "+
+      "il rendimento annualizzato del portafoglio e quello del benchmark nei soli giorni in cui il benchmark "+
+      "sale/scende. M² = rendimento che il portafoglio avrebbe con la volatilità del benchmark."));
+
+    const primo=nb[0];
+    const sExtra=nb.map((n,i)=>({name:"vs "+n, data:d.rolling["extra_cum__"+n]||[],
+                                 color:COL[i%COL.length], w:1.8})).filter(s=>s.data.length);
+    if(sExtra.length){
+      app.insertAdjacentHTML("beforeend",
+        pannello("Extra-rendimento cumulato","Differenza cumulata fra il portafoglio e ciascun benchmark; sopra lo zero il portafoglio è avanti.",
+          "g_ex_"+d.portfolio));
+      lineChart(document.getElementById("g_ex_"+d.portfolio), sExtra,
+        {fmt:v=>nf(v,0)+"%", tfmt:v=>pcs(v,1), h:260, zero:true});
+    }
+    const sBeta=[], sCorr=[];
+    nb.forEach((n,i)=>{
+      if((d.rolling["beta_126gg__"+n]||[]).length)
+        sBeta.push({name:"β vs "+n, data:d.rolling["beta_126gg__"+n], color:COL[i%COL.length], w:1.8});
+      if((d.rolling["corr_126gg__"+n]||[]).length)
+        sCorr.push({name:"ρ vs "+n, data:d.rolling["corr_126gg__"+n], color:COL[i%COL.length], w:1.8});});
+    if(sBeta.length){
+      app.insertAdjacentHTML("beforeend", `<div class="grid2">
+        ${pannello("Beta mobile a 126 giorni","","g_beta_"+d.portfolio)}
+        ${pannello("Correlazione mobile a 126 giorni","","g_corr_"+d.portfolio)}</div>`);
+      lineChart(document.getElementById("g_beta_"+d.portfolio), sBeta,
+        {fmt:v=>nf(v,1), tfmt:v=>nf(v,2), h:240, zero:true});
+      lineChart(document.getElementById("g_corr_"+d.portfolio), sCorr,
+        {fmt:v=>nf(v,1), tfmt:v=>nf(v,2), h:240, y0:-1, y1:1});
+    }
+    if((a.regimi.mercato||[]).length){
+      app.insertAdjacentHTML("beforeend", tabella(
+        [{t:"Fase di mercato ("+primo+")"},{t:"Giorni",n:1},{t:"Portafoglio ann.",n:1},
+         {t:"Benchmark ann.",n:1},{t:"Cattura",n:1}],
+        a.regimi.mercato.map(r=>`<tr><td>${r.fase==="mercato su"?"Giorni di rialzo del benchmark":"Giorni di ribasso del benchmark"}</td>
+          <td class="num">${r.giorni}</td>
+          <td class="num ${cls(r.portafoglio_ann_pct)}">${pcs(r.portafoglio_ann_pct,1)}</td>
+          <td class="num ${cls(r.benchmark_ann_pct)}">${pcs(r.benchmark_ann_pct,1)}</td>
+          <td class="num">${pc(r.cattura_pct,1)}</td></tr>`).join(""),
+        "Rendimenti annualizzati condizionati al segno del benchmark: sono tassi teorici, non rendimenti realizzati su un anno."));
+    }
+  }
+
+  /* --- tavole metriche --- */
+  app.insertAdjacentHTML("beforeend", `<h3 class="sec">Metriche complete</h3>`);
+  const gruppo=(tit, righe)=>`<div class="panel"><h4>${tit}</h4><div class="kv">${
+    righe.filter(r=>r[1]!=="—").map(r=>`<div>${r[0]}</div><div class="${r[2]||""}">${r[1]}</div>`).join("")}</div></div>`;
+  app.insertAdjacentHTML("beforeend", `<div class="grid2">
+    ${gruppo("Rendimento",[
+      ["Rendimento totale", pcs(R.totale_pct), cls(R.totale_pct)],
+      ["CAGR (geometrico annuo)", pcs(R.cagr_pct), cls(R.cagr_pct)],
+      ["Media annua aritmetica", pcs(R.media_ann_aritmetica_pct)],
+      ["Miglior giorno", pcs(R.miglior_giorno_pct),"up"],
+      ["Peggior giorno", pcs(R.peggior_giorno_pct),"down"],
+      ["Miglior settimana", pcs(R.miglior_settimana_pct),"up"],
+      ["Peggior settimana", pcs(R.peggior_settimana_pct),"down"],
+      ["Miglior mese", pcs(R.miglior_mese_pct),"up"],
+      ["Peggior mese", pcs(R.peggior_mese_pct),"down"],
+      ["Miglior trimestre", pcs(R.miglior_trimestre_pct),"up"],
+      ["Peggior trimestre", pcs(R.peggior_trimestre_pct),"down"],
+      ["Giorni positivi", pc(R.giorni_positivi_pct,1)],
+      ["Settimane positive", pc(R.settimane_positive_pct,1)],
+      ["Mesi positivi", pc(R.mesi_positivi_pct,0)+" su "+C.oss_mensili],
+      ["Trimestri positivi", pc(R.trimestri_positivi_pct,1)],
+      ["Guadagno medio nei giorni positivi", pcs(R.guadagno_medio_giorno_pct)],
+      ["Perdita media nei giorni negativi", pcs(R.perdita_media_giorno_pct)],
+      ["Rapporto vincite/perdite", nf(R.rapporto_vincite_perdite)],
+      ["Profit factor", nf(R.profit_factor)],
+      ["Gain-to-pain (mensile)", nf(R.gain_to_pain_mensile)],
+      ["Attesa per giorno", pcs(R.expectancy_giorno_pct,4)],
+      ["Serie positiva più lunga", R.serie_positiva_max_gg+" giorni"],
+      ["Serie negativa più lunga", R.serie_negativa_max_gg+" giorni"],
+    ])}
+    ${gruppo("Rischio e code",[
+      ["Volatilità annua (giornaliera)", pc(K.vol_ann_giornaliera_pct)],
+      ["Volatilità annua (settimanale)", pc(K.vol_ann_settimanale_pct)],
+      ["Volatilità annua (mensile)", pc(K.vol_ann_mensile_pct)],
+      ["Volatilità EWMA corrente (λ=0,94)", pc(K.vol_ewma_corrente_pct)],
+      ["Volatilità 30 giorni", pc(K.vol_30gg_corrente_pct)],
+      ["Volatilità 90 giorni", pc(K.vol_90gg_corrente_pct)],
+      ["Downside deviation annua", pc(K.downside_deviation_pct)],
+      ["Massimo drawdown", pc(K.max_drawdown_pct),"down"],
+      ["Ulcer index", pc(K.ulcer_index_pct)],
+      ["Pain index", pc(K.pain_index_pct)],
+      ["VaR 95% 1 giorno — storico", pc(K.var95_1g_hist_pct)],
+      ["VaR 95% 1 giorno — parametrico", pc(K.var95_1g_param_pct)],
+      ["VaR 95% 1 giorno — Cornish-Fisher", pc(K.var95_1g_cornish_fisher_pct)],
+      ["CVaR 95% 1 giorno (expected shortfall)", pc(K.cvar95_1g_pct)],
+      ["VaR 99% 1 giorno — storico", pc(K.var99_1g_hist_pct)],
+      ["VaR 99% 1 giorno — parametrico", pc(K.var99_1g_param_pct)],
+      ["VaR 99% 1 giorno — Cornish-Fisher", pc(K.var99_1g_cornish_fisher_pct)],
+      ["CVaR 99% 1 giorno", pc(K.cvar99_1g_pct)],
+      ["VaR 95% 1 settimana", pc(K.var95_1sett_pct)],
+      ["VaR 95% 1 mese", pc(K.var95_1mese_pct)],
+      ["VaR 99% 1 mese", pc(K.var99_1mese_pct)],
+      ["VaR 95% 1 anno", pc(K.var95_1anno_pct)],
+      ["VaR 95% mensile — storico", pc(K.var95_1mese_storico_pct)],
+      ["CVaR 95% mensile — storico", pc(K.cvar95_1mese_storico_pct)],
+      ["Tail ratio (95°/5° percentile)", nf(K.tail_ratio)],
+      ["Common sense ratio", nf(K.common_sense_ratio)],
+    ])}
+    ${gruppo("Efficienza (rf = "+pc(C.rf_dichiarato_pct,1)+")",[
+      ["Sharpe", nf(E.sharpe)],
+      ["Errore standard dello Sharpe", nf(E.sharpe_errore_std)],
+      ["Sharpe — intervallo 95%", nf(E.sharpe_ic95_min)+" … "+nf(E.sharpe_ic95_max)],
+      ["Sharpe probabilistico (PSR) contro 0", pc(E.psr_vs_zero_pct,1)],
+      ["Sharpe deflazionato (DSR)", pc(E.dsr_pct,1), E.dsr_pct<95?"warnc":""],
+      ["Sortino", nf(E.sortino)],
+      ["Calmar / MAR", nf(E.calmar)],
+      ["Sterling", nf(E.sterling)],
+      ["Burke", nf(E.burke)],
+      ["Martin (Ulcer performance index)", nf(E.martin_ulcer_ratio)],
+      ["Pain ratio", nf(E.pain_ratio)],
+      ["Omega (soglia 0)", nf(E.omega)],
+      ["Kappa 3", nf(E.kappa3)],
+      ["Recovery factor", nf(E.recovery_factor)],
+    ])}
+    ${gruppo("Forma della distribuzione",[
+      ["Asimmetria giornaliera", nf(D.asimmetria_giornaliera)],
+      ["Curtosi in eccesso giornaliera", nf(D.curtosi_eccesso_giornaliera)],
+      ["Asimmetria mensile", nf(D.asimmetria_mensile)],
+      ["Curtosi in eccesso mensile", nf(D.curtosi_eccesso_mensile)],
+      ["Jarque-Bera", nf(D.jarque_bera)+" (p "+nf(D.jarque_bera_p,4)+")"],
+      ["Shapiro-Wilk — p", nf(D.shapiro_p,4)],
+      ["Normalità", D.normalita_rifiutata?"rifiutata (code spesse)":"non rifiutata",
+       D.normalita_rifiutata?"warnc":""],
+      ["Esponente di Hurst", nf(D.hurst)],
+      ["Ljung-Box Q ("+D.ljung_box.lags+" ritardi)", nf(D.ljung_box.Q)+" (p "+nf(D.ljung_box.p_value,4)+")"],
+      ["Autocorrelazione a 1 giorno", nf(D.ljung_box.acf1,3)],
+      ["Osservazioni giornaliere", String(C.oss_giornaliere)],
+      ["Osservazioni mensili", String(C.oss_mensili)],
+      ["Periodo", C.dal+" → "+C.al],
+    ])}
+  </div>`);
+
+  app.insertAdjacentHTML("beforeend", `<div class="grid2">
+    ${pannello("Distribuzione dei rendimenti giornalieri",
+      `Media ${pcs(D.istogramma.media_pct,3)}, σ ${pc(D.istogramma.sigma_pct,3)}.
+       Asimmetria ${nf(D.asimmetria_giornaliera)}, curtosi in eccesso ${nf(D.curtosi_eccesso_giornaliera)}:
+       ${D.normalita_rifiutata?"le code sono più spesse di una normale, quindi il VaR parametrico sottostima gli eventi estremi.":"compatibile con una normale."}`,
+      "g_hist_"+d.portfolio)}
+    ${pannello("Quantili osservati contro normale (QQ)",
+      "Sulla diagonale i rendimenti si comporterebbero come una normale; gli scostamenti agli estremi misurano lo spessore delle code.",
+      "g_qq_"+d.portfolio)}
+  </div>`);
+  histChart(document.getElementById("g_hist_"+d.portfolio), D.istogramma);
+  scatter(document.getElementById("g_qq_"+d.portfolio), D.qq,
+    {aria:"QQ plot", xl:"quantili teorici della normale (%)", h:250});
+
+  /* --- drawdown e stress --- */
+  app.insertAdjacentHTML("beforeend", `<h3 class="sec">Drawdown, tempo sotto acqua e stress</h3>`);
+  app.insertAdjacentHTML("beforeend", `<div class="tiles">
+    ${tab("Giorni sotto il massimo", pc(a.sotto_acqua.quota_giorni_sotto_massimo_pct,1))}
+    ${tab("Drawdown medio", pc(a.sotto_acqua.dd_medio_pct))}
+    ${tab("Durata media episodio", n0(a.sotto_acqua.durata_media_gg)+" gg")}
+    ${tab("Durata massima", n0(a.sotto_acqua.durata_max_gg)+" gg")}
+    ${tab("Episodi di drawdown", String(a.sotto_acqua.episodi_n))}
+    ${tab("Ulcer index", pc(K.ulcer_index_pct))}
+  </div>`);
+  app.insertAdjacentHTML("beforeend", tabella(
+    [{t:"#"},{t:"Picco"},{t:"Minimo"},{t:"Recupero"},{t:"Profondità",n:1},
+     {t:"Giorni di caduta",n:1},{t:"Giorni di recupero",n:1},{t:"Durata totale",n:1}],
+    a.episodi_drawdown.map((e,i)=>`<tr><td>${i+1}</td><td>${e.picco}</td><td>${e.minimo}</td>
+      <td>${e.recupero||"<i>in corso</i>"}</td>
+      <td class="num down">${pc(e.profondita_pct)}</td>
+      <td class="num">${e.giorni_caduta}</td>
+      <td class="num">${e.giorni_recupero??"—"}</td>
+      <td class="num">${e.giorni_totali}</td></tr>`).join(""),
+    "Giorni di calendario. Un episodio si chiude quando il NAV torna al massimo precedente."));
+
+  app.insertAdjacentHTML("beforeend", tabella(
+    [{t:"Finestra mobile"},{t:"Peggiore",n:1},{t:"Fine della peggiore"},{t:"Mediana",n:1},
+     {t:"Migliore",n:1},{t:"Finestre negative",n:1}],
+    a.finestre_peggiori.map(f=>`<tr><td>${f.giorni} giorni di borsa</td>
+      <td class="num down">${pcs(f.peggiore_pct)}</td><td>${f.fine_peggiore}</td>
+      <td class="num">${pcs(f.mediana_pct)}</td>
+      <td class="num up">${pcs(f.migliore_pct)}</td>
+      <td class="num">${pc(f.quota_negative_pct,1)}</td></tr>`).join(""),
+    "Ogni riga considera tutte le finestre mobili di quell'ampiezza osservate dall'inception."));
+
+  if((a.regimi.volatilita||[]).length){
+    app.insertAdjacentHTML("beforeend", tabella(
+      [{t:"Regime di volatilità"},{t:"Giorni",n:1},{t:"Vol. media",n:1},
+       {t:"Rendimento annualizzato",n:1},{t:"Giorni positivi",n:1},{t:"Peggior giorno",n:1}],
+      a.regimi.volatilita.map(r=>`<tr><td>${r.regime}</td><td class="num">${r.giorni}</td>
+        <td class="num">${pc(r.vol_media_pct,1)}</td>
+        <td class="num ${cls(r.rend_ann_pct)}">${pcs(r.rend_ann_pct,1)}</td>
+        <td class="num">${pc(r.giorni_positivi_pct,1)}</td>
+        <td class="num down">${pcs(r.peggior_giorno_pct)}</td></tr>`).join(""),
+      "Quartili della volatilità realizzata a 21 giorni. I rendimenti annualizzati per regime sono tassi teorici."));
+  }
+
+  /* --- composizione e attribuzione --- */
+  app.insertAdjacentHTML("beforeend", `<h3 class="sec">Composizione, attribuzione e rischio per posizione</h3>`);
+  app.insertAdjacentHTML("beforeend", tabella(
+    [{t:"Strumento"},{t:"Ticker"},{t:"ISIN"},{t:"Classe"},{t:"Val."},{t:"Quantità",n:1},
+     {t:"Carico",n:1},{t:"Prezzo",n:1},{t:"P&amp;L %",n:1},{t:"P&amp;L % in "+ccy,n:1},
+     {t:"Valore "+ccy,n:1},{t:"Contrib. p.p.",n:1},{t:"Peso iniziale",n:1},{t:"Peso attuale",n:1},
+     {t:"Vol. ann.",n:1},{t:"Max DD",n:1}],
+    d.holdings.map(h=>`<tr><td>${h.name}</td><td>${h.ticker}</td>
+      <td style="font-size:11.5px;color:var(--muted)">${h.id}</td><td>${h.group}</td><td>${h.ccy}</td>
+      <td class="num">${n0(h.shares)}</td><td class="num">${nf(h.cost_px)}</td>
+      <td class="num">${nf(h.last_px)}</td>
+      <td class="num ${cls(h.pl_pct)}">${pcs(h.pl_pct)}</td>
+      <td class="num ${cls(h.pl_base_pct)}">${pcs(h.pl_base_pct)}</td>
+      <td class="num">${n0(h.value_base)}</td>
+      <td class="num ${cls(h.contrib_pp)}">${pcs(h.contrib_pp)}</td>
+      <td class="num">${pc(h.weight_cost_pct)}</td><td class="num">${pc(h.weight_now_pct)}</td>
+      <td class="num">${pc(h.vol_ann_pct,1)}</td>
+      <td class="num down">${pc(h.max_dd_pct,1)}</td></tr>`).join(""),
+    "P&amp;L % nella valuta di quotazione dello strumento (riconciliabile con Google Finance); "+
+    "P&amp;L % in "+ccy+" include l'effetto cambio. Contributo in punti percentuali sul capitale iniziale. "+
+    "Nessun ribilanciamento: la differenza fra peso iniziale e peso attuale è pura deriva di mercato.", "wide"));
+
+  if(DR && DR.componenti){
+    app.insertAdjacentHTML("beforeend", `<div class="tiles">
+      ${tab("Volatilità del portafoglio", pc(DR.vol_portafoglio_pct))}
+      ${tab("Somma delle volatilità singole", pc(DR.somma_vol_singole_pct))}
+      ${tab("Beneficio di diversificazione", "−"+pc(DR.beneficio_diversificazione_pct),"up")}
+      ${tab("Diversification ratio", nf(DR.diversification_ratio))}
+      ${tab("Indice di concentrazione (HHI)", nf(DR.hhi,3),"",
+            "equivalente a "+nf(DR.n_equivalente_posizioni,1)+" posizioni pari peso")}
+      ${tab("Numero effettivo di scommesse", nf(DR.numero_effettivo_scommesse),"",
+            "su "+DR.posizioni_n+" posizioni")}
+    </div>`);
+    app.insertAdjacentHTML("beforeend",
+      pannello("Peso in portafoglio contro quota del rischio",
+        "Le posizioni sopra la propria quota di peso contribuiscono al rischio più di quanto pesino.",
+        "g_rc_"+d.portfolio));
+    barPair(document.getElementById("g_rc_"+d.portfolio),
+      DR.componenti.map(c=>({k:c.nome, a:c.peso_pct, b:c.quota_rischio_pct})));
+    app.insertAdjacentHTML("beforeend", tabella(
+      [{t:"Posizione"},{t:"Peso",n:1},{t:"Volatilità singola",n:1},{t:"Contributo alla vol.",n:1},
+       {t:"Quota del rischio",n:1},{t:"VaR 95% componente",n:1},{t:"Beta al portafoglio",n:1}],
+      DR.componenti.map(c=>`<tr><td>${c.nome}</td><td class="num">${pc(c.peso_pct)}</td>
+        <td class="num">${pc(c.vol_singola_pct,1)}</td><td class="num">${pc(c.contrib_vol_pct)}</td>
+        <td class="num"><b>${pc(c.quota_rischio_pct,1)}</b></td>
+        <td class="num">${pc(c.var95_componente_pct)}</td>
+        <td class="num">${nf(c.beta_al_portafoglio)}</td></tr>`).join(""),
+      "Decomposizione di Euler della volatilità: i contributi sommano esattamente alla volatilità del portafoglio "+
+      "e le quote di rischio al 100%."));
+  }
+
+  if(d.correlations){
+    app.insertAdjacentHTML("beforeend",
+      pannello("Correlazione fra le posizioni","Rendimenti giornalieri in "+ccy+", cambio incluso.",
+        "g_hm_"+d.portfolio));
+    heatmap(document.getElementById("g_hm_"+d.portfolio), d.correlations.labels, d.correlations.matrix);
+  }
+  if(d.correlations_bench){
+    app.insertAdjacentHTML("beforeend", tabella(
+      [{t:"Benchmark"}].concat(d.correlations_bench.labels.map(l=>({t:l,n:1}))),
+      Object.entries(d.correlations_bench.righe).map(([n,v])=>`<tr><td><b>${n}</b></td>${
+        v.map(x=>`<td class="num">${nf(x)}</td>`).join("")}</tr>`).join(""),
+      "Correlazione dei rendimenti giornalieri di ciascuna posizione con i benchmark."));
+  }
+
+  /* --- tabelle calendario --- */
+  app.insertAdjacentHTML("beforeend", `<h3 class="sec">Calendario dei rendimenti</h3>`);
+  const anni=Object.keys(d.monthly_matrix).sort();
+  app.insertAdjacentHTML("beforeend", tabella(
+    [{t:"Anno"}].concat(MESI.map(m=>({t:m,n:1}))).concat([{t:"Anno",n:1}]),
+    anni.map(y=>{
+      const riga=d.monthly_matrix[y];
+      const celle=MESI.map((_,i)=>{
+        const v=riga["m"+String(i+1).padStart(2,"0")];
+        return `<td class="num">${v===undefined?'<span style="color:var(--muted)">—</span>'
+          :`<span class="${cls(v)}">${pcs(v)}</span>`}</td>`;}).join("");
+      return `<tr><td><b>${y}</b></td>${celle}<td class="num"><b class="${cls(riga.tot)}">${pcs(riga.tot)}</b></td></tr>`;
+    }).join(""),
+    "Rendimenti mensili composti; la colonna finale è il composto dei soli mesi disponibili."));
+
+  app.insertAdjacentHTML("beforeend", tabella(
+    [{t:"Mese solare"},{t:"Osservazioni",n:1},{t:"Rendimento medio",n:1},
+     {t:"Mediana",n:1},{t:"Mesi positivi",n:1}],
+    a.stagionalita.map(s=>`<tr><td>${s.mese}</td><td class="num">${s.n}</td>
+      <td class="num ${cls(s.medio_pct)}">${pcs(s.medio_pct)}</td>
+      <td class="num ${cls(s.mediano_pct)}">${pcs(s.mediano_pct)}</td>
+      <td class="num">${pc(s.positivi_pct,0)}</td></tr>`).join(""),
+    "<b>Da leggere come curiosità, non come segnale</b>: con 2–3 osservazioni per mese solare "+
+    "qualunque differenza fra i mesi è indistinguibile dal caso."));
+
+  /* --- proiezioni --- */
+  if(a.bootstrap && a.bootstrap._meta){
+    const bs=a.bootstrap;
+    app.insertAdjacentHTML("beforeend", `<h3 class="sec">Proiezioni per ricampionamento</h3>`);
+    app.insertAdjacentHTML("beforeend",
+      pannello("Distribuzione del capitale a 1, 3 e 5 anni",
+        `Block bootstrap stazionario: ${n0(bs._meta.n_sim)} simulazioni costruite pescando blocchi di
+         ${bs._meta.blocco_gg} giorni dalla storia osservata (${bs._meta.oss_storiche} giorni), così da
+         conservare il raggruppamento della volatilità. <b>È una proiezione condizionata al passato, non una previsione</b>:
+         assume che il futuro somigli, in distribuzione, ai ${nf(C.anni,1)} anni osservati.`,
+        "g_fan_"+d.portfolio));
+    fanChart(document.getElementById("g_fan_"+d.portfolio), bs);
+    app.insertAdjacentHTML("beforeend", tabella(
+      [{t:"Orizzonte"},{t:"5°",n:1},{t:"25°",n:1},{t:"Mediana",n:1},{t:"75°",n:1},{t:"95°",n:1},
+       {t:"P(perdita)",n:1},{t:"P(< −10%)",n:1},{t:"P(> +20%)",n:1},{t:"CVaR 95%",n:1},
+       {t:"Drawdown mediano",n:1},{t:"Drawdown 95°",n:1}],
+      Object.keys(bs).filter(k=>k!=="_meta").map(k=>{const b=bs[k];
+        return `<tr><td><b>${k.replace("a"," "+(k[0]==="1"?"anno":"anni"))}</b></td>
+        <td class="num ${cls(b.p05_pct)}">${pcs(b.p05_pct,1)}</td>
+        <td class="num ${cls(b.p25_pct)}">${pcs(b.p25_pct,1)}</td>
+        <td class="num ${cls(b.mediana_pct)}"><b>${pcs(b.mediana_pct,1)}</b></td>
+        <td class="num ${cls(b.p75_pct)}">${pcs(b.p75_pct,1)}</td>
+        <td class="num ${cls(b.p95_pct)}">${pcs(b.p95_pct,1)}</td>
+        <td class="num">${pc(b.prob_perdita_pct,1)}</td>
+        <td class="num">${pc(b.prob_sotto_meno10_pct,1)}</td>
+        <td class="num">${pc(b.prob_sopra_piu20_pct,1)}</td>
+        <td class="num down">${pcs(b.cvar95_finale_pct,1)}</td>
+        <td class="num down">${pc(b.dd_atteso_mediano_pct,1)}</td>
+        <td class="num down">${pc(b.dd_p95_pct,1)}</td></tr>`;}).join(""),
+      "CVaR 95% = perdita media nel 5% peggiore delle simulazioni. Drawdown 95° = livello superato "+
+      "solo dal 5% dei percorsi simulati."));
+  }
+
+  /* --- metodologia --- */
+  app.insertAdjacentHTML("beforeend", `
+    <h3 class="sec">Metodologia</h3>
+    <div class="panel"><p class="note">${d.methodology}</p>
+    <p class="note" style="margin-top:10px">
+      <b>Come sono calcolate le metriche.</b> Rendimenti giornalieri semplici sul NAV;
+      annualizzazione a 252 giorni di borsa; volatilità con deviazione standard campionaria.
+      VaR e CVaR sono espressi come perdita positiva: la versione storica usa i quantili empirici,
+      quella parametrica assume normalità, quella di Cornish-Fisher corregge per asimmetria e curtosi.
+      Il drawdown è misurato sul massimo precedente del NAV. Sharpe, Sortino, Calmar, Sterling, Burke,
+      Omega, Kappa 3, Martin e pain ratio usano un tasso privo di rischio dichiarato pari a
+      ${pc(C.rf_dichiarato_pct,1)}. L'intervallo di confidenza dello Sharpe segue Lo (2002); PSR e DSR
+      seguono Bailey e López de Prado, con ${C.n_prove_dsr} prove indipendenti assunte nel deflatore.
+      La decomposizione del rischio è quella di Euler sulla matrice di covarianza annualizzata delle
+      posizioni. Il numero effettivo di scommesse è l'esponenziale dell'entropia degli autovalori
+      della covarianza.</p>
+    <p class="note" style="margin-top:10px">
+      <b>Limiti dichiarati.</b> Valori lordi: nessuna commissione di negoziazione, di custodia o
+      fiscalità è dedotta. Prezzi di chiusura di fonte pubblica, con riporto in avanti dell'ultimo
+      prezzo nei giorni di chiusura di una singola borsa. Per lo strumento UBS Core MSCI World si usa
+      la linea di quotazione in EUR (stesso ISIN ${d.holdings.find(h=>h.ticker==="WRDUSW-USD")?.id||""}),
+      convertita in ${ccy}, perché la linea in dollari non ha storico continuo; i prezzi esposti in
+      tabella sono comunque riportati nella valuta usata da Google Finance.
+      Il campione di ${nf(C.anni,1)} anni non consente inferenza robusta su alfa e Sharpe.</p>
+    </div>`);
+}
+
+/* --------------------------------------------------------------- confronto */
+function confronto(app){
+  const ids=REG.portfolios.map(p=>p.portfolio);
+  const A=DATI[ids[0]], B=DATI[ids[1]];
+  app.insertAdjacentHTML("beforeend", `<h2>Confronto diretto
+    <span class="meta">${A.label} contro ${B.label} · dati al ${A.asof}</span></h2>`);
+  app.insertAdjacentHTML("beforeend",
+    pannello("Crescita del capitale a confronto, base 100",
+      "Stessa inception, stessa valuta base, stessi prezzi: la differenza è solo di composizione.",
+      "g_cmp"));
+  const bench=Object.entries(A.bench_index_weekly||{}).slice(0,2);
+  lineChart(document.getElementById("g_cmp"),
+    [{name:A.label, data:A.index_weekly, color:"var(--s1)", w:2.4},
+     {name:B.label, data:B.index_weekly, color:"var(--s2)", w:2.4}].concat(
+     bench.map(([n,v],i)=>({name:n, data:v, color:COL[i+3], w:1.3, op:.8}))),
+    {fmt:v=>nf(v,0), tfmt:v=>nf(v,1), h:320});
+
+  app.insertAdjacentHTML("beforeend",
+    pannello("Drawdown a confronto","","g_cmpdd"));
+  lineChart(document.getElementById("g_cmpdd"),
+    [{name:A.label, data:A.drawdown_weekly, color:"var(--s1)", w:1.9},
+     {name:B.label, data:B.drawdown_weekly, color:"var(--s2)", w:1.9}],
+    {fmt:v=>nf(v,0)+"%", tfmt:v=>pc(v,2), h:250, y1:0});
+
+  const righe=[
+    ["Capitale iniziale", d=>n0(d.capitale_iniziale)+" "+d.base_currency],
+    ["Valore attuale", d=>n0(d.metrics.nav_last)+" "+d.base_currency],
+    ["Performance totale", d=>pcs(d.analitica.rendimento.totale_pct)],
+    ["CAGR", d=>pcs(d.analitica.rendimento.cagr_pct)],
+    ["Volatilità annua", d=>pc(d.analitica.rischio.vol_ann_giornaliera_pct)],
+    ["Downside deviation", d=>pc(d.analitica.rischio.downside_deviation_pct)],
+    ["Sharpe", d=>nf(d.analitica.efficienza.sharpe)],
+    ["Sharpe — IC 95%", d=>nf(d.analitica.efficienza.sharpe_ic95_min)+" … "+nf(d.analitica.efficienza.sharpe_ic95_max)],
+    ["Sharpe deflazionato", d=>pc(d.analitica.efficienza.dsr_pct,1)],
+    ["Sortino", d=>nf(d.analitica.efficienza.sortino)],
+    ["Calmar", d=>nf(d.analitica.efficienza.calmar)],
+    ["Omega", d=>nf(d.analitica.efficienza.omega)],
+    ["Massimo drawdown", d=>pc(d.analitica.rischio.max_drawdown_pct)],
+    ["Ulcer index", d=>pc(d.analitica.rischio.ulcer_index_pct)],
+    ["VaR 95% 1 giorno (storico)", d=>pc(d.analitica.rischio.var95_1g_hist_pct)],
+    ["CVaR 95% 1 giorno", d=>pc(d.analitica.rischio.cvar95_1g_pct)],
+    ["VaR 95% 1 mese", d=>pc(d.analitica.rischio.var95_1mese_pct)],
+    ["Peggior mese", d=>pcs(d.analitica.rendimento.peggior_mese_pct)],
+    ["Mesi positivi", d=>pc(d.analitica.rendimento.mesi_positivi_pct,0)],
+    ["Asimmetria giornaliera", d=>nf(d.analitica.distribuzione.asimmetria_giornaliera)],
+    ["Curtosi in eccesso", d=>nf(d.analitica.distribuzione.curtosi_eccesso_giornaliera)],
+    ["Numero effettivo di scommesse", d=>nf(d.analitica.decomposizione_rischio.numero_effettivo_scommesse)],
+    ["Diversification ratio", d=>nf(d.analitica.decomposizione_rischio.diversification_ratio)],
+    ["Concentrazione (HHI)", d=>nf(d.analitica.decomposizione_rischio.hhi,3)],
+    ["Posizioni", d=>String(d.holdings.length)],
+  ];
+  app.insertAdjacentHTML("beforeend", tabella(
+    [{t:"Metrica"},{t:A.label,n:1},{t:B.label,n:1}],
+    righe.map(([k,f])=>`<tr><td>${k}</td><td class="num">${f(A)}</td><td class="num">${f(B)}</td></tr>`).join(""),
+    "Stessa metodologia, stesso periodo, stesse fonti di prezzo per entrambi."));
+
+  const nb=Object.keys(A.analitica.benchmark||{});
+  if(nb.length) app.insertAdjacentHTML("beforeend", tabella(
+    [{t:"Contro benchmark"},{t:A.label+" — β",n:1},{t:A.label+" — α ann.",n:1},{t:A.label+" — IR",n:1},
+     {t:B.label+" — β",n:1},{t:B.label+" — α ann.",n:1},{t:B.label+" — IR",n:1}],
+    nb.map(n=>{const x=A.analitica.benchmark[n]||{}, y=B.analitica.benchmark[n]||{};
+      return `<tr><td><b>${n}</b></td>
+      <td class="num">${nf(x.beta)}</td><td class="num ${cls(x.alpha_ann_pct)}">${pcs(x.alpha_ann_pct)}</td>
+      <td class="num">${nf(x.information_ratio)}</td>
+      <td class="num">${nf(y.beta)}</td><td class="num ${cls(y.alpha_ann_pct)}">${pcs(y.alpha_ann_pct)}</td>
+      <td class="num">${nf(y.information_ratio)}</td></tr>`;}).join("")));
+
+  app.insertAdjacentHTML("beforeend", `<div class="flag">
+    <b>Attenzione a leggere il confronto come una classifica.</b> I due portafogli condividono
+    quattro strumenti su cinque e hanno correlazione quasi totale: la differenza di performance
+    (${pcs(A.analitica.rendimento.totale_pct - B.analitica.rendimento.totale_pct,2)} a favore di
+    ${A.analitica.rendimento.totale_pct>B.analitica.rendimento.totale_pct?A.label:B.label})
+    è ben dentro il rumore di un campione di ${nf(A.analitica.campione.anni,1)} anni.
+    Su questi dati non è possibile affermare che una delle due composizioni sia superiore all'altra.
+  </div>`);
+}
+
+main().catch(e=>{
+  document.getElementById("app").innerHTML =
+    `<div class="flag"><b>Errore nel caricamento dei dati.</b> ${e}</div>`;
+});
+</script>
+</body>
+</html>

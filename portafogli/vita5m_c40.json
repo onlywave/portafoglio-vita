@@ -1,0 +1,81 @@
+{
+ "portfolio": "vita5m_c40",
+ "label": "VITA 5M-C40",
+ "google_portfolio_id": "3269abc3-92a4-4fe8-9d06-6d69ce57e051",
+ "base_currency": "CHF",
+ "inception": "2024-05-01",
+ "sync_date": "2026-08-18",
+ "methodology": "Variante «core 40» del portafoglio VITA 5M: 5 ETF UCITS ad accumulazione, base CHF, costruito il 01/05/2024 con un unico acquisto per strumento e nessuna transazione successiva. Rispetto a VITA 5M concentra il peso sul core azionario mondiale (UBS Core MSCI World) e rinuncia sia al satellite Invesco FTSE All-World sia a due terzi dell'esposizione momentum. Quote fisse da inception; NAV EOD ricostruito dai prezzi di chiusura nella valuta di quotazione e convertito in CHF ai cambi del giorno. Composizione sincronizzata dal portafoglio Google Finance omonimo; prezzi e metriche aggiornati automaticamente ogni giorno di borsa. Nessun ribilanciamento.",
+ "holdings": [
+  {
+   "symbol": "WRDUSW-USD",
+   "yf": "UETW.DE",
+   "name": "UBS Core MSCI World UCITS ETF USD acc",
+   "isin": "IE00BD4TXV59",
+   "group": "Azionario sviluppato",
+   "kind": "etf",
+   "ccy": "EUR",
+   "quote_ccy_google": "USD",
+   "shares": 49946,
+   "cost_px": 29.56,
+   "cost_ccy": "USD",
+   "cost_amount": 1476403.76
+  },
+  {
+   "symbol": "ZGLD",
+   "yf": "ZGLD.SW",
+   "name": "Swisscanto (CH) Gold ETF EA CHF",
+   "isin": "CH0139101593",
+   "group": "Oro fisico CHF",
+   "kind": "etf",
+   "ccy": "CHF",
+   "quote_ccy_google": "CHF",
+   "shares": 857,
+   "cost_px": 625.9,
+   "cost_ccy": "CHF",
+   "cost_amount": 536396.3
+  },
+  {
+   "symbol": "EIMI",
+   "yf": "EIMI.L",
+   "name": "iShares Core MSCI EM IMI UCITS ETF USD acc",
+   "isin": "IE00BKM4GZ66",
+   "group": "Azionario emergenti",
+   "kind": "etf",
+   "ccy": "USD",
+   "quote_ccy_google": "USD",
+   "shares": 20915,
+   "cost_px": 32.69,
+   "cost_ccy": "USD",
+   "cost_amount": 683606.78
+  },
+  {
+   "symbol": "IWMO",
+   "yf": "IWMO.L",
+   "name": "iShares Edge MSCI World Momentum Factor UCITS ETF USD acc",
+   "isin": "IE00BP3QZ825",
+   "group": "Azionario momentum sviluppati",
+   "kind": "etf",
+   "ccy": "USD",
+   "quote_ccy_google": "USD",
+   "shares": 4716,
+   "cost_px": 70.4,
+   "cost_ccy": "USD",
+   "cost_amount": 332006.4
+  },
+  {
+   "symbol": "EMVL",
+   "yf": "EMVL.L",
+   "name": "iShares Edge MSCI EM Value Factor UCITS ETF USD acc",
+   "isin": "IE00BG0SKF03",
+   "group": "Azionario emergenti value",
+   "kind": "etf",
+   "ccy": "USD",
+   "quote_ccy_google": "USD",
+   "shares": 2646,
+   "cost_px": 46.84,
+   "cost_ccy": "USD",
+   "cost_amount": 123932.03
+  }
+ ]
+}

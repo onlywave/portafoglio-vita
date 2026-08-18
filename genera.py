@@ -289,6 +289,28 @@ def costruisci(spec: dict, end: str | None = None) -> dict:
     an = analitica(nav, val_df, bench, rf=0.0, n_prove_dsr=6)
     roll = serie_rolling(nav, bench, rf=0.0)
 
+    # --- serie giornaliera normalizzata (base 100): alimenta le pagine ribasate,
+    # dove il periodo di analisi lo sceglie chi legge e nessun importo e' esposto.
+    fatt = 100.0 / capitale
+    comp_g = val_df.reindex(nav.index)
+    for h in holds:  # il primo punto e' il costo effettivo, non un prezzo di mercato
+        comp_g.loc[nav.index[0], h["symbol"]] = h["cost_amount"] * float(tasso(h["cost_ccy"], idx).asof(g0))
+    serie = {
+        "portfolio": spec["portfolio"], "label": spec["label"], "base_currency": base,
+        "inception": spec["inception"], "asof": str(ultimo.date()),
+        "date": [str(k.date()) for k in nav.index],
+        "nav": [round(float(v) * fatt, 6) for v in nav.values],
+        "cassa": [round(float(v) * fatt, 6) for v in cassa.reindex(nav.index).fillna(0.0).values],
+        "componenti": {h["symbol"]: [round(float(v) * fatt, 6) for v in comp_g[h["symbol"]].values]
+                       for h in holds},
+        "etichette": {h["symbol"]: {"nome": h["name"], "gruppo": h["group"],
+                                    "isin": h["isin"], "ccy": h["quote_ccy_google"]} for h in holds},
+        "benchmark": {n: [round(float(v), 6) for v in b.reindex(nav.index).ffill().bfill().values]
+                      for n, b in bench.items()},
+        "disclaimer": DISCLAIMER,
+        "methodology": spec["methodology"],
+    }
+
     dd = nav / nav.cummax() - 1.0
     mensili = nav.resample("ME").last().pct_change().dropna()
     comp_ret = val_df.pct_change().dropna()
@@ -308,7 +330,7 @@ def costruisci(spec: dict, end: str | None = None) -> dict:
                            for c in comp_ret.columns]
         corr_bench = {"labels": list(comp_ret.columns), "righe": righe}
 
-    return {
+    payload = {
         "portfolio": spec["portfolio"], "label": spec["label"],
         "google_portfolio_id": spec["google_portfolio_id"],
         "base_currency": base, "inception": spec["inception"],
@@ -338,6 +360,7 @@ def costruisci(spec: dict, end: str | None = None) -> dict:
         "holdings": posizioni,
         "disclaimer": DISCLAIMER,
     }
+    return payload, serie
 
 
 def main(out_dir: str, end: str | None = None) -> None:
@@ -346,10 +369,13 @@ def main(out_dir: str, end: str | None = None) -> None:
     registry = []
     for spec_path in sorted(SPEC_DIR.glob("*.json")):
         spec = json.loads(spec_path.read_text())
-        d = costruisci(spec, end=end)
+        d, serie = costruisci(spec, end=end)
         (out / f"{d['portfolio']}.json").write_text(json.dumps(d, ensure_ascii=False, indent=1))
+        (out / f"serie_{d['portfolio']}.json").write_text(
+            json.dumps(serie, ensure_ascii=False, separators=(",", ":")))
         print("scritto:", out / f"{d['portfolio']}.json", "| asof", d["asof"],
-              "| perf", d["metrics"]["perf_total_pct"], "%")
+              "| perf", d["metrics"]["perf_total_pct"], "%",
+              "| serie", len(serie["date"]), "giorni")
         registry.append({k: d[k] for k in (
             "portfolio", "label", "base_currency", "inception", "asof",
             "capitale_iniziale", "metrics", "google_portfolio_id")})

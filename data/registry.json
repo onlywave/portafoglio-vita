@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-18T22:12:23+00:00",
+ "generated": "2026-08-18T22:22:29+00:00",
  "portfolios": [
   {
    "portfolio": "vita5m",
@@ -9,7 +9,7 @@
    "asof": "2026-08-18",
    "capitale_iniziale": 2955188.0,
    "metrics": {
-    "perf_total_pct": 49.44,
+    "perf_total_pct": 49.45,
     "cagr_pct": 19.09,
     "vol_ann_pct": 16.12,
     "sharpe": 1.15,
@@ -34,7 +34,7 @@
     "rolling12_max_pct": 33.4,
     "rolling12_positive_pct": 100.0,
     "rolling12_n": 17,
-    "nav_last": 4416345.0
+    "nav_last": 4416523.0
    },
    "google_portfolio_id": "560ad9f3-5549-45cb-bbc3-29aa06774c03"
   },
@@ -46,7 +46,7 @@
    "asof": "2026-08-18",
    "capitale_iniziale": 2941735.0,
    "metrics": {
-    "perf_total_pct": 48.24,
+    "perf_total_pct": 48.25,
     "cagr_pct": 18.67,
     "vol_ann_pct": 15.81,
     "sharpe": 1.14,
@@ -71,7 +71,7 @@
     "rolling12_max_pct": 31.2,
     "rolling12_positive_pct": 100.0,
     "rolling12_n": 17,
-    "nav_last": 4360766.0
+    "nav_last": 4361026.0
    },
    "google_portfolio_id": "3269abc3-92a4-4fe8-9d06-6d69ce57e051"
   }

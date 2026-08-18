@@ -133,9 +133,15 @@ def kappa(r: pd.Series, n: int = 3, soglia: float = 0.0) -> float | None:
 
 
 def ewma_vol(r: pd.Series, lam: float = 0.94) -> pd.Series:
-    """Volatilita' annualizzata EWMA (RiskMetrics, lambda 0.94)."""
-    var = r.ewm(alpha=1 - lam, adjust=False).var(bias=True)
-    return np.sqrt(var * TD)
+    """Volatilita' annualizzata EWMA nella convenzione RiskMetrics:
+    sigma2_t = lam*sigma2_{t-1} + (1-lam)*r2_{t-1}, media assunta nulla
+    (pandas .ewm().var() centrerebbe sulla media mobile, dando un valore diverso)."""
+    v = float(r.iloc[0]) ** 2
+    out = []
+    for x in r.to_numpy(dtype=float):
+        v = lam * v + (1 - lam) * x * x
+        out.append(v)
+    return pd.Series(np.sqrt(np.array(out) * TD), index=r.index)
 
 
 def hurst(r: pd.Series) -> float | None:

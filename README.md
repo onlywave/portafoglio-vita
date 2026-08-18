@@ -2,7 +2,20 @@
 
 Cruscotto quantitativo dei due portafogli **VITA 5M** e **VITA 5M-C40**.
 
-**Pagina: https://onlywave.github.io/portafoglio-vita/**
+**Pagine**
+
+| | |
+|---|---|
+| Cruscotto completo, valori in CHF | https://onlywave.github.io/portafoglio-vita/ |
+| VITA 5M — indice base 100, periodo a scelta | https://onlywave.github.io/portafoglio-vita/vita5m.html |
+| VITA 5M-C40 — indice base 100, periodo a scelta | https://onlywave.github.io/portafoglio-vita/vita5m-c40.html |
+
+Le due pagine in base 100 non espongono quantità, prezzi di carico né importi: lavorano solo
+in grandezze relative. Il periodo di analisi lo sceglie chi legge (preset o due date) e l'intero
+blocco statistico — drawdown, correlazioni, decomposizione del rischio, bootstrap — viene
+**ricalcolato nel browser** su quella finestra, non ritagliato da un calcolo fatto sull'intera
+storia. Lo stato finisce nell'indirizzo (`#da=2025-04-09&a=2026-08-18`), quindi una vista è
+condivisibile con un link.
 
 ## Come funziona
 
@@ -17,12 +30,17 @@ con le stesse quantità e gli stessi prezzi di carico.
 
 | Cosa | Come si aggiorna |
 |---|---|
-| Prezzi, cambi, NAV, tutte le metriche | automatico, `aggiorna-dati` alle 20:30 UTC nei giorni feriali |
+| Prezzi, cambi, NAV, serie giornaliere, tutte le metriche | automatico, `aggiorna-dati` alle 20:30 UTC nei giorni feriali |
 | Quantità, prezzi di carico, elenco strumenti | manuale, modificando `portafogli/*.json` — solo se cambia la composizione |
 
 ## File
 
-- `index.html` — la pagina (nessuna dipendenza esterna, SVG generati a runtime)
+- `index.html` — cruscotto completo in valuta base
+- `vita5m.html`, `vita5m-c40.html` — pagine in base 100 con periodo selezionabile
+- `assets/stile.css`, `assets/grafici.js` — stile e primitive SVG condivise
+- `assets/quant.js` — motore statistico lato browser, verificato contro quello Python su 159
+  metriche (differenze residue sotto l'unità di arrotondamento)
+- `assets/ribasata.js` — costruzione delle pagine in base 100
 - `portafogli/*.json` — composizione: quantità, prezzi di carico, ticker Yahoo, ISIN
 - `genera.py` — costruisce il NAV giornaliero e scrive `data/*.json`
 - `analitica.py` — metriche di performance, rischio, distribuzione, benchmark, bootstrap

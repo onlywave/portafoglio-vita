@@ -118,6 +118,21 @@ function disegna(){
     Tasso privo di rischio assunto pari a ${pc(C.rf_dichiarato_pct,1)}.
   </div>`);
 
+  /* equity con drawdown in sottografico, primo grafico della pagina */
+  const ddPeriodo=Q.ddSerie(R.nav).map(v=>v*100);
+  const passo=Math.max(1, Math.ceil(R.date.length/220));
+  const camp=[]; for(let i=0;i<R.date.length;i+=passo) camp.push(i);
+  if(camp[camp.length-1]!==R.date.length-1) camp.push(R.date.length-1);
+  const eqC=camp.map(i=>[R.date[i], R.nav[i]]), ddC=camp.map(i=>[R.date[i], ddPeriodo[i]]);
+  add(pannello("Equity e drawdown",
+    `Indice base 100 al ${C.dal} e, sotto, la distanza dal massimo raggiunto nel periodo.
+     Massimo drawdown ${pc(K.max_drawdown_pct)} il ${K.max_dd_data}; sotto il proprio massimo
+     il ${pc(A.sotto_acqua.quota_giorni_sotto_massimo_pct,1)} dei giorni.`, "g_eq"));
+  equityDD(document.getElementById("g_eq"),
+    [{name:S.label, data:eqC, color:"var(--s1)"}],
+    [{name:"drawdown", data:ddC}],
+    {fmt:v=>nf(v,0), tfmt:v=>nf(v,1), h:400, tit:"Indice base 100"});
+
   /* andamento */
   add(`<h3 class="sec">Andamento</h3>`);
   add(pannello(`Indice del portafoglio, base 100 al ${C.dal}`,

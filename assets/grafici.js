@@ -308,3 +308,103 @@ function tabella(intest, righe, nota="", cl=""){
     intest.map(h=>`<th class="${h.n?"num":""}">${h.t}</th>`).join("")}</tr></thead>
     <tbody>${Array.isArray(righe)?righe.join(""):righe}</tbody></table></div>${nota?`<p class="cap" style="margin:8px 0 0">${nota}</p>`:""}</div>`;
 }
+
+/* equity con drawdown in sottografico: due riquadri, un solo asse dei tempi.
+   eq e dd sono liste di serie {name, data:[[data,valore]], color}; le date
+   delle due liste devono coincidere perché il crosshair legge lo stesso indice. */
+function equityDD(host, eq, dd, opt={}){
+  const W=1000, H=opt.h||400, m={t:28,r:14,b:26,l:58}, gap=34;
+  const disp=H-m.t-m.b-gap, hT=Math.round(disp*0.66), hB=disp-hT;
+  const yT0=m.t, yT1=m.t+hT, yB0=yT1+gap, yB1=yB0+hB;
+  const tutti=eq.flatMap(s=>s.data);
+  if(!tutti.length) return;
+  const ts=tutti.map(p=>+new Date(p[0]));
+  const x0=Math.min(...ts), x1=Math.max(...ts);
+  const X=t=>m.l+(t-x0)/((x1-x0)||1)*(W-m.l-m.r);
+  const ev=tutti.map(p=>p[1]).filter(isFinite);
+  let e0=Math.min(...ev), e1=Math.max(...ev);
+  const pad=(e1-e0)*0.07||1; e0-=pad; e1+=pad;
+  const YT=v=>yT1-(v-e0)/((e1-e0)||1)*hT;
+  const dv=dd.flatMap(s=>s.data.map(p=>p[1])).filter(isFinite);
+  const d0=Math.min(...dv,-0.5)*1.12, d1=0;
+  const YB=v=>yB0+(v-d1)/((d0-d1)||1)*hB;
+  const fmtE=opt.fmt||(v=>nf(v,0));
+
+  let g="", l="";
+  for(let i=0;i<=4;i++){                       // griglia del riquadro superiore
+    const v=e0+(e1-e0)*i/4, y=YT(v);
+    g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"
+        stroke="var(--grid)" stroke-width="1"/>`;
+    l+=`<text x="${m.l-7}" y="${(y+4).toFixed(1)}" text-anchor="end" font-size="10.5"
+        fill="var(--muted)" font-variant-numeric="tabular-nums">${fmtE(v)}</text>`;
+  }
+  for(let i=0;i<=2;i++){                       // griglia del riquadro inferiore
+    const v=d1+(d0-d1)*i/2, y=YB(v);
+    g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"
+        stroke="${i===0?"var(--axis)":"var(--grid)"}" stroke-width="1"/>`;
+    l+=`<text x="${m.l-7}" y="${(y+4).toFixed(1)}" text-anchor="end" font-size="10.5"
+        fill="var(--muted)" font-variant-numeric="tabular-nums">${nf(v,0)}%</text>`;
+  }
+  const mesi={};
+  tutti.forEach(p=>{const k=String(p[0]).slice(0,7); if(!(k in mesi)) mesi[k]=+new Date(p[0]);});
+  const en=Object.entries(mesi), step=Math.max(1,Math.ceil(en.length/10));
+  en.forEach(([k,t],i)=>{ if(i%step===0)
+    l+=`<text x="${X(t).toFixed(1)}" y="${H-6}" font-size="10.5" text-anchor="middle"
+        fill="var(--muted)">${k.slice(5)}/${k.slice(2,4)}</text>`;});
+
+  let dis="";
+  eq.forEach((s,i)=>{                          // equity: linea con velo sottostante
+    const c=s.color||COL[i%COL.length];
+    const pts=s.data.filter(p=>isFinite(p[1]));
+    const d=pts.map((p,j)=>(j?"L":"M")+X(+new Date(p[0])).toFixed(1)+" "+YT(p[1]).toFixed(1)).join(" ");
+    if(eq.length===1)
+      dis+=`<path d="${d} L${X(+new Date(pts[pts.length-1][0])).toFixed(1)} ${yT1}
+             L${X(+new Date(pts[0][0])).toFixed(1)} ${yT1} Z" fill="${c}" fill-opacity=".10"/>`;
+    dis+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="${s.w||2.4}" stroke-linejoin="round"/>`;
+  });
+  dd.forEach((s,i)=>{                          // drawdown: area sotto lo zero
+    const c=s.color||(dd.length===1?"var(--neg)":COL[i%COL.length]);
+    const pts=s.data.filter(p=>isFinite(p[1]));
+    const d=pts.map((p,j)=>(j?"L":"M")+X(+new Date(p[0])).toFixed(1)+" "+YB(p[1]).toFixed(1)).join(" ");
+    dis+=`<path d="M${X(+new Date(pts[0][0])).toFixed(1)} ${YB(0)} ${d.slice(1)}
+           L${X(+new Date(pts[pts.length-1][0])).toFixed(1)} ${YB(0)} Z"
+          fill="${c}" fill-opacity="${dd.length===1?".24":".13"}"/>`;
+    dis+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="1.6"/>`;
+  });
+
+  const eti=(t,y)=>`<text x="${m.l}" y="${y}" font-size="10.5" fill="var(--muted)"
+    letter-spacing=".06em">${t}</text>`;
+  host.insertAdjacentHTML("beforeend",
+    (eq.length>1?legenda(eq):"")+
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.aria||"equity e drawdown"}">
+      ${g}${l}
+      ${eti((opt.tit||"EQUITY").toUpperCase(), yT0-11)}
+      ${eti("DRAWDOWN", yB0-11)}
+      <line x1="${m.l}" x2="${W-m.r}" y1="${yT1}" y2="${yT1}" stroke="var(--axis)"/>
+      ${dis}
+      <line class="ch" y1="${yT0}" y2="${yB1}" stroke="var(--axis)" stroke-dasharray="3 3" style="display:none"/>
+      <circle class="pt" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" style="display:none"/>
+      <rect x="${m.l}" y="${yT0}" width="${W-m.l-m.r}" height="${yB1-yT0}" fill="transparent" class="hov"/>
+    </svg><div class="tip"></div>`);
+  const svg=host.querySelector("svg:last-of-type"), tip=host.querySelector(".tip:last-of-type");
+  const ch=svg.querySelector(".ch"), pt=svg.querySelector(".pt");
+  svg.querySelector(".hov").addEventListener("mousemove",e=>{
+    const r=svg.getBoundingClientRect(), px=(e.clientX-r.left)*(W/r.width);
+    const base=eq[0].data; let b=0,bd=1e18;
+    base.forEach((p,i)=>{const d=Math.abs(X(+new Date(p[0]))-px); if(d<bd){bd=d;b=i;}});
+    const key=base[b][0], x=X(+new Date(key));
+    ch.setAttribute("x1",x); ch.setAttribute("x2",x); ch.style.display="block";
+    pt.setAttribute("cx",x); pt.setAttribute("cy",YT(base[b][1])); pt.style.display="block";
+    pt.setAttribute("fill", eq[0].color||COL[0]);
+    const righe=eq.map((s,i)=>{ const h=s.data.find(p=>p[0]===key); if(!h) return null;
+      const q=(dd[i]||dd[0]).data.find(p=>p[0]===key);
+      return `<span style="color:${s.color||COL[i%COL.length]}">■</span> ${s.name}: <b>${
+        (opt.tfmt||fmtE)(h[1])}</b>${q?`  ·  DD <b class="down">${nf(q[1],2)}%</b>`:""}`;
+    }).filter(Boolean);
+    tip.style.display="block";
+    tip.style.left=Math.min(x/W*r.width+12, r.width-230)+"px";
+    tip.style.top="8px";
+    tip.innerHTML=`${key}<br>`+righe.join("<br>");
+  });
+  svg.addEventListener("mouseleave",()=>{tip.style.display="none";ch.style.display="none";pt.style.display="none";});
+}

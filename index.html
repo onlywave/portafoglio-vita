@@ -96,6 +96,18 @@ function render(app, d){
     Tasso privo di rischio assunto pari a ${pc(C.rf_dichiarato_pct,1)} e dichiarato in ogni ratio.
   </div>`);
 
+  /* --- equity con drawdown in sottografico: il quadro d'insieme --- */
+  app.insertAdjacentHTML("beforeend",
+    pannello(`Equity e drawdown`,
+      `Indice del portafoglio base 100 al ${d.inception} e, sotto, la distanza dal massimo
+       precedente. Massimo drawdown ${pc(K.max_drawdown_pct)} il ${K.max_dd_data};
+       sotto il proprio massimo il ${pc(a.sotto_acqua.quota_giorni_sotto_massimo_pct,1)} dei giorni.`,
+      "g_eq_"+d.portfolio));
+  equityDD(document.getElementById("g_eq_"+d.portfolio),
+    [{name:d.label, data:d.index_weekly, color:"var(--s1)"}],
+    [{name:"drawdown", data:d.drawdown_weekly}],
+    {fmt:v=>nf(v,0), tfmt:v=>nf(v,1), h:400, tit:"Indice base 100"});
+
   /* --- curva e drawdown --- */
   app.insertAdjacentHTML("beforeend", `<h3 class="sec">Andamento</h3>`);
   const serieBench = Object.entries(d.bench_index_weekly||{});
@@ -561,6 +573,17 @@ function confronto(app){
   const A=DATI[ids[0]], B=DATI[ids[1]];
   app.insertAdjacentHTML("beforeend", `<h2>Confronto diretto
     <span class="meta">${A.label} contro ${B.label} · dati al ${A.asof}</span></h2>`);
+  app.insertAdjacentHTML("beforeend",
+    pannello("Equity e drawdown a confronto",
+      "Indici base 100 alla stessa data e, sotto, i rispettivi drawdown dal massimo precedente.",
+      "g_cmpeq"));
+  equityDD(document.getElementById("g_cmpeq"),
+    [{name:A.label, data:A.index_weekly, color:"var(--s1)"},
+     {name:B.label, data:B.index_weekly, color:"var(--s2)"}],
+    [{name:A.label, data:A.drawdown_weekly, color:"var(--s1)"},
+     {name:B.label, data:B.drawdown_weekly, color:"var(--s2)"}],
+    {fmt:v=>nf(v,0), tfmt:v=>nf(v,1), h:420, tit:"Indice base 100"});
+
   app.insertAdjacentHTML("beforeend",
     pannello("Crescita del capitale a confronto, base 100",
       "Stessa inception, stessa valuta base, stessi prezzi: la differenza è solo di composizione.",

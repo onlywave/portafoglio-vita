@@ -1,18 +1,18 @@
 {
- "generated": "2026-08-28T04:24:42+00:00",
+ "generated": "2026-08-29T02:52:15+00:00",
  "portfolios": [
   {
    "portfolio": "vita5m",
    "label": "VITA 5M",
    "base_currency": "CHF",
    "inception": "2024-05-01",
-   "asof": "2026-08-27",
+   "asof": "2026-08-28",
    "capitale_iniziale": 2955188.0,
    "metrics": {
-    "perf_total_pct": 49.89,
-    "cagr_pct": 19.02,
+    "perf_total_pct": 50.29,
+    "cagr_pct": 19.13,
     "vol_ann_pct": 16.1,
-    "sharpe": 1.14,
+    "sharpe": 1.15,
     "sortino": 1.07,
     "calmar": 1.06,
     "max_dd_pct": -18.01,
@@ -27,14 +27,14 @@
     "worst_month_pct": -6.79,
     "var95_1m_hist_pct": 4.24,
     "cvar95_1m_hist_pct": 5.52,
-    "skew_monthly": -0.42,
-    "kurtosis_monthly": 0.2,
+    "skew_monthly": -0.41,
+    "kurtosis_monthly": 0.18,
     "rolling12_median_pct": 16.4,
     "rolling12_min_pct": 5.3,
     "rolling12_max_pct": 33.4,
     "rolling12_positive_pct": 100.0,
     "rolling12_n": 17,
-    "nav_last": 4429615.0
+    "nav_last": 4441464.0
    },
    "google_portfolio_id": "560ad9f3-5549-45cb-bbc3-29aa06774c03"
   },
@@ -43,11 +43,11 @@
    "label": "VITA 5M-C40",
    "base_currency": "CHF",
    "inception": "2024-05-01",
-   "asof": "2026-08-27",
+   "asof": "2026-08-28",
    "capitale_iniziale": 2941735.0,
    "metrics": {
-    "perf_total_pct": 48.63,
-    "cagr_pct": 18.59,
+    "perf_total_pct": 48.84,
+    "cagr_pct": 18.64,
     "vol_ann_pct": 15.79,
     "sharpe": 1.14,
     "sortino": 1.06,
@@ -71,7 +71,7 @@
     "rolling12_max_pct": 31.2,
     "rolling12_positive_pct": 100.0,
     "rolling12_n": 17,
-    "nav_last": 4372274.0
+    "nav_last": 4378562.0
    },
    "google_portfolio_id": "3269abc3-92a4-4fe8-9d06-6d69ce57e051"
   }

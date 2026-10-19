@@ -1,23 +1,23 @@
 {
- "generated": "2026-10-16T22:56:03+00:00",
+ "generated": "2026-10-19T23:50:16+00:00",
  "portfolios": [
   {
    "portfolio": "vita5m",
    "label": "VITA 5M",
    "base_currency": "CHF",
    "inception": "2024-05-01",
-   "asof": "2026-10-16",
+   "asof": "2026-10-19",
    "capitale_iniziale": 2955188.0,
    "metrics": {
-    "perf_total_pct": 47.03,
-    "cagr_pct": 16.96,
-    "vol_ann_pct": 15.91,
+    "perf_total_pct": 46.95,
+    "cagr_pct": 16.87,
+    "vol_ann_pct": 15.89,
     "sharpe": 1.04,
     "sortino": 0.98,
     "calmar": 0.94,
     "max_dd_pct": -18.01,
     "var95_1d_hist_pct": 1.41,
-    "var95_1w_pct": 3.69,
+    "var95_1w_pct": 3.68,
     "best_day_pct": 4.86,
     "worst_day_pct": -5.87,
     "days_positive_pct": 56.0,
@@ -34,7 +34,7 @@
     "rolling12_max_pct": 33.4,
     "rolling12_positive_pct": 100.0,
     "rolling12_n": 19,
-    "nav_last": 4345120.0
+    "nav_last": 4342525.0
    },
    "google_portfolio_id": "560ad9f3-5549-45cb-bbc3-29aa06774c03"
   },
@@ -43,18 +43,18 @@
    "label": "VITA 5M-C40",
    "base_currency": "CHF",
    "inception": "2024-05-01",
-   "asof": "2026-10-16",
+   "asof": "2026-10-19",
    "capitale_iniziale": 2941735.0,
    "metrics": {
-    "perf_total_pct": 46.32,
-    "cagr_pct": 16.72,
-    "vol_ann_pct": 15.56,
+    "perf_total_pct": 46.14,
+    "cagr_pct": 16.6,
+    "vol_ann_pct": 15.55,
     "sharpe": 1.05,
     "sortino": 0.99,
-    "calmar": 0.94,
+    "calmar": 0.93,
     "max_dd_pct": -17.85,
     "var95_1d_hist_pct": 1.33,
-    "var95_1w_pct": 3.61,
+    "var95_1w_pct": 3.6,
     "best_day_pct": 7.11,
     "worst_day_pct": -6.23,
     "days_positive_pct": 56.0,
@@ -62,16 +62,16 @@
     "months_positive_pct": 73.0,
     "best_month_pct": 7.95,
     "worst_month_pct": -6.54,
-    "var95_1m_hist_pct": 3.77,
+    "var95_1m_hist_pct": 3.82,
     "cvar95_1m_hist_pct": 5.53,
     "skew_monthly": -0.42,
-    "kurtosis_monthly": -0.01,
+    "kurtosis_monthly": -0.02,
     "rolling12_median_pct": 16.5,
     "rolling12_min_pct": 4.8,
     "rolling12_max_pct": 31.2,
     "rolling12_positive_pct": 100.0,
     "rolling12_n": 19,
-    "nav_last": 4304220.0
+    "nav_last": 4298933.0
    },
    "google_portfolio_id": "3269abc3-92a4-4fe8-9d06-6d69ce57e051"
   }

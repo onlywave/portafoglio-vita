@@ -1,10 +1,16 @@
 """Genera i dati della vetrina PORTAFOGLIO VITA a partire dalle spec in portafogli/.
 
-Modello: buy & hold a quote fisse dall'inception (un solo acquisto per strumento,
-nessuna transazione successiva — riscontro dal registro transazioni di Google
-Finance). Il NAV giornaliero e' ricostruito dai prezzi EOD di chiusura nella
-valuta di quotazione, convertiti in valuta base ai cambi dello stesso giorno; i
-dividendi (nulli su ETF ad accumulazione) sono accreditati a cassa.
+Due modelli, scelti dalla spec:
+  - buy & hold a quote fisse dall'inception (un solo acquisto per strumento,
+    nessuna transazione successiva — riscontro dal registro transazioni di
+    Google Finance): la spec porta `shares` e i prezzi di carico;
+  - proporzioni costanti con ribilanciamento periodico: la spec porta
+    `movements`, il registro degli eseguiti, e le quote di ogni giorno sono la
+    somma cumulata dei movimenti fino a quel giorno. Gli acquisti addebitano e
+    le vendite accreditano la cassa, che entra nel NAV.
+Il NAV giornaliero e' ricostruito dai prezzi EOD di chiusura nella valuta di
+quotazione, convertiti in valuta base ai cambi dello stesso giorno; i dividendi
+(nulli su ETF ad accumulazione) sono accreditati a cassa.
 
 Convenzioni metriche: rendimenti giornalieri semplici, 252 giorni/anno, VaR
 espresso POSITIVO (perdita), drawdown negativo.
@@ -30,24 +36,96 @@ PRE_DAYS = 12  # margine dati prima dell'inception per ffill di prezzi e FX
 
 DISCLAIMER = (
     "Pagina di ricerca a cura di Emanuele Ferreri. Non e' consulenza finanziaria, "
-    "ne' offerta o sollecitazione all'investimento. I due portafogli sono "
+    "ne' offerta o sollecitazione all'investimento. VITA 5M e VITA 5M-C40 sono "
     "posizioni buy & hold a composizione fissa dal 01/05/2024, sincronizzate dai "
-    "portafogli Google Finance omonimi; prezzi di chiusura da fonte pubblica "
-    "(Yahoo Finance), valori lordi, nessuna commissione ne' fiscalita' dedotta. "
-    "Le performance passate non sono indicative di quelle future."
+    "portafogli Google Finance omonimi; EMANUELE ETF e' un portafoglio a "
+    "proporzioni costanti con ribilanciamento trimestrale dal 26/06/2023, "
+    "ricostruito dal registro movimenti di Quantistik. Prezzi di chiusura da "
+    "fonte pubblica (Yahoo Finance), valori lordi, nessuna commissione ne' "
+    "fiscalita' dedotta. Le performance passate non sono indicative di quelle "
+    "future."
 )
+
+# valuta in cui si misurano i portafogli nella scheda di confronto: i libri in
+# valuta diversa portano anche la serie convertita, altrimenti il confronto
+# sommerebbe composizione e cambio senza dichiararlo
+VALUTA_CONFRONTO = "CHF"
 
 MONTH_KEYS = [f"m{i:02d}" for i in range(1, 13)]
 
-# Benchmark di confronto, ricostruiti nella valuta base del portafoglio.
-# "mix" combina piu' simboli a pesi fissi ribilanciati giornalmente.
-BENCHMARK = {
-    "MSCI World (CHF)": {"mix": {"IWDA.L": 1.0}, "ccy": {"IWDA.L": "USD"}},
-    "SMI (CHF)": {"mix": {"^SSMI": 1.0}, "ccy": {"^SSMI": "CHF"}},
-    "60/40 globale (CHF)": {"mix": {"IWDA.L": 0.6, "AGGS.SW": 0.4},
-                            "ccy": {"IWDA.L": "USD", "AGGS.SW": "CHF"}},
-    "Oro CHF": {"mix": {"ZGLD.SW": 1.0}, "ccy": {"ZGLD.SW": "CHF"}},
+# Benchmark di confronto, per valuta base del portafoglio e ricostruiti in
+# quella valuta. "mix" combina piu' simboli a pesi fissi ribilanciati
+# giornalmente.
+BENCHMARK_BASE = {
+    "CHF": {
+        "MSCI World (CHF)": {"mix": {"IWDA.L": 1.0}, "ccy": {"IWDA.L": "USD"}},
+        "SMI (CHF)": {"mix": {"^SSMI": 1.0}, "ccy": {"^SSMI": "CHF"}},
+        "60/40 globale (CHF)": {"mix": {"IWDA.L": 0.6, "AGGS.SW": 0.4},
+                                "ccy": {"IWDA.L": "USD", "AGGS.SW": "CHF"}},
+        "Oro CHF": {"mix": {"ZGLD.SW": 1.0}, "ccy": {"ZGLD.SW": "CHF"}},
+    },
+    "EUR": {
+        "MSCI World (EUR)": {"mix": {"IWDA.AS": 1.0}, "ccy": {"IWDA.AS": "EUR"}},
+        "MSCI EM IMI (EUR)": {"mix": {"EIMI.L": 1.0}, "ccy": {"EIMI.L": "USD"}},
+        "60/40 globale (EUR)": {"mix": {"IWDA.AS": 0.6, "AGGH.MI": 0.4},
+                                "ccy": {"IWDA.AS": "EUR", "AGGH.MI": "EUR"}},
+        "Oro (EUR)": {"mix": {"ZGLD.SW": 1.0}, "ccy": {"ZGLD.SW": "CHF"}},
+    },
 }
+
+
+def benchmark_di(base: str) -> dict:
+    return BENCHMARK_BASE.get(base, {})
+
+
+# ------------------------------------------------------------------- registro
+def quote_e_cassa(spec: dict, idx: pd.DatetimeIndex) -> tuple[pd.DataFrame, pd.Series]:
+    """Quote per strumento e cassa generata dai movimenti, giorno per giorno.
+
+    Ogni eseguito vale dal primo giorno di borsa non anteriore alla sua data;
+    le quote sono la somma cumulata dei movimenti, la cassa la somma cumulata
+    degli importi col segno opposto (un acquisto la consuma)."""
+    isin2sym = {h["isin"]: h["symbol"] for h in spec["holdings"]}
+    simboli = [h["symbol"] for h in spec["holdings"]]
+    dq = pd.DataFrame(0.0, index=idx, columns=simboli)
+    dc = pd.Series(0.0, index=idx)
+    for data, tipo, isin, qta, _px, imp in spec["movements"]:
+        pos = int(idx.searchsorted(pd.Timestamp(data)))
+        if pos >= len(idx):
+            print(f"  ! movimento {data} {tipo} {isin} oltre la fine dei prezzi: ignorato")
+            continue
+        segno = 1.0 if tipo == "A" else -1.0
+        dq.iat[pos, simboli.index(isin2sym[isin])] += segno * float(qta)
+        dc.iat[pos] += -segno * float(imp)
+    return dq.cumsum(), dc.cumsum()
+
+
+def carico_registro(spec: dict) -> dict:
+    """Per strumento: quote correnti, costo residuo e prezzo medio di carico in
+    valuta base, utile realizzato e importo investito all'avvio.
+
+    Convenzione del costo medio: una vendita esce al costo medio del momento,
+    quindi il realizzato non resta dentro il costo della posizione residua."""
+    isin2sym = {h["isin"]: h["symbol"] for h in spec["holdings"]}
+    out = {h["symbol"]: {"quote": 0.0, "costo": 0.0, "realizzato": 0.0,
+                         "iniziale": 0.0, "pmc": 0.0} for h in spec["holdings"]}
+    prima = min(m[0] for m in spec["movements"])
+    for data, tipo, isin, qta, _px, imp in spec["movements"]:
+        s = out[isin2sym[isin]]
+        qta, imp = float(qta), float(imp)
+        if tipo == "A":
+            s["quote"] += qta
+            s["costo"] += imp
+        else:
+            pmc = s["costo"] / s["quote"] if s["quote"] else 0.0
+            s["realizzato"] += imp - pmc * qta
+            s["costo"] -= pmc * qta
+            s["quote"] -= qta
+        if data == prima:
+            s["iniziale"] += imp if tipo == "A" else -imp
+    for s in out.values():
+        s["pmc"] = s["costo"] / s["quote"] if s["quote"] else 0.0
+    return out
 
 
 # ---------------------------------------------------------------- dati mercato
@@ -189,14 +267,18 @@ def rendimenti_annuali(nav: pd.Series) -> list[dict]:
 def costruisci_benchmark(base: str, idx: pd.DatetimeIndex, start: str,
                          end: str | None, fx_get) -> dict[str, pd.Series]:
     """NAV base-100 di ogni benchmark nella valuta base, allineato a `idx`."""
-    simboli = sorted({s for b in BENCHMARK.values() for s in b["mix"]})
+    cfg_base = benchmark_di(base)
+    if not cfg_base:
+        print(f"  ! nessun benchmark definito per la valuta base {base}")
+        return {}
+    simboli = sorted({s for b in cfg_base.values() for s in b["mix"]})
     try:
         px, _ = scarica(simboli, start, end)
     except SystemExit as e:
         print("  ! benchmark non disponibili:", e)
         return {}
     out = {}
-    for nome, cfg in BENCHMARK.items():
+    for nome, cfg in cfg_base.items():
         try:
             comp = []
             for sym, peso in cfg["mix"].items():
@@ -222,8 +304,9 @@ def costruisci(spec: dict, end: str | None = None) -> dict:
 
     yfs = [h["yf"] for h in holds]
     closes, divs = scarica(yfs, start, end)
-    valute = ({h["ccy"] for h in holds} | {h["cost_ccy"] for h in holds} | {base}
-              | {c for b in BENCHMARK.values() for c in b["ccy"].values()})
+    valute = ({h["ccy"] for h in holds} | {h.get("cost_ccy", base) for h in holds}
+              | {base, VALUTA_CONFRONTO}
+              | {c for b in benchmark_di(base).values() for c in b["ccy"].values()})
     valute = {"GBP" if v in ("GBp", "GBX") else v for v in valute}
     fx = cambi(valute, base, start, end)
 
@@ -237,56 +320,99 @@ def costruisci(spec: dict, end: str | None = None) -> dict:
         raise SystemExit(f"{spec['portfolio']}: nessuna quotazione dopo l'inception")
     idx = live.index
 
-    # valore di mercato per strumento in valuta base + cassa dividendi
-    valori, cassa = {}, pd.Series(0.0, index=idx)
+    # prezzo unitario in valuta base: e' da qui che si misurano i rendimenti di
+    # componente, perche' con il ribilanciamento il VALORE di una posizione salta
+    # per un eseguito anche quando il prezzo non si muove
+    prezzi_base = pd.DataFrame({h["symbol"]: live[h["yf"]] * tasso(h["ccy"], idx)
+                                for h in holds})
+    movimenti = spec.get("movements")
+    if movimenti:
+        quote, cassa_trade = quote_e_cassa(spec, idx)
+        cassa = cassa_trade + float(spec["capital"])
+    else:
+        quote = pd.DataFrame({h["symbol"]: float(h["shares"]) for h in holds}, index=idx)
+        cassa = pd.Series(0.0, index=idx)
+
+    # valore di mercato per strumento in valuta base + cassa (movimenti, dividendi)
+    valori = {}
     for h in holds:
         r = tasso(h["ccy"], idx)
-        valori[h["symbol"]] = live[h["yf"]] * r * h["shares"]
-        cassa = cassa.add((divs[h["yf"]].reindex(idx).fillna(0.0) * r * h["shares"]).cumsum(),
-                          fill_value=0.0)
+        if movimenti:
+            valori[h["symbol"]] = prezzi_base[h["symbol"]] * quote[h["symbol"]]
+            div = divs[h["yf"]].reindex(idx).fillna(0.0) * r * quote[h["symbol"]]
+        else:
+            valori[h["symbol"]] = live[h["yf"]] * r * h["shares"]
+            div = divs[h["yf"]].reindex(idx).fillna(0.0) * r * h["shares"]
+        cassa = cassa.add(div.cumsum(), fill_value=0.0)
     val_df = pd.DataFrame(valori)
     nav = val_df.sum(axis=1) + cassa
 
-    # NAV iniziale = capitale effettivamente investito (prezzi di carico Google),
-    # convertito in valuta base al cambio del giorno di acquisto
+    # NAV iniziale = capitale effettivamente conferito: per il buy & hold la somma
+    # dei prezzi di carico convertiti al cambio del giorno d'acquisto, per il
+    # modello a proporzioni costanti l'apporto dichiarato nella spec
     g0 = idx[0]
-    capitale = sum(h["cost_amount"] * float(tasso(h["cost_ccy"], idx).asof(g0)) for h in holds)
+    carico = carico_registro(spec) if movimenti else None
+    capitale = (float(spec["capital"]) if movimenti else
+                sum(h["cost_amount"] * float(tasso(h["cost_ccy"], idx).asof(g0)) for h in holds))
     nav = pd.concat([pd.Series([capitale], index=[g0 - pd.Timedelta(days=1)]), nav])
 
     s = statistiche(nav)
     ultimo = idx[-1]
     nav_last = float(nav.iloc[-1])
 
+    # carico per posizione: quote correnti, costo residuo in valuta base, prezzo
+    # medio di carico nella valuta di esposizione, realizzato
+    carichi = {}
+    for h in holds:
+        if movimenti:
+            c = carico[h["symbol"]]
+            carichi[h["symbol"]] = (c["quote"], c["costo"], c["pmc"], c["realizzato"])
+        else:
+            rc = float(tasso(h["cost_ccy"], idx).asof(g0))
+            carichi[h["symbol"]] = (h["shares"], h["cost_amount"] * rc,
+                                    float(h["cost_px"]), 0.0)
+    costo_tot = sum(v[1] for v in carichi.values())
+
     posizioni = []
     for h in holds:
+        sym = h["symbol"]
+        quote_ora, costo_base, pmc, realizzato = carichi[sym]
         r1 = float(tasso(h["ccy"], idx).asof(ultimo))
-        rc = float(tasso(h["cost_ccy"], idx).asof(g0))
         px = float(live[h["yf"]].asof(ultimo))
-        val = float(val_df[h["symbol"]].asof(ultimo))
-        costo_base = h["cost_amount"] * rc
-        # prezzo riportato nella valuta in cui Google espone lo strumento
-        rq = 1.0 if h["quote_ccy_google"] == h["ccy"] else (
-            r1 / float(tasso(h["quote_ccy_google"], idx).asof(ultimo)))
+        val = float(val_df[sym].asof(ultimo))
+        vista = h.get("quote_ccy") or h["quote_ccy_google"]
+        # prezzo riportato nella valuta in cui lo espone la fonte della composizione
+        rq = 1.0 if vista == h["ccy"] else (r1 / float(tasso(vista, idx).asof(ultimo)))
         px_quote = px * rq
-        serie_h = (live[h["yf"]] * tasso(h["ccy"], idx)).pct_change().dropna()
-        posizioni.append({
-            "name": h["name"], "id": h["isin"], "ticker": h["symbol"],
-            "group": h["group"], "kind": h["kind"], "ccy": h["quote_ccy_google"],
-            "shares": h["shares"], "cost_px": h["cost_px"],
+        serie_h = prezzi_base[sym].pct_change().dropna()
+        dd_h = prezzi_base[sym] if movimenti else val_df[sym]
+        voce = {
+            "name": h["name"], "id": h["isin"], "ticker": sym,
+            "group": h["group"], "kind": h["kind"], "ccy": vista,
+            "shares": round(quote_ora, 6) if movimenti else quote_ora,
+            "cost_px": round(pmc, 4) if movimenti else pmc,
             "last_px": round(px_quote, 4),
-            "pl_pct": round((px_quote / h["cost_px"] - 1) * 100, 2),
-            "pl_base_pct": round((val / costo_base - 1) * 100, 2),
+            "pl_pct": round((px_quote / pmc - 1) * 100, 2) if pmc else None,
+            "pl_base_pct": round((val / costo_base - 1) * 100, 2) if costo_base else None,
             "value_base": round(val, 0), "cost_base": round(costo_base, 0),
-            "contrib_pp": round((val - costo_base) / capitale * 100, 2),
+            "contrib_pp": round((val - costo_base + realizzato) / capitale * 100, 2),
             "weight_now_pct": round(val / nav_last * 100, 2),
-            "weight_cost_pct": round(costo_base / capitale * 100, 2),
+            "weight_cost_pct": round(costo_base / costo_tot * 100, 2),
             "vol_ann_pct": round(float(serie_h.std(ddof=1)) * (252 ** 0.5) * 100, 2),
-            "max_dd_pct": round(float((val_df[h["symbol"]] / val_df[h["symbol"]].cummax() - 1).min()) * 100, 2),
-        })
+            "max_dd_pct": round(float((dd_h / dd_h.cummax() - 1).min()) * 100, 2),
+        }
+        if movimenti:  # su un libro ribilanciato il realizzato non e' trascurabile
+            voce["realized_base"] = round(realizzato, 0)
+            voce["target_pct"] = h.get("target_pct")
+            voce["venue"] = h.get("venue")
+        posizioni.append(voce)
 
     bench = costruisci_benchmark(base, nav.index, start, end,
                                  lambda c, i: tasso(c, i))
-    an = analitica(nav, val_df, bench, rf=0.0, n_prove_dsr=6)
+    # covarianze, correlazioni ed Euler sui rendimenti di PREZZO quando il
+    # portafoglio e' ribilanciato: i valori hanno dentro gli eseguiti
+    rend_comp = prezzi_base.pct_change().dropna() if movimenti else None
+    an = analitica(nav, val_df, bench, rf=0.0, n_prove_dsr=6, rend_comp=rend_comp)
     roll = serie_rolling(nav, bench, rf=0.0)
 
     # --- serie giornaliera normalizzata (base 100): alimenta le pagine ribasate,
@@ -294,7 +420,27 @@ def costruisci(spec: dict, end: str | None = None) -> dict:
     fatt = 100.0 / capitale
     comp_g = val_df.reindex(nav.index)
     for h in holds:  # il primo punto e' il costo effettivo, non un prezzo di mercato
-        comp_g.loc[nav.index[0], h["symbol"]] = h["cost_amount"] * float(tasso(h["cost_ccy"], idx).asof(g0))
+        comp_g.loc[nav.index[0], h["symbol"]] = (
+            carico[h["symbol"]]["iniziale"] if movimenti else
+            h["cost_amount"] * float(tasso(h["cost_ccy"], idx).asof(g0)))
+    prz_g = prezzi_base.reindex(nav.index).bfill()
+    # flussi di ribilanciamento per strumento: servono alla pagina in base 100 per
+    # togliere gli eseguiti dall'attribuzione (il primo giro e' gia' dentro il
+    # valore iniziale della componente, quindi non si conta due volte)
+    flussi_g = {}
+    if movimenti:
+        isin2sym = {h["isin"]: h["symbol"] for h in holds}
+        simboli = [h["symbol"] for h in holds]
+        fl = pd.DataFrame(0.0, index=nav.index, columns=simboli)
+        prima_data = min(m[0] for m in spec["movements"])
+        for data, tipo, isin, _q, _px, imp in spec["movements"]:
+            if data == prima_data:
+                continue
+            pos = int(nav.index.searchsorted(pd.Timestamp(data)))
+            if pos >= len(nav.index):
+                continue
+            fl.iat[pos, simboli.index(isin2sym[isin])] += float(imp) if tipo == "A" else -float(imp)
+        flussi_g = {s: [round(float(v) * fatt, 6) for v in fl[s].values] for s in simboli}
     serie = {
         "portfolio": spec["portfolio"], "label": spec["label"], "base_currency": base,
         "inception": spec["inception"], "asof": str(ultimo.date()),
@@ -303,17 +449,26 @@ def costruisci(spec: dict, end: str | None = None) -> dict:
         "cassa": [round(float(v) * fatt, 6) for v in cassa.reindex(nav.index).fillna(0.0).values],
         "componenti": {h["symbol"]: [round(float(v) * fatt, 6) for v in comp_g[h["symbol"]].values]
                        for h in holds},
+        # prezzi unitari in base 100: rendimenti di componente al netto degli eseguiti
+        "prezzi": {h["symbol"]: [round(float(v) / float(prz_g[h["symbol"]].iloc[0]) * 100, 6)
+                                 for v in prz_g[h["symbol"]].values] for h in holds},
         "etichette": {h["symbol"]: {"nome": h["name"], "gruppo": h["group"],
-                                    "isin": h["isin"], "ccy": h["quote_ccy_google"]} for h in holds},
+                                    "isin": h["isin"],
+                                    "ccy": h.get("quote_ccy") or h["quote_ccy_google"]}
+                      for h in holds},
         "benchmark": {n: [round(float(v), 6) for v in b.reindex(nav.index).ffill().bfill().values]
                       for n, b in bench.items()},
         "disclaimer": DISCLAIMER,
         "methodology": spec["methodology"],
+        "model": spec.get("model", "buy_hold"),
+        "model_label": spec.get("model_label", "buy & hold"),
+        "rebalance_dates": spec.get("rebalance_dates", []),
+        "flussi": flussi_g,
     }
 
     dd = nav / nav.cummax() - 1.0
     mensili = nav.resample("ME").last().pct_change().dropna()
-    comp_ret = val_df.pct_change().dropna()
+    comp_ret = (prezzi_base if movimenti else val_df).pct_change().dropna()
     corr = None
     if len(comp_ret) >= 40 and comp_ret.shape[1] >= 2:
         m = comp_ret.corr().round(2)
@@ -330,9 +485,28 @@ def costruisci(spec: dict, end: str | None = None) -> dict:
                            for c in comp_ret.columns]
         corr_bench = {"labels": list(comp_ret.columns), "righe": righe}
 
+    # serie misurata nella valuta di confronto: rende paragonabili fra loro
+    # portafogli tenuti in valute diverse, dichiarando il cambio come tale
+    idx_cmp = None
+    if base != VALUTA_CONFRONTO:
+        fx_cmp = (1.0 / fx[VALUTA_CONFRONTO].reindex(nav.index).ffill().bfill())
+        nav_cmp = (nav * fx_cmp).dropna()
+        if len(nav_cmp):
+            sett_cmp = nav_cmp.resample("W-FRI").last().dropna()
+            idx_cmp = [[str(k.date()), round(float(v) / float(nav_cmp.iloc[0]) * 100, 2)]
+                       for k, v in sett_cmp.items()]
+
     payload = {
         "portfolio": spec["portfolio"], "label": spec["label"],
-        "google_portfolio_id": spec["google_portfolio_id"],
+        "google_portfolio_id": spec.get("google_portfolio_id"),
+        "source": spec.get("source", "Google Finance"),
+        "source_id": spec.get("source_portfolio_id") or spec.get("google_portfolio_id"),
+        "source_url": spec.get("source_url"),
+        "model": spec.get("model", "buy_hold"),
+        "model_label": spec.get("model_label", "buy & hold"),
+        "rebalance_dates": spec.get("rebalance_dates", []),
+        "cmp_currency": VALUTA_CONFRONTO,
+        "index_weekly_cmp": idx_cmp,
         "base_currency": base, "inception": spec["inception"],
         "sync_date": spec["sync_date"], "asof": str(ultimo.date()),
         "methodology": spec["methodology"],
@@ -367,8 +541,9 @@ def main(out_dir: str, end: str | None = None) -> None:
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     registry = []
-    for spec_path in sorted(SPEC_DIR.glob("*.json")):
-        spec = json.loads(spec_path.read_text())
+    specs = [json.loads(p.read_text()) for p in sorted(SPEC_DIR.glob("*.json"))]
+    # l'ordine delle schede lo decide la spec: `order` crescente, poi il nome
+    for spec in sorted(specs, key=lambda s: (s.get("order", 99), s["portfolio"])):
         d, serie = costruisci(spec, end=end)
         (out / f"{d['portfolio']}.json").write_text(json.dumps(d, ensure_ascii=False, indent=1))
         (out / f"serie_{d['portfolio']}.json").write_text(
@@ -378,7 +553,8 @@ def main(out_dir: str, end: str | None = None) -> None:
               "| serie", len(serie["date"]), "giorni")
         registry.append({k: d[k] for k in (
             "portfolio", "label", "base_currency", "inception", "asof",
-            "capitale_iniziale", "metrics", "google_portfolio_id")})
+            "capitale_iniziale", "metrics", "google_portfolio_id",
+            "source", "source_id", "source_url", "model", "model_label")})
     (out / "registry.json").write_text(json.dumps({
         "generated": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
         "portfolios": registry, "disclaimer": DISCLAIMER,

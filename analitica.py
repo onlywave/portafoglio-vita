@@ -248,10 +248,16 @@ def blocco_benchmark(nav: pd.Series, bnav: pd.Series, rf: float = 0.0) -> dict:
 
 
 # ------------------------------------------------ decomposizione del rischio
-def decomposizione_rischio(valori: pd.DataFrame, nav_last: float) -> dict:
+def decomposizione_rischio(valori: pd.DataFrame, nav_last: float,
+                           rend: pd.DataFrame | None = None) -> dict:
     """Contributo al rischio per posizione: volatilita' marginale e componente,
-    VaR componente, concentrazione (HHI) e numero effettivo di scommesse (PCA)."""
-    rend = valori.pct_change().dropna()
+    VaR componente, concentrazione (HHI) e numero effettivo di scommesse (PCA).
+
+    I pesi vengono sempre dai valori di mercato; i rendimenti, se `rend` e'
+    passato, da quella serie invece che dai valori. Serve ai portafogli
+    ribilanciati, dove il valore di una posizione cambia per un eseguito e non
+    per un movimento di prezzo."""
+    rend = (valori.pct_change() if rend is None else rend).dropna()
     if len(rend) < 60 or rend.shape[1] < 2:
         return {}
     w = (valori.iloc[-1] / nav_last).values
@@ -369,7 +375,8 @@ def finestre_peggiori(nav: pd.Series, giorni=(5, 21, 63, 126, 252)) -> list[dict
 
 # ----------------------------------------------------------- blocco principale
 def analitica(nav: pd.Series, valori: pd.DataFrame, benchmark: dict[str, pd.Series],
-              rf: float = 0.0, n_prove_dsr: int = 6) -> dict:
+              rf: float = 0.0, n_prove_dsr: int = 6,
+              rend_comp: pd.DataFrame | None = None) -> dict:
     r = _r(nav)
     mensili = nav.resample("ME").last().pct_change().dropna()
     trim = nav.resample("QE").last().pct_change().dropna()
@@ -497,7 +504,8 @@ def analitica(nav: pd.Series, valori: pd.DataFrame, benchmark: dict[str, pd.Seri
         "cono_volatilita": cono_volatilita(r),
         "finestre_peggiori": finestre_peggiori(nav),
         "bootstrap": bootstrap(r),
-        "decomposizione_rischio": decomposizione_rischio(valori, float(nav.iloc[-1])),
+        "decomposizione_rischio": decomposizione_rischio(valori, float(nav.iloc[-1]),
+                                                         rend_comp),
         "stagionalita": stagionalita(nav),
         "trimestrali": trimestrali(nav),
         "regimi": regimi(nav, next(iter(benchmark.values())) if benchmark else None),

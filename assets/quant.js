@@ -473,10 +473,15 @@ function vsBenchmark(navP, navB, rf=0){
 }
 
 /* --------------------------------------------- decomposizione del rischio */
-function decomposizione(compSerie, nomi, navFin){
+/* `rendSerie`, se passata, da' i rendimenti al posto dei valori: su un
+   portafoglio ribilanciato il valore di una posizione cambia anche per un
+   eseguito, e finirebbe dentro covarianze e contributi al rischio. I pesi
+   restano quelli dei valori di mercato. */
+function decomposizione(compSerie, nomi, navFin, rendSerie){
   const n=nomi.length, T=compSerie[nomi[0]].length;
   if(T<61||n<2) return null;
-  const rend=nomi.map(k=>rendimenti(compSerie[k]));
+  const RS=rendSerie||compSerie;
+  const rend=nomi.map(k=>rendimenti(RS[k]));
   const m=rend.length, L=rend[0].length;
   const w=nomi.map(k=>compSerie[k][T-1]/navFin);
   const cov=[];
@@ -527,8 +532,8 @@ function autovalori(A0){
   }
   return A.map((r,i)=>r[i]).sort((a,b)=>b-a);
 }
-function correlazioni(compSerie, nomi){
-  const rend=nomi.map(k=>rendimenti(compSerie[k]));
+function correlazioni(compSerie, nomi, rendSerie){
+  const rend=nomi.map(k=>rendimenti((rendSerie||compSerie)[k]));
   if(rend[0].length<40) return null;
   const M=nomi.map((_,i)=>nomi.map((__,j)=>pearson(rend[i],rend[j])));
   return {labels:nomi.slice(), matrix:M};

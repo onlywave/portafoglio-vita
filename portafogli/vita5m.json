@@ -1,6 +1,7 @@
 {
  "portfolio": "vita5m",
  "label": "VITA 5M",
+ "order": 1,
  "google_portfolio_id": "560ad9f3-5549-45cb-bbc3-29aa06774c03",
  "base_currency": "CHF",
  "inception": "2024-05-01",

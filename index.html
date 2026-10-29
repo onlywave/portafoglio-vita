@@ -4,23 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PORTAFOGLIO VITA — cruscotto quantitativo</title>
-<meta name="description" content="Cruscotto di rischio e performance dei portafogli VITA 5M e VITA 5M-C40.">
+<meta name="description" content="Cruscotto di rischio e performance dei portafogli VITA 5M, VITA 5M-C40 ed EMANUELE ETF.">
 <link rel="stylesheet" href="assets/stile.css?v=ea2dd3a1a5">
 </head>
 <body>
 <div class="wrap">
   <header>
     <h1>PORTAFOGLIO VITA</h1>
-    <p class="sub">Cruscotto quantitativo dei portafogli <b>VITA 5M</b> e <b>VITA 5M-C40</b> —
-       rischio, performance, distribuzione, attribuzione.</p>
+    <p class="sub">Cruscotto quantitativo dei portafogli <b>VITA 5M</b>, <b>VITA 5M-C40</b>
+       ed <b>EMANUELE ETF</b> — rischio, performance, distribuzione, attribuzione.</p>
     <span class="pill" id="pAsof">—</span>
     <span class="pill" id="pGen">—</span>
-    <span class="pill">Composizione da Google Finance · prezzi EOD pubblici</span>
+    <span class="pill">Composizioni da Google Finance e Quantistik · prezzi EOD pubblici</span>
     <span class="pill">Ricerca · non è consulenza finanziaria</span>
     <div class="navlinks">
       <a href="./" class="qui">Cruscotto completo</a>
       <a href="vita5m.html">VITA 5M — base 100, periodo a scelta</a>
       <a href="vita5m-c40.html">VITA 5M-C40 — base 100, periodo a scelta</a>
+      <a href="emanuele-etf.html">EMANUELE ETF — base 100, periodo a scelta</a>
     </div>
   </header>
 
@@ -39,8 +40,13 @@ async function main(){
     "Generato <b>"+REG.generated.slice(0,16).replace("T"," ")+" UTC</b>";
   const tabs=document.getElementById("tabs");
   for(const p of REG.portfolios) DATI[p.portfolio]=await (await fetch(`data/${p.portfolio}.json?v=${Date.now()}`)).json();
+  const asofs=[...new Set(REG.portfolios.map(p=>p.asof))].sort();
+  const inc=[...new Set(REG.portfolios.map(p=>p.inception))].sort();
   document.getElementById("pAsof").innerHTML =
-    "Dati al <b>"+REG.portfolios[0].asof+"</b> · inception "+REG.portfolios[0].inception;
+    "Dati al <b>"+asofs[asofs.length-1]+"</b>"+
+    (asofs.length>1 ? " · <b>una serie è ferma al "+asofs[0]+"</b>" : "")+
+    (inc.length>1 ? " · "+REG.portfolios.length+" portafogli, inception dal "+inc[0]+" al "+inc[inc.length-1]
+                  : " · inception "+inc[0]);
 
   const chiavi=REG.portfolios.map(p=>p.portfolio);
   tabs.innerHTML = chiavi.map((k,i)=>
@@ -70,7 +76,8 @@ function render(app, d){
 
   app.insertAdjacentHTML("beforeend", `
     <h2>${d.label} <span class="meta">${ccy} · inception ${d.inception} ·
-      dati al ${d.asof} · ${d.holdings.length} posizioni · buy &amp; hold</span></h2>
+      dati al ${d.asof} · ${d.holdings.length} posizioni ·
+      ${(d.model_label||"buy & hold").replace(/&/g,"&amp;")} · fonte ${d.source||"—"}</span></h2>
     <div class="tiles">
       ${tabB("Performance da inception", pcs(R.totale_pct), cls(R.totale_pct),
              `capitale iniziale ${n0(d.capitale_iniziale)} ${ccy}`)}
@@ -419,11 +426,15 @@ function render(app, d){
 
   /* --- composizione e attribuzione --- */
   app.insertAdjacentHTML("beforeend", `<h3 class="sec">Composizione, attribuzione e rischio per posizione</h3>`);
+  const haObiettivo=d.holdings.some(h=>h.target_pct!=null);
+  const haRealizzato=d.holdings.some(h=>h.realized_base!=null);
   app.insertAdjacentHTML("beforeend", tabella(
     [{t:"Strumento"},{t:"Ticker"},{t:"ISIN"},{t:"Classe"},{t:"Val."},{t:"Quantità",n:1},
      {t:"Carico",n:1},{t:"Prezzo",n:1},{t:"P&amp;L %",n:1},{t:"P&amp;L % in "+ccy,n:1},
      {t:"Valore "+ccy,n:1},{t:"Contrib. p.p.",n:1},{t:"Peso iniziale",n:1},{t:"Peso attuale",n:1},
-     {t:"Vol. ann.",n:1},{t:"Max DD",n:1}],
+     {t:"Vol. ann.",n:1},{t:"Max DD",n:1}]
+     .concat(haObiettivo?[{t:"Peso obiettivo",n:1}]:[])
+     .concat(haRealizzato?[{t:"Realizzato "+ccy,n:1}]:[]),
     d.holdings.map(h=>`<tr><td>${h.name}</td><td>${h.ticker}</td>
       <td style="font-size:11.5px;color:var(--muted)">${h.id}</td><td>${h.group}</td><td>${h.ccy}</td>
       <td class="num">${n0(h.shares)}</td><td class="num">${nf(h.cost_px)}</td>
@@ -434,10 +445,17 @@ function render(app, d){
       <td class="num ${cls(h.contrib_pp)}">${pcs(h.contrib_pp)}</td>
       <td class="num">${pc(h.weight_cost_pct)}</td><td class="num">${pc(h.weight_now_pct)}</td>
       <td class="num">${pc(h.vol_ann_pct,1)}</td>
-      <td class="num down">${pc(h.max_dd_pct,1)}</td></tr>`).join(""),
-    "P&amp;L % nella valuta di quotazione dello strumento (riconciliabile con Google Finance); "+
+      <td class="num down">${pc(h.max_dd_pct,1)}</td>
+      ${haObiettivo?`<td class="num">${pc(h.target_pct)}</td>`:""}
+      ${haRealizzato?`<td class="num ${cls(h.realized_base)}">${n0(h.realized_base)}</td>`:""}</tr>`).join(""),
+    "P&amp;L % nella valuta in cui lo espone "+(d.source||"la fonte")+"; "+
     "P&amp;L % in "+ccy+" include l'effetto cambio. Contributo in punti percentuali sul capitale iniziale. "+
-    "Nessun ribilanciamento: la differenza fra peso iniziale e peso attuale è pura deriva di mercato.", "wide"));
+    (d.model==="buy_hold"
+      ? "Nessun ribilanciamento: la differenza fra peso iniziale e peso attuale è pura deriva di mercato."
+      : "Carico = prezzo medio delle quote ancora in portafoglio, con le vendite uscite al costo medio del "+
+        "momento: l'utile già realizzato sta quindi fuori dal P&amp;L della posizione residua e dentro il "+
+        "contributo. Lo scostamento fra peso attuale e peso obiettivo è la deriva dall'ultimo ribilanciamento."),
+    "wide"));
 
   if(DR && DR.componenti){
     app.insertAdjacentHTML("beforeend", `<div class="tiles">
@@ -559,52 +577,134 @@ function render(app, d){
     <p class="note" style="margin-top:10px">
       <b>Limiti dichiarati.</b> Valori lordi: nessuna commissione di negoziazione, di custodia o
       fiscalità è dedotta. Prezzi di chiusura di fonte pubblica, con riporto in avanti dell'ultimo
-      prezzo nei giorni di chiusura di una singola borsa. Per lo strumento UBS Core MSCI World si usa
-      la linea di quotazione in EUR (stesso ISIN ${d.holdings.find(h=>h.ticker==="WRDUSW-USD")?.id||""}),
-      convertita in ${ccy}, perché la linea in dollari non ha storico continuo; i prezzi esposti in
-      tabella sono comunque riportati nella valuta usata da Google Finance.
+      prezzo nei giorni di chiusura di una singola borsa.
+      ${d.holdings.some(h=>h.ticker==="WRDUSW-USD")?`Per lo strumento UBS Core MSCI World si usa
+        la linea di quotazione in EUR (stesso ISIN ${d.holdings.find(h=>h.ticker==="WRDUSW-USD").id}),
+        convertita in ${ccy}, perché la linea in dollari non ha storico continuo; i prezzi esposti in
+        tabella sono comunque riportati nella valuta usata da Google Finance.`:""}
+      ${d.model!=="buy_hold"?`Le quantità di ogni giorno vengono dal registro movimenti della fonte
+        (${d.holdings.length} strumenti, ${(d.rebalance_dates||[]).length} date di ribilanciamento,
+        l'ultima il ${(d.rebalance_dates||[]).slice(-1)[0]||"—"}) e sono quadrate con le quote esposte
+        dalla piattaforma; i prezzi però sono quelli pubblici delle linee effettivamente detenute,
+        non quelli della piattaforma, quindi il NAV qui ricostruito non coincide alla cifra con
+        quello mostrato dalla fonte.`:""}
       Il campione di ${nf(C.anni,1)} anni non consente inferenza robusta su alfa e Sharpe.</p>
     </div>`);
 }
 
 /* --------------------------------------------------------------- confronto */
+/* Confronto a N portafogli. Due vincoli dichiarati: le inception non coincidono,
+   quindi le serie sono ribasate sulla finestra comune; le valute base non
+   coincidono, quindi i grafici e la prima tabella misurano tutto nella valuta
+   di confronto (serie `index_weekly_cmp` per chi ha base diversa). */
 function confronto(app){
-  const ids=REG.portfolios.map(p=>p.portfolio);
-  const A=DATI[ids[0]], B=DATI[ids[1]];
-  app.insertAdjacentHTML("beforeend", `<h2>Confronto diretto
-    <span class="meta">${A.label} contro ${B.label} · dati al ${A.asof}</span></h2>`);
+  const P=REG.portfolios.map(p=>DATI[p.portfolio]);
+  const SCOL=["var(--s1)","var(--s2)","var(--s3)","var(--s4)","var(--s5)"];
+  const col=i=>SCOL[i%SCOL.length];
+  const ccyC=P.find(d=>d.cmp_currency)?.cmp_currency||P[0].base_currency;
+  const inCcyC=d=>d.base_currency===ccyC?d.index_weekly:(d.index_weekly_cmp||d.index_weekly);
+
+  /* finestra comune: la più recente fra le date iniziali delle serie */
+  const inizio=P.map(d=>inCcyC(d)[0][0]).sort().slice(-1)[0];
+  const riba=s=>{const k=s.findIndex(x=>x[0]>=inizio); if(k<0) return [];
+    const b=s[k][1]; return s.slice(k).map(([t,v])=>[t, +(v/b*100).toFixed(3)]);};
+  const ddDi=s=>{let mx=-Infinity; return s.map(([t,v])=>{mx=Math.max(mx,v);
+    return [t, +((v/mx-1)*100).toFixed(2)];});};
+  const IDX=P.map(d=>riba(inCcyC(d))), DD=IDX.map(ddDi);
+
+  /* serie allineate sulle date presenti in tutti, per metriche e correlazioni */
+  const MP=IDX.map(s=>new Map(s));
+  const dateC=IDX[0].map(x=>x[0]).filter(t=>MP.every(m=>m.has(t)));
+  const SC=MP.map(m=>dateC.map(t=>m.get(t)));
+  const RS=SC.map(s=>s.slice(1).map((v,i)=>v/s[i]-1));
+  const anni=(new Date(dateC[dateC.length-1])-new Date(dateC[0]))/(365.25*864e5);
+  const med=a=>a.reduce((x,y)=>x+y,0)/a.length;
+  const sdv=a=>{const m=med(a); return Math.sqrt(a.reduce((s,v)=>s+(v-m)*(v-m),0)/(a.length-1));};
+  const perf=i=>SC[i][SC[i].length-1]/SC[i][0]-1;
+  const cagr=i=>Math.pow(1+perf(i), 1/Math.max(anni,1e-9))-1;
+  const vol=i=>sdv(RS[i])*Math.sqrt(52);
+  const mdd=i=>Math.min(...ddDi(dateC.map((t,k)=>[t,SC[i][k]])).map(x=>x[1]));
+  const pers=i=>({l:P[i].label, p:perf(i)*100});
+
+  const ribil=P.filter(d=>d.model&&d.model!=="buy_hold").map(d=>d.label);
+  const altrava=P.filter(d=>d.base_currency!==ccyC);
+
+  app.insertAdjacentHTML("beforeend", `<h2>Confronto fra i ${P.length} portafogli
+    <span class="meta">finestra comune dal ${inizio} · ${nf(anni,1)} anni ·
+      misurati in ${ccyC} · dati al ${P[0].asof}</span></h2>`);
+
+  app.insertAdjacentHTML("beforeend", `<div class="flag">
+    <b>Come leggere questo confronto.</b> Le inception non coincidono
+    (${P.map(d=>d.label+" "+d.inception).join(" · ")}): tutte le serie qui sotto ripartono da 100
+    alla data da cui esistono tutte, il ${inizio}, e i drawdown sono ricalcolati su quella
+    finestra, non ritagliati da quelli di inception.
+    ${altrava.length?`Le valute base sono diverse (${P.map(d=>d.label+" "+d.base_currency).join(" · ")}):
+      ${altrava.map(d=>d.label).join(" e ")} ${altrava.length>1?"sono":"è"} ${altrava.length>1?"convertiti":"convertito"}
+      in ${ccyC} al cambio del giorno, quindi quello che si vede include l'effetto cambio.`:""}
+    ${ribil.length?`${ribil.join(" e ")} ribilancia a proporzioni costanti, gli altri sono buy & hold:
+      il confronto misura anche l'effetto del ribilanciamento, non solo la composizione.`:""}
+  </div>`);
+
   app.insertAdjacentHTML("beforeend",
     pannello("Equity e drawdown a confronto",
-      "Indici base 100 alla stessa data e, sotto, i rispettivi drawdown dal massimo precedente.",
+      `Indici base 100 al ${inizio} e, sotto, i rispettivi drawdown dal massimo precedente della finestra.`,
       "g_cmpeq"));
   equityDD(document.getElementById("g_cmpeq"),
-    [{name:A.label, data:A.index_weekly, color:"var(--s1)"},
-     {name:B.label, data:B.index_weekly, color:"var(--s2)"}],
-    [{name:A.label, data:A.drawdown_weekly, color:"var(--s1)"},
-     {name:B.label, data:B.drawdown_weekly, color:"var(--s2)"}],
+    P.map((d,i)=>({name:d.label, data:IDX[i], color:col(i)})),
+    P.map((d,i)=>({name:d.label, data:DD[i], color:col(i)})),
     {fmt:v=>nf(v,0), tfmt:v=>nf(v,1), h:420, tit:"Indice base 100"});
 
+  const Pb=P.find(d=>d.base_currency===ccyC)||P[0];
+  const bench=Object.entries(Pb.bench_index_weekly||{}).slice(0,2)
+    .map(([n,v])=>[n, riba(v)]).filter(([,v])=>v.length);
   app.insertAdjacentHTML("beforeend",
     pannello("Crescita del capitale a confronto, base 100",
-      "Stessa inception, stessa valuta base, stessi prezzi: la differenza è solo di composizione.",
-      "g_cmp"));
-  const bench=Object.entries(A.bench_index_weekly||{}).slice(0,2);
+      `Stessa finestra, stessa valuta di misura (${ccyC}), stesse fonti di prezzo: resta la differenza
+       di composizione, di ribilanciamento e di cambio.`, "g_cmp"));
   lineChart(document.getElementById("g_cmp"),
-    [{name:A.label, data:A.index_weekly, color:"var(--s1)", w:2.4},
-     {name:B.label, data:B.index_weekly, color:"var(--s2)", w:2.4}].concat(
-     bench.map(([n,v],i)=>({name:n, data:v, color:COL[i+3], w:1.3, op:.8}))),
+    P.map((d,i)=>({name:d.label, data:IDX[i], color:col(i), w:2.4})).concat(
+      bench.map(([n,v],i)=>({name:n, data:v, color:COL[(i+P.length)%COL.length], w:1.3, op:.8}))),
     {fmt:v=>nf(v,0), tfmt:v=>nf(v,1), h:320});
 
-  app.insertAdjacentHTML("beforeend",
-    pannello("Drawdown a confronto","","g_cmpdd"));
+  app.insertAdjacentHTML("beforeend", pannello("Drawdown a confronto","","g_cmpdd"));
   lineChart(document.getElementById("g_cmpdd"),
-    [{name:A.label, data:A.drawdown_weekly, color:"var(--s1)", w:1.9},
-     {name:B.label, data:B.drawdown_weekly, color:"var(--s2)", w:1.9}],
+    P.map((d,i)=>({name:d.label, data:DD[i], color:col(i), w:1.9})),
     {fmt:v=>nf(v,0)+"%", tfmt:v=>pc(v,2), h:250, y1:0});
 
+  /* 1 - finestra comune, valuta di confronto: le uniche cifre paragonabili fra loro */
+  const righeC=[
+    ["Performance nella finestra", i=>pcs(perf(i)*100)],
+    ["CAGR nella finestra", i=>pcs(cagr(i)*100)],
+    ["Volatilità annua (settimanale)", i=>pc(vol(i)*100)],
+    ["Sharpe (rf 0, settimanale)", i=>nf(med(RS[i])*52/vol(i))],
+    ["Massimo drawdown nella finestra", i=>pc(mdd(i))],
+    ["Calmar nella finestra", i=>nf(cagr(i)/Math.abs(mdd(i)/100))],
+    ["Peggior settimana", i=>pcs(Math.min(...RS[i])*100)],
+    ["Migliore settimana", i=>pcs(Math.max(...RS[i])*100)],
+    ["Settimane positive", i=>pc(RS[i].filter(v=>v>0).length/RS[i].length*100,0)],
+  ];
+  app.insertAdjacentHTML("beforeend", tabella(
+    [{t:`Finestra comune dal ${inizio}, in ${ccyC}`}].concat(P.map(d=>({t:d.label, n:1}))),
+    righeC.map(([k,f])=>`<tr><td>${k}</td>${P.map((_,i)=>`<td class="num">${f(i)}</td>`).join("")}</tr>`).join(""),
+    `Rendimenti settimanali (venerdì) sulle ${dateC.length} settimane in cui esistono tutte le serie,
+     tutte misurate in ${ccyC}. Queste sono le cifre confrontabili fra loro: quelle della tabella
+     successiva coprono periodi e valute diversi.`));
+
+  if(P.length>1){
+    app.insertAdjacentHTML("beforeend",
+      pannello("Correlazione fra i portafogli",
+        `Rendimenti settimanali in ${ccyC} nella finestra comune.`, "g_cmphm"));
+    heatmap(document.getElementById("g_cmphm"), P.map(d=>d.label),
+      P.map((_,i)=>P.map((__,j)=>+pearsonJS(RS[i],RS[j]).toFixed(2))));
+  }
+
+  /* 2 - da inception, ciascuno nella propria valuta base */
   const righe=[
     ["Capitale iniziale", d=>n0(d.capitale_iniziale)+" "+d.base_currency],
     ["Valore attuale", d=>n0(d.metrics.nav_last)+" "+d.base_currency],
+    ["Inception", d=>d.inception],
+    ["Modello", d=>d.model_label||"buy & hold"],
+    ["Fonte della composizione", d=>d.source||"—"],
     ["Performance totale", d=>pcs(d.analitica.rendimento.totale_pct)],
     ["CAGR", d=>pcs(d.analitica.rendimento.cagr_pct)],
     ["Volatilità annua", d=>pc(d.analitica.rischio.vol_ann_giornaliera_pct)],
@@ -628,33 +728,54 @@ function confronto(app){
     ["Diversification ratio", d=>nf(d.analitica.decomposizione_rischio.diversification_ratio)],
     ["Concentrazione (HHI)", d=>nf(d.analitica.decomposizione_rischio.hhi,3)],
     ["Posizioni", d=>String(d.holdings.length)],
+    ["Anni di storia", d=>nf(d.analitica.campione.anni,1)],
   ];
   app.insertAdjacentHTML("beforeend", tabella(
-    [{t:"Metrica"},{t:A.label,n:1},{t:B.label,n:1}],
-    righe.map(([k,f])=>`<tr><td>${k}</td><td class="num">${f(A)}</td><td class="num">${f(B)}</td></tr>`).join(""),
-    "Stessa metodologia, stesso periodo, stesse fonti di prezzo per entrambi."));
+    [{t:"Da inception, in valuta base"}].concat(P.map(d=>({t:d.label+" ("+d.base_currency+")", n:1}))),
+    righe.map(([k,f])=>`<tr><td>${k}</td>${P.map(d=>`<td class="num">${f(d)}</td>`).join("")}</tr>`).join(""),
+    "Stessa metodologia e stesse fonti di prezzo, ma periodi e valute base diversi: queste colonne "+
+    "non sono confrontabili fra loro riga per riga. Per il confronto vale la tabella precedente."));
 
-  const nb=Object.keys(A.analitica.benchmark||{});
-  if(nb.length) app.insertAdjacentHTML("beforeend", tabella(
-    [{t:"Contro benchmark"},{t:A.label+" — β",n:1},{t:A.label+" — α ann.",n:1},{t:A.label+" — IR",n:1},
-     {t:B.label+" — β",n:1},{t:B.label+" — α ann.",n:1},{t:B.label+" — IR",n:1}],
-    nb.map(n=>{const x=A.analitica.benchmark[n]||{}, y=B.analitica.benchmark[n]||{};
-      return `<tr><td><b>${n}</b></td>
-      <td class="num">${nf(x.beta)}</td><td class="num ${cls(x.alpha_ann_pct)}">${pcs(x.alpha_ann_pct)}</td>
-      <td class="num">${nf(x.information_ratio)}</td>
-      <td class="num">${nf(y.beta)}</td><td class="num ${cls(y.alpha_ann_pct)}">${pcs(y.alpha_ann_pct)}</td>
-      <td class="num">${nf(y.information_ratio)}</td></tr>`;}).join("")));
+  const righeB=[];
+  P.forEach(d=>{const B=d.analitica.benchmark||{};
+    Object.keys(B).forEach(n=>{const x=B[n]||{};
+      righeB.push(`<tr><td><b>${d.label}</b></td><td>${n}</td>
+        <td class="num">${nf(x.beta)}</td>
+        <td class="num ${cls(x.alpha_ann_pct)}">${pcs(x.alpha_ann_pct)}</td>
+        <td class="num">${nf(x.information_ratio)}</td>
+        <td class="num">${nf(x.correlazione)}</td>
+        <td class="num">${pc(x.tracking_error_pct)}</td></tr>`);});});
+  if(righeB.length) app.insertAdjacentHTML("beforeend", tabella(
+    [{t:"Portafoglio"},{t:"Benchmark"},{t:"β",n:1},{t:"α annua",n:1},{t:"IR",n:1},
+     {t:"ρ",n:1},{t:"Tracking error",n:1}],
+    righeB.join(""),
+    "Ogni portafoglio è misurato contro i benchmark della propria valuta base e sul proprio "+
+    "periodo di inception: le righe non sono omogenee fra portafogli.", "wide"));
 
+  const isins=P.map(d=>new Set(d.holdings.map(h=>h.id)));
+  const comuni=[...isins[0]].filter(x=>isins.every(s=>s.has(x))).length;
+  const ord=P.map((_,i)=>pers(i)).sort((a,b)=>b.p-a.p);
+  const rmin=Math.min(...P.map((_,i)=>P.map((__,j)=>i===j?1:pearsonJS(RS[i],RS[j]))).flat());
   app.insertAdjacentHTML("beforeend", `<div class="flag">
-    <b>Attenzione a leggere il confronto come una classifica.</b> I due portafogli condividono
-    quattro strumenti su cinque e hanno correlazione quasi totale: la differenza di performance
-    (${pcs(A.analitica.rendimento.totale_pct - B.analitica.rendimento.totale_pct,2)} a favore di
-    ${A.analitica.rendimento.totale_pct>B.analitica.rendimento.totale_pct?A.label:B.label})
-    è ben dentro il rumore di un campione di ${nf(A.analitica.campione.anni,1)} anni.
-    Su questi dati non è possibile affermare che una delle due composizioni sia superiore all'altra.
+    <b>Non è una classifica.</b> I ${P.length} portafogli pescano in gran parte dagli stessi
+    mattoni — ${comuni} ISIN sono presenti in tutti — e nella finestra comune la correlazione
+    settimanale fra loro non scende sotto ${nf(rmin,2)}. Su ${nf(anni,1)} anni la distanza fra
+    ${ord[0].l} (${pcs(ord[0].p)}) e ${ord[ord.length-1].l} (${pcs(ord[ord.length-1].p)}) è di
+    ${nf(ord[0].p-ord[ord.length-1].p,1)} punti: con portafogli così sovrapposti e un campione
+    così corto, non è una differenza da cui concludere che una composizione sia superiore a
+    un'altra. Le differenze di valuta base e di ribilanciamento, dichiarate sopra, pesano sul
+    risultato tanto quanto i pesi scelti.
   </div>`);
 }
 
+/* correlazione di Pearson, usata solo in questa scheda */
+function pearsonJS(a,b){
+  const n=Math.min(a.length,b.length);
+  let ma=0,mb=0; for(let i=0;i<n;i++){ma+=a[i];mb+=b[i];} ma/=n; mb/=n;
+  let sab=0,saa=0,sbb=0;
+  for(let i=0;i<n;i++){const x=a[i]-ma,y=b[i]-mb; sab+=x*y; saa+=x*x; sbb+=y*y;}
+  return saa&&sbb?sab/Math.sqrt(saa*sbb):1;
+}
 main().catch(e=>{
   document.getElementById("app").innerHTML =
     `<div class="flag"><b>Errore nel caricamento dei dati.</b> ${e}</div>`;

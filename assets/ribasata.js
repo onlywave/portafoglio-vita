@@ -36,10 +36,20 @@ function ritaglia(i, j){
   const nav=S.nav.slice(i, j+1).map(v=>v/n*100);
   const comp={}, etich=S.etichette;
   for(const k in S.componenti) comp[k]=S.componenti[k].slice(i, j+1).map(v=>v/n*100);
+  /* prezzi unitari ribasati a 100 a inizio periodo: su un portafoglio
+     ribilanciato sono questi, non i valori, a dare il rendimento dello
+     strumento. Flussi: gli eseguiti del periodo, da togliere dall'attribuzione */
+  const prz={}, flus={};
+  for(const k in comp){
+    const s=((S.prezzi||S.componenti)[k]||[]).slice(i, j+1), b=s[0];
+    prz[k]= b ? s.map(v=>v/b*100) : comp[k].slice();
+    const f=(S.flussi||{})[k];
+    flus[k]= f ? f.slice(i, j+1).map(v=>v/n*100) : comp[k].map(()=>0);
+  }
   const bench={};
   for(const k in S.benchmark){ const b=S.benchmark[k], b0=b[i];
     bench[k]=b.slice(i, j+1).map(v=>v/b0*100); }
-  return {date, nav, comp, bench, etich};
+  return {date, nav, comp, prz, flus, bench, etich};
 }
 
 /* --------------------------------------------------------------- pannello */
@@ -79,13 +89,14 @@ function disegna(){
   const R=ritaglia(sel.i, sel.j);
   const A=Q.analizza(R.date, R.nav, {rf:0, nProve:6});
   const nomi=Object.keys(R.comp);
-  const DR=Q.decomposizione(R.comp, nomi, R.nav[R.nav.length-1]);
+  const RIBIL=!!(S.model && S.model!=="buy_hold");
+  const DR=Q.decomposizione(R.comp, nomi, R.nav[R.nav.length-1], R.prz);
   const B={}; for(const k in R.bench){ const b=Q.vsBenchmark(R.nav, R.bench[k], 0);
     if(b){ b.cagr_bench_pct=(Math.pow(R.bench[k][R.bench[k].length-1]/100,
       1/Math.max(A.campione.anni,1e-9))-1)*100; B[k]=b; } }
   const ROLL=Q.rolling(R.date, R.nav, R.bench, 0);
   const BS=Q.bootstrap(Q.rendimenti(R.nav));
-  const CORR=Q.correlazioni(R.comp, nomi);
+  const CORR=Q.correlazioni(R.comp, nomi, R.prz);
 
   const app=document.getElementById("app");
   app.innerHTML=selettore(sel);
@@ -367,12 +378,14 @@ function disegna(){
   add(`<h3 class="sec">Composizione e attribuzione</h3>`);
   const L=R.nav.length-1;
   const righeH=nomi.map(k=>{
-    const c=R.comp[k], e=R.etich[k];
+    const c=R.comp[k], e=R.etich[k], q=R.prz[k];
     const w0=c[0]/R.nav[0]*100, w1=c[L]/R.nav[L]*100;
-    const rp=(c[L]/c[0]-1)*100, contrib=(c[L]-c[0])/R.nav[0]*100;
-    const rr=Q.rendimenti(c);
+    /* contributo: variazione di valore al netto degli eseguiti del periodo */
+    const flussi=R.flus[k].slice(1).reduce((s,v)=>s+v, 0);
+    const rp=(q[L]/q[0]-1)*100, contrib=(c[L]-c[0]-flussi)/R.nav[0]*100;
+    const rr=Q.rendimenti(q);
     return {k, e, w0, w1, rp, contrib, vol:Q.sd(rr)*Math.sqrt(252)*100,
-            dd:Math.min(...Q.ddSerie(c))*100};
+            dd:Math.min(...Q.ddSerie(q))*100};
   });
   add(tabella([{t:"Strumento"},{t:"Ticker"},{t:"ISIN"},{t:"Classe"},{t:"Val."},
     {t:"Peso iniziale",n:1},{t:"Peso finale",n:1},{t:"Deriva",n:1},
@@ -385,9 +398,12 @@ function disegna(){
       <td class="num ${cls(h.rp)}">${pcs(h.rp)}</td>
       <td class="num ${cls(h.contrib)}">${pcs(h.contrib)}</td>
       <td class="num">${pc(h.vol,1)}</td><td class="num down">${pc(h.dd,1)}</td></tr>`).join(""),
-    "Rendimenti degli strumenti in "+S.base_currency+", effetto cambio incluso. Contributo in punti "+
-    "percentuali sull'indice del portafoglio a inizio periodo. Nessun ribilanciamento: la deriva è "+
-    "solo movimento di mercato. <b>Quantità, prezzi e importi non sono esposti</b>: la pagina lavora "+
+    "Rendimenti degli strumenti in "+S.base_currency+", effetto cambio incluso, misurati sul prezzo "+
+    "unitario. Contributo in punti percentuali sull'indice del portafoglio a inizio periodo"+
+    (RIBIL ? ", al netto degli eseguiti del periodo: la deriva dei pesi è movimento di mercato dall'ultimo "+
+             "ribilanciamento, non dall'inizio del periodo"
+           : ". Nessun ribilanciamento: la deriva è solo movimento di mercato")+
+    ". <b>Quantità, prezzi e importi non sono esposti</b>: la pagina lavora "+
     "esclusivamente in grandezze relative.", "wide"));
 
   if(DR){
@@ -495,7 +511,8 @@ async function avvia(pid, altro){
   document.title = S.label + " — indice base 100";
   document.getElementById("titolo").textContent = S.label;
   document.getElementById("sottotitolo").innerHTML =
-    `Indice base 100 · ${S.base_currency} · inception ${S.inception} · dati al <b>${S.asof}</b>`;
+    `Indice base 100 · ${S.base_currency} · inception ${S.inception} · ` +
+    `${S.model_label || "buy & hold"} · dati al <b>${S.asof}</b>`;
   document.getElementById("piede").textContent = S.disclaimer;
   addEventListener("hashchange", disegna);
   disegna();

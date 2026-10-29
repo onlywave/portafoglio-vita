@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EMANUELE ETF — indice base 100</title>
+<meta name="description" content="Cruscotto quantitativo di EMANUELE ETF in punti indice, con periodo di analisi a scelta.">
+<link rel="stylesheet" href="assets/stile.css?v=ea2dd3a1a5">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 id="titolo">EMANUELE ETF</h1>
+    <p class="sub" id="sottotitolo">—</p>
+    <span class="pill">Solo grandezze relative · nessuna quantità, nessun importo</span>
+    <span class="pill">Proporzioni costanti · ribilanciamento trimestrale</span>
+    <span class="pill">Metriche ricalcolate sul periodo scelto</span>
+    <span class="pill">Ricerca · non è consulenza finanziaria</span>
+    <div class="navlinks">
+      <a href="./">← Cruscotto completo</a>
+      <a href="vita5m.html">VITA 5M — base 100</a>
+      <a href="vita5m-c40.html">VITA 5M-C40 — base 100</a>
+      <a href="emanuele-etf.html" class="qui">EMANUELE ETF — base 100</a>
+    </div>
+  </header>
+  <div id="app"></div>
+  <p class="foot" id="piede"></p>
+</div>
+<script src="assets/grafici.js?v=80e3233ef8"></script>
+<script src="assets/quant.js?v=378b1be8ed"></script>
+<script src="assets/ribasata.js?v=18a0142bb6"></script>
+<script>
+avvia("emanuele_etf", "vita5m.html").catch(e=>{
+  document.getElementById("app").innerHTML =
+    '<div class="flag"><b>Errore nel caricamento dei dati.</b> '+e+'</div>';
+});
+</script>
+</body>
+</html>

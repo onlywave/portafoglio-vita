@@ -1,9 +1,10 @@
 name: aggiorna-dati
 
-# Ricalcola prezzi, cambi e metriche dei portafogli VITA dai dati EOD pubblici
-# e ripubblica i JSON della pagina. Le POSIZIONI (quantita' e prezzi di carico)
-# vivono in portafogli/*.json e non vengono toccate: si aggiornano solo quando
-# cambia la composizione sui portafogli Google Finance di riferimento.
+# Ricalcola prezzi, cambi e metriche dei tre portafogli dai dati EOD pubblici e
+# ripubblica i JSON della pagina. Le POSIZIONI non vengono toccate: quantita' e
+# prezzi di carico del buy & hold, e il registro degli eseguiti del portafoglio
+# ribilanciato, vivono in portafogli/*.json e si aggiornano a mano solo quando
+# cambia la composizione alla fonte (Google Finance, Quantistik).
 on:
   schedule:
     - cron: "30 20 * * 1-5"   # lun-ven 20:30 UTC, dopo la chiusura delle borse europee

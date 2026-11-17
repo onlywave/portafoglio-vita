@@ -13,16 +13,16 @@
  "base_currency": "CHF",
  "inception": "2024-05-01",
  "sync_date": "2026-08-18",
- "asof": "2026-11-13",
+ "asof": "2026-11-16",
  "methodology": "Variante «core 40» del portafoglio VITA 5M: 5 ETF UCITS ad accumulazione, base CHF, costruito il 01/05/2024 con un unico acquisto per strumento e nessuna transazione successiva. Rispetto a VITA 5M concentra il peso sul core azionario mondiale (UBS Core MSCI World) e rinuncia sia al satellite Invesco FTSE All-World sia a due terzi dell'esposizione momentum. Quote fisse da inception; NAV EOD ricostruito dai prezzi di chiusura nella valuta di quotazione e convertito in CHF ai cambi del giorno. Composizione sincronizzata dal portafoglio Google Finance omonimo; prezzi e metriche aggiornati automaticamente ogni giorno di borsa. Nessun ribilanciamento.",
  "capitale_iniziale": 2941735.0,
  "metrics": {
-  "perf_total_pct": 43.25,
-  "cagr_pct": 15.21,
-  "vol_ann_pct": 15.72,
-  "sharpe": 0.96,
-  "sortino": 0.9,
-  "calmar": 0.85,
+  "perf_total_pct": 42.42,
+  "cagr_pct": 14.9,
+  "vol_ann_pct": 15.71,
+  "sharpe": 0.95,
+  "sortino": 0.89,
+  "calmar": 0.83,
   "max_dd_pct": -17.85,
   "var95_1d_hist_pct": 1.36,
   "var95_1w_pct": 3.64,
@@ -35,32 +35,32 @@
   "worst_month_pct": -6.54,
   "var95_1m_hist_pct": 5.32,
   "cvar95_1m_hist_pct": 6.33,
-  "skew_monthly": -0.57,
-  "kurtosis_monthly": 0.15,
+  "skew_monthly": -0.55,
+  "kurtosis_monthly": 0.13,
   "rolling12_median_pct": 16.2,
   "rolling12_min_pct": 4.8,
   "rolling12_max_pct": 31.2,
   "rolling12_positive_pct": 100.0,
   "rolling12_n": 20,
-  "nav_last": 4213955.0
+  "nav_last": 4189583.0
  },
  "analitica": {
   "campione": {
-   "oss_giornaliere": 653,
-   "oss_settimanali": 132,
+   "oss_giornaliere": 654,
+   "oss_settimanali": 133,
    "oss_mensili": 31,
    "oss_trimestrali": 10,
-   "anni": 2.54,
+   "anni": 2.55,
    "dal": "2024-04-30",
-   "al": "2026-11-13",
+   "al": "2026-11-16",
    "rf_dichiarato_pct": 0.0,
    "n_prove_dsr": 6
   },
   "rendimento": {
-   "totale_pct": 43.25,
-   "cagr_pct": 15.21,
-   "media_ann_aritmetica_pct": 15.11,
-   "media_ann_geometrica_pct": 15.21,
+   "totale_pct": 42.42,
+   "cagr_pct": 14.9,
+   "media_ann_aritmetica_pct": 14.86,
+   "media_ann_geometrica_pct": 14.9,
    "miglior_giorno_pct": 7.11,
    "peggior_giorno_pct": -6.23,
    "miglior_settimana_pct": 8.02,
@@ -68,29 +68,29 @@
    "miglior_mese_pct": 7.95,
    "peggior_mese_pct": -6.54,
    "miglior_trimestre_pct": 13.36,
-   "peggior_trimestre_pct": -4.9,
-   "giorni_positivi_pct": 55.28,
-   "settimane_positive_pct": 61.36,
+   "peggior_trimestre_pct": -5.45,
+   "giorni_positivi_pct": 55.2,
+   "settimane_positive_pct": 61.65,
    "mesi_positivi_pct": 74.19,
    "trimestri_positivi_pct": 80.0,
    "guadagno_medio_giorno_pct": 0.66,
-   "perdita_media_giorno_pct": -0.69,
+   "perdita_media_giorno_pct": -0.68,
    "rapporto_vincite_perdite": 0.97,
-   "profit_factor": 1.2,
-   "gain_to_pain_mensile": 1.38,
-   "expectancy_giorno_pct": 0.06,
+   "profit_factor": 1.19,
+   "gain_to_pain_mensile": 1.36,
+   "expectancy_giorno_pct": 0.059,
    "serie_positiva_max_gg": 10,
    "serie_negativa_max_gg": 7
   },
   "rischio": {
-   "vol_ann_giornaliera_pct": 15.72,
-   "vol_ann_settimanale_pct": 14.74,
-   "vol_ann_mensile_pct": 11.79,
-   "vol_ewma_corrente_pct": 18.15,
-   "vol_30gg_corrente_pct": 17.31,
-   "vol_90gg_corrente_pct": 14.66,
-   "downside_deviation_pct": 16.71,
-   "semivarianza_ann_pct": 2.7919,
+   "vol_ann_giornaliera_pct": 15.71,
+   "vol_ann_settimanale_pct": 14.62,
+   "vol_ann_mensile_pct": 11.8,
+   "vol_ewma_corrente_pct": 17.75,
+   "vol_30gg_corrente_pct": 17.19,
+   "vol_90gg_corrente_pct": 14.62,
+   "downside_deviation_pct": 16.69,
+   "semivarianza_ann_pct": 2.7856,
    "max_drawdown_pct": -17.85,
    "max_dd_data": "2025-04-09",
    "ulcer_index_pct": 4.25,
@@ -99,13 +99,13 @@
    "var95_1g_param_pct": 1.57,
    "var95_1g_cornish_fisher_pct": 1.28,
    "cvar95_1g_pct": 2.4,
-   "var99_1g_hist_pct": 2.98,
+   "var99_1g_hist_pct": 2.97,
    "var99_1g_param_pct": 2.24,
    "var99_1g_cornish_fisher_pct": 4.03,
    "cvar99_1g_pct": 4.35,
    "var95_1sett_pct": 3.64,
    "var95_1mese_pct": 7.46,
-   "var95_1anno_pct": 25.85,
+   "var95_1anno_pct": 25.84,
    "var99_1mese_pct": 10.55,
    "var95_1mese_storico_pct": 5.32,
    "cvar95_1mese_storico_pct": 6.33,
@@ -113,39 +113,39 @@
    "common_sense_ratio": 1.26
   },
   "efficienza": {
-   "sharpe": 0.96,
+   "sharpe": 0.95,
    "sharpe_errore_std": 0.62,
-   "sharpe_ic95_min": -0.26,
-   "sharpe_ic95_max": 2.18,
-   "psr_vs_zero_pct": 93.6,
-   "dsr_pct": 59.58,
-   "sortino": 0.9,
-   "calmar": 0.85,
-   "mar": 0.85,
-   "sterling": 1.39,
-   "burke": 0.56,
-   "martin_ulcer_ratio": 3.58,
-   "pain_ratio": 5.1,
-   "omega": 1.2,
-   "kappa3": 1.62,
-   "recovery_factor": 2.42,
-   "rendimento_per_unita_dd": 0.85
+   "sharpe_ic95_min": -0.27,
+   "sharpe_ic95_max": 2.16,
+   "psr_vs_zero_pct": 93.32,
+   "dsr_pct": 58.69,
+   "sortino": 0.89,
+   "calmar": 0.83,
+   "mar": 0.83,
+   "sterling": 1.36,
+   "burke": 0.55,
+   "martin_ulcer_ratio": 3.5,
+   "pain_ratio": 4.98,
+   "omega": 1.19,
+   "kappa3": 1.6,
+   "recovery_factor": 2.38,
+   "rendimento_per_unita_dd": 0.83
   },
   "distribuzione": {
    "asimmetria_giornaliera": -0.36,
    "curtosi_eccesso_giornaliera": 9.06,
-   "asimmetria_mensile": -0.54,
-   "curtosi_eccesso_mensile": -0.06,
-   "jarque_bera": 2246.07,
+   "asimmetria_mensile": -0.52,
+   "curtosi_eccesso_mensile": -0.08,
+   "jarque_bera": 2249.41,
    "jarque_bera_p": 0.0,
    "shapiro_p": 0.0,
    "normalita_rifiutata": true,
    "hurst": 0.55,
    "ljung_box": {
-    "Q": 8.43,
-    "p_value": 0.5873,
+    "Q": 8.27,
+    "p_value": 0.6028,
     "lags": 10,
-    "acf1": -0.073
+    "acf1": -0.0725
    },
    "istogramma": {
     "centri_pct": [
@@ -209,7 +209,7 @@
      12,
      24,
      42,
-     62,
+     63,
      114,
      113,
      117,
@@ -247,22 +247,22 @@
      0.47,
      1.28,
      3.15,
-     6.94,
-     13.72,
-     24.38,
-     38.88,
-     55.66,
-     71.52,
-     82.51,
-     85.44,
-     79.43,
-     66.28,
-     49.66,
+     6.95,
+     13.76,
+     24.44,
+     38.98,
+     55.79,
+     71.69,
+     82.69,
+     85.6,
+     79.55,
+     66.35,
+     49.68,
      33.39,
-     20.16,
-     10.92,
-     5.31,
-     2.32,
+     20.14,
+     10.91,
+     5.3,
+     2.31,
      0.91,
      0.32,
      0.1,
@@ -277,7 +277,7 @@
      0.0,
      0.0
     ],
-    "media_pct": 0.06,
+    "media_pct": 0.059,
     "sigma_pct": 0.99
    },
    "qq": [
@@ -286,7 +286,7 @@
      -6.225
     ],
     [
-     -2.466,
+     -2.467,
      -4.036
     ],
     [
@@ -294,23 +294,23 @@
      -3.381
     ],
     [
-     -2.1,
+     -2.101,
      -2.377
     ],
     [
-     -1.991,
+     -1.992,
      -2.236
     ],
     [
-     -1.902,
+     -1.903,
      -2.046
     ],
     [
-     -1.827,
+     -1.828,
      -1.875
     ],
     [
-     -1.761,
+     -1.762,
      -1.737
     ],
     [
@@ -318,846 +318,846 @@
      -1.637
     ],
     [
-     -1.649,
+     -1.65,
      -1.529
     ],
     [
-     -1.601,
+     -1.602,
      -1.443
     ],
     [
-     -1.556,
+     -1.557,
      -1.356
     ],
     [
-     -1.514,
+     -1.515,
      -1.316
     ],
     [
-     -1.475,
+     -1.476,
      -1.263
     ],
     [
-     -1.438,
+     -1.44,
      -1.238
     ],
     [
-     -1.403,
+     -1.405,
      -1.204
     ],
     [
-     -1.37,
+     -1.372,
      -1.146
     ],
     [
-     -1.339,
+     -1.34,
      -1.105
     ],
     [
-     -1.308,
+     -1.31,
      -1.068
     ],
     [
-     -1.279,
+     -1.281,
      -1.065
     ],
     [
-     -1.251,
+     -1.253,
      -1.011
     ],
     [
-     -1.225,
+     -1.226,
      -0.974
     ],
     [
-     -1.199,
+     -1.2,
      -0.946
     ],
     [
-     -1.173,
+     -1.175,
      -0.923
     ],
     [
-     -1.149,
+     -1.15,
      -0.897
     ],
     [
-     -1.125,
+     -1.127,
      -0.879
     ],
     [
-     -1.102,
+     -1.104,
      -0.867
     ],
     [
-     -1.08,
+     -1.081,
      -0.835
     ],
     [
-     -1.058,
+     -1.059,
      -0.822
     ],
     [
-     -1.037,
+     -1.038,
      -0.778
     ],
     [
-     -1.016,
+     -1.017,
      -0.754
     ],
     [
-     -0.996,
+     -0.997,
      -0.742
     ],
     [
-     -0.976,
+     -0.977,
      -0.717
     ],
     [
-     -0.956,
+     -0.958,
      -0.699
     ],
     [
-     -0.937,
+     -0.939,
      -0.683
     ],
     [
-     -0.918,
+     -0.92,
      -0.649
     ],
     [
-     -0.9,
+     -0.901,
      -0.619
     ],
     [
-     -0.882,
-     -0.602
+     -0.883,
+     -0.608
     ],
     [
-     -0.864,
-     -0.574
+     -0.866,
+     -0.58
     ],
     [
-     -0.847,
-     -0.56
+     -0.848,
+     -0.564
     ],
     [
-     -0.829,
-     -0.551
+     -0.831,
+     -0.554
     ],
     [
-     -0.812,
-     -0.54
+     -0.814,
+     -0.542
     ],
     [
-     -0.796,
-     -0.524
+     -0.797,
+     -0.526
     ],
     [
-     -0.779,
-     -0.512
+     -0.781,
+     -0.516
     ],
     [
-     -0.763,
-     -0.496
+     -0.765,
+     -0.506
     ],
     [
-     -0.747,
-     -0.486
+     -0.749,
+     -0.49
     ],
     [
-     -0.731,
+     -0.733,
      -0.475
     ],
     [
-     -0.716,
-     -0.462
+     -0.717,
+     -0.463
     ],
     [
-     -0.7,
-     -0.46
+     -0.702,
+     -0.461
     ],
     [
-     -0.685,
-     -0.453
+     -0.687,
+     -0.456
     ],
     [
-     -0.67,
-     -0.445
+     -0.672,
+     -0.448
     ],
     [
-     -0.655,
-     -0.428
+     -0.657,
+     -0.434
     ],
     [
-     -0.64,
-     -0.424
+     -0.642,
+     -0.426
     ],
     [
-     -0.626,
-     -0.406
+     -0.628,
+     -0.411
     ],
     [
-     -0.611,
-     -0.376
+     -0.613,
+     -0.384
     ],
     [
-     -0.597,
-     -0.366
+     -0.599,
+     -0.368
     ],
     [
-     -0.583,
-     -0.344
+     -0.585,
+     -0.35
     ],
     [
-     -0.569,
-     -0.333
+     -0.571,
+     -0.334
     ],
     [
-     -0.555,
-     -0.326
+     -0.557,
+     -0.33
     ],
     [
-     -0.541,
-     -0.312
+     -0.543,
+     -0.318
     ],
     [
-     -0.528,
-     -0.304
+     -0.53,
+     -0.305
     ],
     [
-     -0.514,
-     -0.291
+     -0.516,
+     -0.296
     ],
     [
-     -0.501,
-     -0.281
+     -0.503,
+     -0.286
     ],
     [
-     -0.487,
-     -0.279
+     -0.489,
+     -0.28
     ],
     [
-     -0.474,
+     -0.476,
      -0.27
     ],
     [
-     -0.461,
-     -0.262
+     -0.463,
+     -0.263
     ],
     [
-     -0.448,
-     -0.243
+     -0.45,
+     -0.256
     ],
     [
-     -0.435,
-     -0.23
+     -0.437,
+     -0.235
     ],
     [
-     -0.422,
+     -0.424,
      -0.228
     ],
     [
-     -0.409,
-     -0.214
+     -0.411,
+     -0.221
     ],
     [
-     -0.397,
-     -0.204
+     -0.399,
+     -0.209
     ],
     [
-     -0.384,
+     -0.386,
      -0.201
     ],
     [
-     -0.371,
-     -0.198
+     -0.374,
+     -0.199
     ],
     [
-     -0.359,
-     -0.189
+     -0.361,
+     -0.193
     ],
     [
-     -0.346,
-     -0.185
+     -0.349,
+     -0.186
     ],
     [
-     -0.334,
+     -0.336,
      -0.176
     ],
     [
-     -0.322,
-     -0.165
+     -0.324,
+     -0.168
     ],
     [
-     -0.309,
-     -0.16
+     -0.312,
+     -0.161
     ],
     [
-     -0.297,
-     -0.154
+     -0.3,
+     -0.156
     ],
     [
-     -0.285,
-     -0.139
+     -0.287,
+     -0.142
     ],
     [
-     -0.273,
-     -0.129
+     -0.275,
+     -0.13
     ],
     [
-     -0.261,
-     -0.121
+     -0.263,
+     -0.123
     ],
     [
-     -0.249,
-     -0.119
+     -0.251,
+     -0.12
     ],
     [
-     -0.237,
-     -0.114
+     -0.239,
+     -0.116
     ],
     [
-     -0.225,
-     -0.109
+     -0.228,
+     -0.111
     ],
     [
-     -0.213,
-     -0.103
+     -0.216,
+     -0.107
     ],
     [
-     -0.201,
-     -0.098
+     -0.204,
+     -0.101
     ],
     [
-     -0.19,
-     -0.088
+     -0.192,
+     -0.092
     ],
     [
-     -0.178,
+     -0.18,
      -0.078
     ],
     [
-     -0.166,
-     -0.072
+     -0.169,
+     -0.077
     ],
     [
-     -0.155,
-     -0.066
+     -0.157,
+     -0.067
     ],
     [
-     -0.143,
-     -0.059
+     -0.145,
+     -0.061
     ],
     [
-     -0.131,
-     -0.047
+     -0.134,
+     -0.05
     ],
     [
-     -0.12,
-     -0.034
+     -0.122,
+     -0.043
     ],
     [
-     -0.108,
-     -0.032
+     -0.111,
+     -0.033
     ],
     [
-     -0.097,
-     -0.026
+     -0.099,
+     -0.029
     ],
     [
-     -0.085,
+     -0.088,
      -0.018
     ],
     [
-     -0.073,
-     -0.001
+     -0.076,
+     -0.005
     ],
     [
-     -0.062,
-     0.004
+     -0.065,
+     0.003
     ],
     [
-     -0.05,
-     0.009
+     -0.053,
+     0.007
     ],
     [
-     -0.039,
-     0.018
+     -0.042,
+     0.013
     ],
     [
-     -0.028,
-     0.024
+     -0.03,
+     0.022
     ],
     [
-     -0.016,
-     0.04
+     -0.019,
+     0.037
     ],
     [
-     -0.005,
-     0.042
+     -0.007,
+     0.041
     ],
     [
-     0.007,
-     0.05
+     0.004,
+     0.048
     ],
     [
-     0.018,
-     0.082
+     0.015,
+     0.059
     ],
     [
-     0.03,
+     0.027,
+     0.088
+    ],
+    [
+     0.038,
      0.089
     ],
     [
-     0.041,
-     0.096
+     0.05,
+     0.102
     ],
     [
-     0.052,
-     0.103
+     0.061,
+     0.11
     ],
     [
-     0.064,
-     0.114
+     0.072,
+     0.12
     ],
     [
-     0.075,
-     0.124
+     0.084,
+     0.14
     ],
     [
-     0.087,
-     0.141
+     0.095,
+     0.145
     ],
     [
-     0.098,
-     0.146
+     0.106,
+     0.153
     ],
     [
-     0.109,
-     0.154
+     0.118,
+     0.157
     ],
     [
-     0.121,
-     0.161
+     0.129,
+     0.163
     ],
     [
-     0.132,
-     0.167
-    ],
-    [
-     0.144,
+     0.141,
      0.178
     ],
     [
-     0.155,
+     0.152,
      0.185
     ],
     [
-     0.167,
+     0.163,
      0.198
     ],
     [
-     0.178,
+     0.175,
      0.202
     ],
     [
-     0.19,
+     0.186,
+     0.206
+    ],
+    [
+     0.198,
      0.211
     ],
     [
-     0.201,
-     0.212
+     0.209,
+     0.215
     ],
     [
-     0.213,
-     0.217
-    ],
-    [
-     0.224,
+     0.221,
      0.22
     ],
     [
-     0.236,
-     0.225
+     0.232,
+     0.224
     ],
     [
-     0.247,
-     0.232
+     0.244,
+     0.229
     ],
     [
-     0.259,
-     0.239
+     0.256,
+     0.238
     ],
     [
-     0.271,
-     0.247
+     0.267,
+     0.244
     ],
     [
-     0.282,
-     0.25
+     0.279,
+     0.249
     ],
     [
-     0.294,
-     0.257
+     0.291,
+     0.254
     ],
     [
-     0.306,
-     0.279
+     0.302,
+     0.276
     ],
     [
-     0.317,
-     0.284
+     0.314,
+     0.283
     ],
     [
-     0.329,
-     0.289
+     0.326,
+     0.288
     ],
     [
-     0.341,
-     0.296
+     0.338,
+     0.295
     ],
     [
-     0.353,
+     0.349,
      0.3
     ],
     [
-     0.365,
-     0.318
+     0.361,
+     0.306
     ],
     [
-     0.377,
-     0.325
+     0.373,
+     0.321
     ],
     [
-     0.389,
-     0.329
+     0.385,
+     0.328
     ],
     [
-     0.401,
+     0.397,
      0.334
     ],
     [
-     0.413,
-     0.341
+     0.409,
+     0.337
     ],
     [
-     0.425,
+     0.422,
      0.344
     ],
     [
-     0.438,
-     0.347
+     0.434,
+     0.345
     ],
     [
-     0.45,
-     0.352
+     0.446,
+     0.35
     ],
     [
-     0.462,
-     0.356
+     0.458,
+     0.354
     ],
     [
-     0.475,
+     0.471,
      0.363
     ],
     [
-     0.487,
-     0.375
+     0.483,
+     0.364
     ],
     [
-     0.5,
-     0.395
+     0.496,
+     0.386
     ],
     [
-     0.512,
-     0.405
+     0.508,
+     0.404
     ],
     [
-     0.525,
-     0.412
+     0.521,
+     0.408
     ],
     [
-     0.538,
-     0.418
+     0.534,
+     0.415
     ],
     [
-     0.551,
-     0.431
+     0.546,
+     0.425
     ],
     [
-     0.563,
-     0.439
+     0.559,
+     0.437
     ],
     [
-     0.577,
-     0.449
+     0.572,
+     0.443
     ],
     [
-     0.59,
-     0.455
+     0.585,
+     0.453
     ],
     [
-     0.603,
-     0.463
+     0.599,
+     0.46
     ],
     [
-     0.616,
-     0.473
+     0.612,
+     0.467
     ],
     [
-     0.63,
-     0.489
+     0.625,
+     0.486
     ],
     [
-     0.643,
+     0.639,
      0.497
     ],
     [
-     0.657,
-     0.5
+     0.652,
+     0.498
     ],
     [
-     0.67,
+     0.666,
      0.504
     ],
     [
-     0.684,
-     0.512
+     0.68,
+     0.507
     ],
     [
-     0.698,
-     0.52
+     0.694,
+     0.516
     ],
     [
-     0.712,
-     0.53
+     0.708,
+     0.522
     ],
     [
-     0.727,
-     0.537
+     0.722,
+     0.535
     ],
     [
-     0.741,
-     0.542
+     0.736,
+     0.539
     ],
     [
-     0.755,
-     0.545
+     0.75,
+     0.543
     ],
     [
-     0.77,
-     0.557
+     0.765,
+     0.552
     ],
     [
-     0.785,
-     0.577
+     0.78,
+     0.572
     ],
     [
-     0.8,
-     0.592
+     0.795,
+     0.585
     ],
     [
-     0.815,
-     0.604
+     0.81,
+     0.6
     ],
     [
-     0.83,
-     0.616
+     0.825,
+     0.613
     ],
     [
-     0.846,
-     0.629
+     0.841,
+     0.627
     ],
     [
-     0.862,
-     0.641
+     0.856,
+     0.635
     ],
     [
-     0.878,
+     0.872,
      0.652
     ],
     [
-     0.894,
-     0.664
+     0.888,
+     0.663
     ],
     [
-     0.91,
-     0.691
+     0.904,
+     0.679
     ],
     [
-     0.927,
-     0.696
+     0.921,
+     0.695
     ],
     [
-     0.944,
-     0.709
+     0.938,
+     0.704
     ],
     [
-     0.961,
-     0.728
+     0.955,
+     0.717
     ],
     [
-     0.978,
-     0.751
+     0.972,
+     0.732
     ],
     [
-     0.996,
+     0.989,
      0.759
     ],
     [
-     1.014,
-     0.772
+     1.007,
+     0.768
     ],
     [
-     1.032,
-     0.81
+     1.025,
+     0.808
     ],
     [
-     1.051,
-     0.817
+     1.044,
+     0.814
     ],
     [
-     1.07,
+     1.063,
      0.84
     ],
     [
-     1.089,
-     0.857
+     1.082,
+     0.855
     ],
     [
-     1.109,
-     0.869
+     1.102,
+     0.866
     ],
     [
-     1.129,
-     0.895
+     1.122,
+     0.882
     ],
     [
-     1.15,
-     0.922
+     1.142,
+     0.916
     ],
     [
-     1.171,
-     0.93
+     1.163,
+     0.925
     ],
     [
-     1.192,
+     1.185,
+     0.966
+    ],
+    [
+     1.207,
      0.97
     ],
     [
-     1.215,
-     0.973
+     1.229,
+     0.975
     ],
     [
-     1.237,
-     0.976
+     1.252,
+     1.009
     ],
     [
-     1.261,
-     1.014
+     1.276,
+     1.021
     ],
     [
-     1.285,
-     1.028
+     1.301,
+     1.036
     ],
     [
-     1.31,
-     1.055
+     1.326,
+     1.057
     ],
     [
-     1.336,
+     1.353,
      1.065
     ],
     [
-     1.362,
-     1.072
+     1.38,
+     1.103
     ],
     [
-     1.39,
-     1.107
+     1.408,
+     1.115
     ],
     [
-     1.419,
-     1.118
+     1.438,
+     1.124
     ],
     [
-     1.448,
-     1.128
+     1.468,
+     1.135
     ],
     [
-     1.48,
-     1.149
+     1.5,
+     1.167
     ],
     [
-     1.512,
-     1.179
+     1.534,
+     1.207
     ],
     [
-     1.546,
-     1.209
+     1.57,
+     1.227
     ],
     [
-     1.583,
-     1.263
+     1.607,
+     1.288
     ],
     [
-     1.621,
-     1.294
+     1.647,
+     1.307
     ],
     [
-     1.662,
-     1.312
+     1.69,
+     1.468
     ],
     [
-     1.706,
-     1.482
+     1.736,
+     1.501
     ],
     [
-     1.753,
-     1.508
+     1.786,
+     1.511
     ],
     [
-     1.804,
-     1.522
+     1.84,
+     1.555
     ],
     [
-     1.861,
-     1.607
+     1.901,
+     1.689
     ],
     [
-     1.924,
-     1.725
+     1.97,
+     1.865
     ],
     [
-     1.996,
-     1.867
+     2.049,
+     1.876
     ],
     [
-     2.08,
-     1.902
+     2.144,
+     2.075
     ],
     [
-     2.181,
-     2.088
+     2.262,
+     2.246
     ],
     [
-     2.311,
-     2.312
+     2.425,
+     2.502
     ],
     [
-     2.498,
-     2.877
-    ],
-    [
-     2.866,
-     4.394
+     2.699,
+     3.155
     ]
    ]
   },
   "sotto_acqua": {
-   "quota_giorni_sotto_massimo_pct": 87.0,
-   "dd_medio_pct": -3.43,
+   "quota_giorni_sotto_massimo_pct": 87.02,
+   "dd_medio_pct": -3.44,
    "durata_media_gg": 21.0,
    "durata_max_gg": 203,
    "episodi_n": 41
@@ -1190,7 +1190,7 @@
     "profondita_pct": -8.94,
     "giorni_caduta": 31,
     "giorni_recupero": null,
-    "giorni_totali": 38,
+    "giorni_totali": 41,
     "in_corso": true
    },
    {
@@ -1249,16 +1249,16 @@
     "finestra_gg": 21,
     "min_pct": 5.2,
     "p25_pct": 9.12,
-    "mediana_pct": 12.08,
-    "p75_pct": 16.15,
+    "mediana_pct": 12.09,
+    "p75_pct": 16.16,
     "max_pct": 38.42,
-    "corrente_pct": 19.89
+    "corrente_pct": 19.91
    },
    {
     "finestra_gg": 63,
     "min_pct": 7.22,
-    "p25_pct": 11.15,
-    "mediana_pct": 15.44,
+    "p25_pct": 11.16,
+    "mediana_pct": 15.43,
     "p75_pct": 18.09,
     "max_pct": 25.14,
     "corrente_pct": 14.47
@@ -1266,16 +1266,16 @@
    {
     "finestra_gg": 126,
     "min_pct": 8.31,
-    "p25_pct": 14.22,
+    "p25_pct": 14.23,
     "mediana_pct": 16.6,
-    "p75_pct": 18.07,
+    "p75_pct": 18.06,
     "max_pct": 20.34,
-    "corrente_pct": 15.12
+    "corrente_pct": 15.1
    },
    {
     "finestra_gg": 252,
     "min_pct": 14.33,
-    "p25_pct": 15.6,
+    "p25_pct": 15.59,
     "mediana_pct": 16.48,
     "p75_pct": 17.57,
     "max_pct": 18.19,
@@ -1288,15 +1288,15 @@
     "peggiore_pct": -13.35,
     "migliore_pct": 8.02,
     "mediana_pct": 0.5,
-    "quota_negative_pct": 37.6,
+    "quota_negative_pct": 37.54,
     "fine_peggiore": "2025-04-09"
    },
    {
     "giorni": 21,
     "peggiore_pct": -11.6,
     "migliore_pct": 14.44,
-    "mediana_pct": 1.5,
-    "quota_negative_pct": 29.07,
+    "mediana_pct": 1.49,
+    "quota_negative_pct": 29.18,
     "fine_peggiore": "2025-04-07"
    },
    {
@@ -1304,124 +1304,124 @@
     "peggiore_pct": -12.84,
     "migliore_pct": 17.21,
     "mediana_pct": 4.73,
-    "quota_negative_pct": 20.47,
+    "quota_negative_pct": 20.61,
     "fine_peggiore": "2025-04-09"
    },
    {
     "giorni": 126,
     "peggiore_pct": -9.22,
     "migliore_pct": 28.07,
-    "mediana_pct": 8.89,
-    "quota_negative_pct": 10.8,
+    "mediana_pct": 8.88,
+    "quota_negative_pct": 10.78,
     "fine_peggiore": "2025-04-09"
    },
    {
     "giorni": 252,
     "peggiore_pct": 3.62,
     "migliore_pct": 36.18,
-    "mediana_pct": 16.77,
+    "mediana_pct": 16.72,
     "quota_negative_pct": 0.0,
     "fine_peggiore": "2025-07-09"
    }
   ],
   "bootstrap": {
    "1a": {
-    "p05_pct": -8.43,
-    "p25_pct": 4.88,
-    "mediana_pct": 14.75,
-    "p75_pct": 24.84,
-    "p95_pct": 40.09,
-    "prob_perdita_pct": 15.61,
-    "prob_sotto_meno10_pct": 3.73,
-    "prob_sopra_piu20_pct": 35.87,
-    "cvar95_finale_pct": -14.16,
-    "dd_atteso_mediano_pct": -12.1,
-    "dd_p95_pct": -21.99
+    "p05_pct": -8.9,
+    "p25_pct": 4.78,
+    "mediana_pct": 14.56,
+    "p75_pct": 24.88,
+    "p95_pct": 39.61,
+    "prob_perdita_pct": 16.03,
+    "prob_sotto_meno10_pct": 4.15,
+    "prob_sopra_piu20_pct": 36.16,
+    "cvar95_finale_pct": -14.53,
+    "dd_atteso_mediano_pct": -12.13,
+    "dd_p95_pct": -22.04
    },
    "3a": {
-    "p05_pct": 2.03,
-    "p25_pct": 29.39,
-    "mediana_pct": 50.52,
-    "p75_pct": 74.22,
-    "p95_pct": 114.76,
-    "prob_perdita_pct": 4.18,
-    "prob_sotto_meno10_pct": 1.55,
-    "prob_sopra_piu20_pct": 83.74,
-    "cvar95_finale_pct": -7.72,
-    "dd_atteso_mediano_pct": -17.05,
-    "dd_p95_pct": -28.77
+    "p05_pct": 2.05,
+    "p25_pct": 29.08,
+    "mediana_pct": 49.98,
+    "p75_pct": 73.54,
+    "p95_pct": 114.39,
+    "prob_perdita_pct": 4.29,
+    "prob_sotto_meno10_pct": 1.61,
+    "prob_sopra_piu20_pct": 83.66,
+    "cvar95_finale_pct": -7.94,
+    "dd_atteso_mediano_pct": -17.08,
+    "dd_p95_pct": -28.9
    },
    "5a": {
-    "p05_pct": 20.86,
-    "p25_pct": 61.7,
-    "mediana_pct": 97.01,
-    "p75_pct": 138.04,
-    "p95_pct": 210.7,
-    "prob_perdita_pct": 1.21,
-    "prob_sotto_meno10_pct": 0.53,
-    "prob_sopra_piu20_pct": 95.27,
-    "cvar95_finale_pct": 6.71,
-    "dd_atteso_mediano_pct": -19.45,
-    "dd_p95_pct": -31.29
+    "p05_pct": 20.81,
+    "p25_pct": 61.24,
+    "mediana_pct": 95.5,
+    "p75_pct": 137.28,
+    "p95_pct": 210.26,
+    "prob_perdita_pct": 1.31,
+    "prob_sotto_meno10_pct": 0.52,
+    "prob_sopra_piu20_pct": 95.21,
+    "cvar95_finale_pct": 6.49,
+    "dd_atteso_mediano_pct": -19.55,
+    "dd_p95_pct": -31.5
    },
    "_meta": {
     "n_sim": 10000,
     "blocco_gg": 21,
-    "oss_storiche": 653
+    "oss_storiche": 654
    }
   },
   "decomposizione_rischio": {
    "componenti": [
     {
      "nome": "WRDUSW-USD",
-     "peso_pct": 44.9,
+     "peso_pct": 44.84,
      "vol_singola_pct": 20.11,
-     "contrib_vol_pct": 7.68,
-     "quota_rischio_pct": 48.81,
-     "var95_componente_pct": 0.8,
+     "contrib_vol_pct": 7.66,
+     "quota_rischio_pct": 48.8,
+     "var95_componente_pct": 0.79,
      "beta_al_portafoglio": 1.09
     },
     {
      "nome": "ZGLD",
-     "peso_pct": 19.42,
-     "vol_singola_pct": 19.88,
-     "contrib_vol_pct": 1.85,
-     "quota_rischio_pct": 11.74,
-     "var95_componente_pct": 0.19,
-     "beta_al_portafoglio": 0.6
+     "peso_pct": 19.71,
+     "vol_singola_pct": 19.87,
+     "contrib_vol_pct": 1.88,
+     "quota_rischio_pct": 12.0,
+     "var95_componente_pct": 0.2,
+     "beta_al_portafoglio": 0.61
     },
     {
      "nome": "EIMI",
-     "peso_pct": 20.84,
-     "vol_singola_pct": 21.21,
-     "contrib_vol_pct": 3.52,
-     "quota_rischio_pct": 22.38,
+     "peso_pct": 20.79,
+     "vol_singola_pct": 21.2,
+     "contrib_vol_pct": 3.51,
+     "quota_rischio_pct": 22.34,
      "var95_componente_pct": 0.36,
      "beta_al_portafoglio": 1.07
     },
     {
      "nome": "IWMO",
-     "peso_pct": 9.98,
-     "vol_singola_pct": 22.54,
-     "contrib_vol_pct": 1.85,
-     "quota_rischio_pct": 11.76,
+     "peso_pct": 9.82,
+     "vol_singola_pct": 22.57,
+     "contrib_vol_pct": 1.82,
+     "quota_rischio_pct": 11.58,
      "var95_componente_pct": 0.19,
      "beta_al_portafoglio": 1.18
     },
     {
      "nome": "EMVL",
-     "peso_pct": 4.86,
+     "peso_pct": 4.84,
      "vol_singola_pct": 22.86,
      "contrib_vol_pct": 0.83,
-     "quota_rischio_pct": 5.31,
+     "quota_rischio_pct": 5.28,
      "var95_componente_pct": 0.09,
      "beta_al_portafoglio": 1.09
     }
    ],
-   "vol_portafoglio_pct": 15.73,
-   "somma_vol_singole_pct": 20.67,
-   "beneficio_diversificazione_pct": 4.95,
-   "diversification_ratio": 1.31,
+   "vol_portafoglio_pct": 15.7,
+   "somma_vol_singole_pct": 20.66,
+   "beneficio_diversificazione_pct": 4.97,
+   "diversification_ratio": 1.32,
    "hhi": 0.2951,
    "n_equivalente_posizioni": 3.39,
    "numero_effettivo_scommesse": 2.74,
@@ -1501,8 +1501,8 @@
    {
     "mese": "Nov",
     "n": 3,
-    "medio_pct": 1.95,
-    "mediano_pct": 1.3,
+    "medio_pct": 1.75,
+    "mediano_pct": 1.19,
     "positivi_pct": 100.0
    },
    {
@@ -1552,7 +1552,7 @@
    },
    {
     "periodo": "2026 T4",
-    "ret_pct": -4.9
+    "ret_pct": -5.45
    }
   ],
   "regimi": {
@@ -1583,10 +1583,10 @@
     },
     {
      "regime": "vol alta (Q4)",
-     "giorni": 158,
-     "vol_media_pct": 23.91,
-     "rend_ann_pct": 2.65,
-     "giorni_positivi_pct": 53.16,
+     "giorni": 159,
+     "vol_media_pct": 23.89,
+     "rend_ann_pct": 1.72,
+     "giorni_positivi_pct": 52.83,
      "peggior_giorno_pct": -6.23
     }
    ],
@@ -1594,99 +1594,99 @@
     {
      "fase": "mercato su",
      "giorni": 362,
-     "portafoglio_ann_pct": 139.91,
-     "benchmark_ann_pct": 176.7,
-     "cattura_pct": 79.18
+     "portafoglio_ann_pct": 139.93,
+     "benchmark_ann_pct": 176.66,
+     "cattura_pct": 79.21
     },
     {
      "fase": "mercato giu",
-     "giorni": 290,
-     "portafoglio_ann_pct": -140.54,
-     "benchmark_ann_pct": -188.58,
-     "cattura_pct": 74.53
+     "giorni": 291,
+     "portafoglio_ann_pct": -140.59,
+     "benchmark_ann_pct": -188.48,
+     "cattura_pct": 74.59
     }
    ]
   },
   "benchmark": {
    "MSCI World (CHF)": {
     "beta": 0.76,
-    "alpha_ann_pct": 4.33,
+    "alpha_ann_pct": 4.3,
     "correlazione": 0.8,
     "r_quadro": 0.63,
-    "tracking_error_pct": 10.32,
+    "tracking_error_pct": 10.31,
     "information_ratio": 0.09,
-    "up_capture_pct": 62.75,
-    "down_capture_pct": 89.08,
+    "up_capture_pct": 62.8,
+    "down_capture_pct": 89.11,
     "beta_up": 0.7,
     "beta_down": 0.8,
-    "batting_average_pct": 51.15,
-    "m2_ann_pct": 15.84,
-    "perf_bench_pct": 39.49,
-    "cagr_bench_pct": 14.01,
+    "batting_average_pct": 51.22,
+    "m2_ann_pct": 15.58,
+    "perf_bench_pct": 38.53,
+    "cagr_bench_pct": 13.65,
     "vol_bench_pct": 16.47,
     "maxdd_bench_pct": -22.57,
-    "extra_rendimento_pct": 3.76,
-    "oss_n": 653
+    "extra_rendimento_pct": 3.89,
+    "oss_n": 654
    },
    "SMI (CHF)": {
     "beta": 0.6,
-    "alpha_ann_pct": 7.69,
+    "alpha_ann_pct": 7.39,
     "correlazione": 0.51,
     "r_quadro": 0.26,
-    "tracking_error_pct": 14.54,
-    "information_ratio": 0.19,
-    "up_capture_pct": 40.31,
-    "down_capture_pct": 67.12,
+    "tracking_error_pct": 14.53,
+    "information_ratio": 0.17,
+    "up_capture_pct": 40.25,
+    "down_capture_pct": 67.34,
     "beta_up": 0.52,
     "beta_down": 0.78,
-    "batting_average_pct": 54.06,
-    "m2_ann_pct": 12.69,
-    "perf_bench_pct": 34.53,
-    "cagr_bench_pct": 12.4,
-    "vol_bench_pct": 13.2,
+    "batting_average_pct": 53.82,
+    "m2_ann_pct": 12.48,
+    "perf_bench_pct": 34.91,
+    "cagr_bench_pct": 12.48,
+    "vol_bench_pct": 13.19,
     "maxdd_bench_pct": -17.31,
-    "extra_rendimento_pct": 8.72,
-    "oss_n": 653
+    "extra_rendimento_pct": 7.5,
+    "oss_n": 654
    },
    "60/40 globale (CHF)": {
     "beta": 1.18,
-    "alpha_ann_pct": 4.99,
+    "alpha_ann_pct": 5.01,
     "correlazione": 0.79,
     "r_quadro": 0.62,
     "tracking_error_pct": 9.9,
     "information_ratio": 0.66,
-    "up_capture_pct": 138.5,
-    "down_capture_pct": 105.94,
+    "up_capture_pct": 138.6,
+    "down_capture_pct": 105.96,
     "beta_up": 1.1,
     "beta_down": 1.29,
-    "batting_average_pct": 54.82,
-    "m2_ann_pct": 10.05,
-    "perf_bench_pct": 23.09,
-    "cagr_bench_pct": 8.53,
-    "vol_bench_pct": 10.46,
+    "batting_average_pct": 54.74,
+    "m2_ann_pct": 9.89,
+    "perf_bench_pct": 22.43,
+    "cagr_bench_pct": 8.27,
+    "vol_bench_pct": 10.45,
     "maxdd_bench_pct": -14.61,
-    "extra_rendimento_pct": 20.16,
-    "oss_n": 653
+    "extra_rendimento_pct": 19.99,
+    "oss_n": 654
    },
    "Oro CHF": {
     "beta": 0.4,
-    "alpha_ann_pct": 7.77,
+    "alpha_ann_pct": 7.41,
     "correlazione": 0.51,
     "r_quadro": 0.26,
-    "tracking_error_pct": 17.98,
-    "information_ratio": -0.17,
-    "up_capture_pct": 20.61,
+    "tracking_error_pct": 17.99,
+    "information_ratio": -0.2,
+    "up_capture_pct": 20.37,
     "down_capture_pct": 67.48,
     "beta_up": 0.33,
     "beta_down": 0.42,
-    "batting_average_pct": 49.46,
-    "m2_ann_pct": 19.09,
-    "perf_bench_pct": 52.16,
-    "cagr_bench_pct": 17.99,
-    "vol_bench_pct": 19.86,
+    "batting_average_pct": 49.39,
+    "m2_ann_pct": 18.78,
+    "perf_bench_pct": 53.56,
+    "cagr_bench_pct": 18.35,
+    "vol_bench_pct": 19.85,
     "maxdd_bench_pct": -22.69,
-    "extra_rendimento_pct": -8.91,
-    "oss_n": 653
+    "extra_rendimento_pct": -11.14,
+    "oss_n": 654
    }
   }
  },
@@ -2198,7 +2198,11 @@
    ],
    [
     "2026-11-13",
-    17.31
+    17.33
+   ],
+   [
+    "2026-11-20",
+    17.19
    ]
   ],
   "vol_60gg": [
@@ -2684,7 +2688,11 @@
    ],
    [
     "2026-11-13",
-    14.44
+    14.48
+   ],
+   [
+    "2026-11-20",
+    14.49
    ]
   ],
   "vol_90gg": [
@@ -3146,7 +3154,11 @@
    ],
    [
     "2026-11-13",
-    14.66
+    14.69
+   ],
+   [
+    "2026-11-20",
+    14.62
    ]
   ],
   "vol_252gg": [
@@ -3476,6 +3488,10 @@
    ],
    [
     "2026-11-13",
+    15.23
+   ],
+   [
+    "2026-11-20",
     15.22
    ]
   ],
@@ -4010,7 +4026,11 @@
    ],
    [
     "2026-11-13",
-    18.15
+    18.29
+   ],
+   [
+    "2026-11-20",
+    17.75
    ]
   ],
   "sharpe_126gg": [
@@ -4444,7 +4464,11 @@
    ],
    [
     "2026-11-13",
-    0.36
+    0.26
+   ],
+   [
+    "2026-11-20",
+    0.17
    ]
   ],
   "sharpe_252gg": [
@@ -4774,7 +4798,11 @@
    ],
    [
     "2026-11-13",
-    1.07
+    1.02
+   ],
+   [
+    "2026-11-20",
+    0.98
    ]
   ],
   "sortino_252gg": [
@@ -5104,7 +5132,11 @@
    ],
    [
     "2026-11-13",
-    1.14
+    1.09
+   ],
+   [
+    "2026-11-20",
+    1.05
    ]
   ],
   "rolling12m": [
@@ -5186,7 +5218,7 @@
    ],
    [
     "2026-11",
-    12.95
+    12.3
    ]
   ],
   "rolling6m": [
@@ -5292,7 +5324,7 @@
    ],
    [
     "2026-11",
-    -0.19
+    -0.76
    ]
   ],
   "beta_126gg__MSCI World (CHF)": [
@@ -5727,6 +5759,10 @@
    [
     "2026-11-13",
     0.91
+   ],
+   [
+    "2026-11-20",
+    0.91
    ]
   ],
   "corr_126gg__MSCI World (CHF)": [
@@ -6160,6 +6196,10 @@
    ],
    [
     "2026-11-13",
+    0.81
+   ],
+   [
+    "2026-11-20",
     0.81
    ]
   ],
@@ -6694,7 +6734,11 @@
    ],
    [
     "2026-11-13",
-    2.69
+    2.99
+   ],
+   [
+    "2026-11-20",
+    2.81
    ]
   ],
   "beta_126gg__SMI (CHF)": [
@@ -7129,6 +7173,10 @@
    [
     "2026-11-13",
     0.18
+   ],
+   [
+    "2026-11-20",
+    0.18
    ]
   ],
   "corr_126gg__SMI (CHF)": [
@@ -7562,6 +7610,10 @@
    ],
    [
     "2026-11-13",
+    0.13
+   ],
+   [
+    "2026-11-20",
     0.13
    ]
   ],
@@ -8096,7 +8148,11 @@
    ],
    [
     "2026-11-13",
-    6.48
+    5.95
+   ],
+   [
+    "2026-11-20",
+    5.56
    ]
   ],
   "beta_126gg__60/40 globale (CHF)": [
@@ -8531,6 +8587,10 @@
    [
     "2026-11-13",
     1.24
+   ],
+   [
+    "2026-11-20",
+    1.24
    ]
   ],
   "corr_126gg__60/40 globale (CHF)": [
@@ -8964,6 +9024,10 @@
    ],
    [
     "2026-11-13",
+    0.79
+   ],
+   [
+    "2026-11-20",
     0.79
    ]
   ],
@@ -9498,7 +9562,11 @@
    ],
    [
     "2026-11-13",
-    16.38
+    16.39
+   ],
+   [
+    "2026-11-20",
+    16.33
    ]
   ],
   "beta_126gg__Oro CHF": [
@@ -9932,7 +10000,11 @@
    ],
    [
     "2026-11-13",
-    0.46
+    0.45
+   ],
+   [
+    "2026-11-20",
+    0.45
    ]
   ],
   "corr_126gg__Oro CHF": [
@@ -10366,6 +10438,10 @@
    ],
    [
     "2026-11-13",
+    0.63
+   ],
+   [
+    "2026-11-20",
     0.64
    ]
   ],
@@ -10900,7 +10976,11 @@
    ],
    [
     "2026-11-13",
-    -5.86
+    -7.44
+   ],
+   [
+    "2026-11-20",
+    -7.26
    ]
   ]
  },
@@ -11435,7 +11515,11 @@
   ],
   [
    "2026-11-13",
-   4213955.0
+   4181152.0
+  ],
+  [
+   "2026-11-20",
+   4189583.0
   ]
  ],
  "index_weekly": [
@@ -11969,7 +12053,11 @@
   ],
   [
    "2026-11-13",
-   143.25
+   142.13
+  ],
+  [
+   "2026-11-20",
+   142.42
   ]
  ],
  "bench_index_weekly": {
@@ -12504,7 +12592,11 @@
    ],
    [
     "2026-11-13",
-    139.49
+    138.0
+   ],
+   [
+    "2026-11-20",
+    138.53
    ]
   ],
   "SMI (CHF)": [
@@ -13038,7 +13130,11 @@
    ],
    [
     "2026-11-13",
-    134.53
+    134.15
+   ],
+   [
+    "2026-11-20",
+    134.91
    ]
   ],
   "60/40 globale (CHF)": [
@@ -13572,7 +13668,11 @@
    ],
    [
     "2026-11-13",
-    123.09
+    122.11
+   ],
+   [
+    "2026-11-20",
+    122.43
    ]
   ],
   "Oro CHF": [
@@ -14106,7 +14206,11 @@
    ],
    [
     "2026-11-13",
-    152.16
+    153.56
+   ],
+   [
+    "2026-11-20",
+    153.56
    ]
   ]
  },
@@ -14141,7 +14245,7 @@
   "2026-08": 5.29,
   "2026-09": 1.86,
   "2026-10": -6.12,
-  "2026-11": 1.3
+  "2026-11": 0.72
  },
  "monthly_matrix": {
   "2024": {
@@ -14181,8 +14285,8 @@
    "m08": 5.29,
    "m09": 1.86,
    "m10": -6.12,
-   "m11": 1.3,
-   "tot": 12.3
+   "m11": 0.72,
+   "tot": 11.65
   }
  },
  "annual": [
@@ -14202,10 +14306,10 @@
   },
   {
    "anno": "2026",
-   "ret_pct": 12.29,
+   "ret_pct": 11.64,
    "parziale": true,
    "da": "2026-01-01",
-   "a": "2026-11-13"
+   "a": "2026-11-16"
   }
  ],
  "rolling12": [
@@ -14287,7 +14391,7 @@
   ],
   [
    "2026-11",
-   12.95
+   12.3
   ]
  ],
  "drawdown_weekly": [
@@ -14821,7 +14925,11 @@
   ],
   [
    "2026-11-13",
-   -5.79
+   -6.52
+  ],
+  [
+   "2026-11-20",
+   -6.33
   ]
  ],
  "max_dd_date": "2025-04-09",
@@ -14845,7 +14953,7 @@
     0.16,
     1.0,
     0.3,
-    0.26,
+    0.25,
     0.28
    ],
    [
@@ -14857,7 +14965,7 @@
    ],
    [
     0.57,
-    0.26,
+    0.25,
     0.83,
     1.0,
     0.79
@@ -14905,7 +15013,7 @@
     0.16,
     1.0,
     0.3,
-    0.26,
+    0.25,
     0.28
    ]
   }
@@ -14920,13 +15028,13 @@
    "ccy": "USD",
    "shares": 49946,
    "cost_px": 29.56,
-   "last_px": 45.3199,
-   "pl_pct": 53.31,
-   "pl_base_pct": 39.38,
-   "value_base": 1892165.0,
+   "last_px": 44.8264,
+   "pl_pct": 51.65,
+   "pl_base_pct": 38.39,
+   "value_base": 1878682.0,
    "cost_base": 1357538.0,
-   "contrib_pp": 18.17,
-   "weight_now_pct": 44.9,
+   "contrib_pp": 17.72,
+   "weight_now_pct": 44.84,
    "weight_cost_pct": 46.15,
    "vol_ann_pct": 20.11,
    "max_dd_pct": -22.59
@@ -14940,15 +15048,15 @@
    "ccy": "CHF",
    "shares": 857,
    "cost_px": 625.9,
-   "last_px": 954.8,
-   "pl_pct": 52.55,
-   "pl_base_pct": 52.55,
-   "value_base": 818264.0,
+   "last_px": 963.6,
+   "pl_pct": 53.95,
+   "pl_base_pct": 53.95,
+   "value_base": 825805.0,
    "cost_base": 536396.0,
-   "contrib_pp": 9.58,
-   "weight_now_pct": 19.42,
+   "contrib_pp": 9.84,
+   "weight_now_pct": 19.71,
    "weight_cost_pct": 18.23,
-   "vol_ann_pct": 19.88,
+   "vol_ann_pct": 19.87,
    "max_dd_pct": -22.69
   },
   {
@@ -14960,15 +15068,15 @@
    "ccy": "USD",
    "shares": 20915,
    "cost_px": 32.69,
-   "last_px": 50.23,
-   "pl_pct": 53.66,
-   "pl_base_pct": 39.71,
-   "value_base": 878195.0,
+   "last_px": 49.63,
+   "pl_pct": 51.82,
+   "pl_base_pct": 38.57,
+   "value_base": 871006.0,
    "cost_base": 628570.0,
-   "contrib_pp": 8.49,
-   "weight_now_pct": 20.84,
+   "contrib_pp": 8.24,
+   "weight_now_pct": 20.79,
    "weight_cost_pct": 21.37,
-   "vol_ann_pct": 21.21,
+   "vol_ann_pct": 21.2,
    "max_dd_pct": -19.56
   },
   {
@@ -14980,15 +15088,15 @@
    "ccy": "USD",
    "shares": 4716,
    "cost_px": 70.4,
-   "last_px": 106.64,
-   "pl_pct": 51.48,
-   "pl_base_pct": 37.71,
-   "value_base": 420401.0,
+   "last_px": 103.95,
+   "pl_pct": 47.66,
+   "pl_base_pct": 34.75,
+   "value_base": 411355.0,
    "cost_base": 305277.0,
-   "contrib_pp": 3.91,
-   "weight_now_pct": 9.98,
+   "contrib_pp": 3.61,
+   "weight_now_pct": 9.82,
    "weight_cost_pct": 10.38,
-   "vol_ann_pct": 22.54,
+   "vol_ann_pct": 22.57,
    "max_dd_pct": -24.15
   },
   {
@@ -15000,13 +15108,13 @@
    "ccy": "USD",
    "shares": 2646,
    "cost_px": 46.84,
-   "last_px": 92.65,
-   "pl_pct": 97.8,
-   "pl_base_pct": 79.84,
-   "value_base": 204930.0,
+   "last_px": 91.31,
+   "pl_pct": 94.94,
+   "pl_base_pct": 77.91,
+   "value_base": 202734.0,
    "cost_base": 113954.0,
-   "contrib_pp": 3.09,
-   "weight_now_pct": 4.86,
+   "contrib_pp": 3.02,
+   "weight_now_pct": 4.84,
    "weight_cost_pct": 3.87,
    "vol_ann_pct": 22.86,
    "max_dd_pct": -19.74

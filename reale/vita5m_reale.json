@@ -84,7 +84,8 @@
   "drawdown_pct": -5.0,
   "vol20_pct": 15.0,
   "scostamento_pp": 2.0,
-  "oro_max_pct": 20.0
+  "oro_max_pct": 20.0,
+  "vol_exante_pct": 18.0
  },
  "tranches": [
   {

@@ -266,7 +266,8 @@ def main(out_dir: str) -> None:
     sc = ((peso - target) * 100).abs()
     al("Scostamento massimo dai pesi obiettivo", sc.max(), s["scostamento_pp"], sc.max() >= s["scostamento_pp"], "pp")
     al("Oro (ZGLD) sul portafoglio", peso.get("ZGLD", 0) * 100, s["oro_max_pct"], peso.get("ZGLD", 0) * 100 > s["oro_max_pct"])
-    al("Volatilità ex ante (pesi correnti)", ex_cor["vol_pct"], s["vol20_pct"], (ex_cor["vol_pct"] or 0) >= s["vol20_pct"])
+    al("Volatilità ex ante (pesi correnti)", ex_cor["vol_pct"], s.get("vol_exante_pct", 18.0),
+       (ex_cor["vol_pct"] or 0) >= s.get("vol_exante_pct", 18.0))
 
     righe = []
     for l in lines:

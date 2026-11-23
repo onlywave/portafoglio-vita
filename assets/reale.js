@@ -19,7 +19,7 @@ async function avviaReale(){
   const vsS = L.rend_twr_pct - L.bench_pct[BN[0]], vsW = L.rend_twr_pct - L.bench_pct[BN[1]];
   const allerteOn = d.allerte.filter(a=>a.stato==="ALLERTA");
 
-  let h = "";
+  let h = `<div id="intra"></div>`;
   // ------------------------------------------------------------- 1. sintesi
   h += sez("01","Sintesi", `${n0(d.live.serie.date.length)} sedute dall'inception`);
   h += `<div class="tesi"><b>${pcs(L.rend_twr_pct)}</b> dall'inizio (rendimento ponderato nel tempo), contro
@@ -148,4 +148,67 @@ async function avviaReale(){
     ({name:k, color:["var(--s1)","var(--s2)","var(--s3)"][i], w:i?1.6:2.3, data:E.date.map((x,j)=>[x,E[k][j]])})),
     {fmt:v=>nf(v,0)});
   heatmap(document.getElementById("corr"), X.correlazioni.labels, X.correlazioni.matrix);
+  caricaIntraday(d);
+  setInterval(()=>caricaIntraday(d), 5*60*1000);
+}
+
+/* ------------------------------------------------------------------ intraday */
+const URL_INTRA = [
+  "https://raw.githubusercontent.com/onlywave/portafoglio-vita/intraday/intraday.json",
+  "https://api.github.com/repos/onlywave/portafoglio-vita/contents/intraday.json?ref=intraday",
+];
+async function leggiIntraday(){
+  for(const u of URL_INTRA){
+    try{
+      const r = await fetch(u+(u.includes("?")?"&":"?")+"t="+Date.now(),
+        u.includes("api.github")?{headers:{Accept:"application/vnd.github.raw+json"}}:{cache:"no-store"});
+      if(r.ok) return await r.json();
+    }catch(e){}
+  }
+  return null;
+}
+function curvaIntraday(host, P){
+  const W=1000,H=230,m={t:12,r:14,b:24,l:52};
+  const nomi=Object.keys(P).filter(k=>k!=="ora"), n=P.ora.length;
+  if(n<2){ host.innerHTML='<p class="note">Percorso disponibile dopo le prime barre della seduta.</p>'; return; }
+  const vs=nomi.flatMap(k=>P[k]).filter(v=>v!=null&&isFinite(v));
+  let y0=Math.min(...vs,0), y1=Math.max(...vs,0); const pad=(y1-y0)*0.1||0.2; y0-=pad; y1+=pad;
+  const X=i=>m.l+i/(n-1)*(W-m.l-m.r), Y=v=>H-m.b-(v-y0)/(y1-y0)*(H-m.t-m.b);
+  const col=["var(--s1)","var(--s2)","var(--s3)"];
+  let g="";
+  for(let i=0;i<=4;i++){const v=y0+(y1-y0)*i/4;
+    g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--grid)"/>
+        <text x="${m.l-7}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end" font-size="10.5" fill="var(--muted)">${nf(v,2)}%</text>`;}
+  g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="var(--axis)"/>`;
+  const passo=Math.max(1,Math.round(n/8));
+  P.ora.forEach((o,i)=>{ if(i%passo===0) g+=`<text x="${X(i).toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="10.5" fill="var(--muted)">${o}</text>`; });
+  nomi.forEach((k,j)=>{
+    const d=P[k].map((v,i)=>v==null?null:`${X(i).toFixed(1)} ${Y(v).toFixed(1)}`).filter(Boolean);
+    g+=`<path d="M${d.join(" L")}" fill="none" stroke="${col[j%3]}" stroke-width="${j?1.6:2.4}"/>`;
+  });
+  host.innerHTML = legenda(nomi.map((k,j)=>({name:k,color:col[j%3]}))) +
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="percorso intraday">${g}</svg>`;
+}
+async function caricaIntraday(daily){
+  const box=document.getElementById("intra"); if(!box) return;
+  const q=await leggiIntraday();
+  if(!q){ box.innerHTML = sez("00","Oggi, in tempo quasi reale") +
+    `<div class="flag"><b>Quotazione intraday non ancora disponibile.</b> Si aggiorna ogni 15 minuti nei giorni di borsa.</div>`; return; }
+  const B=q.benchmark||{}, bs=B[BN[0]], bw=B[BN[1]];
+  const aperta = q.giorno > daily.asof;
+  box.innerHTML = sez("00","Oggi, in tempo quasi reale",
+      `seduta del ${dIT(q.giorno)} · ultimo prezzo ${q.ultimo_prezzo} · aggiornato ${new Date(q.aggiornato).toLocaleTimeString("it-CH",{hour:"2-digit",minute:"2-digit"})} · ritardo ~15-20 min`) +
+    `<div class="tiles">
+      ${tabB("Variazione di oggi (stima)", pcs(q.var_oggi_pct), cls(q.var_oggi_pct), "in CHF, contro la chiusura precedente")}
+      ${tabB("Dall'inizio, stimato ora", q.twr_stimato_pct==null?"—":pcs(q.twr_stimato_pct), cls(q.twr_stimato_pct), aperta?"chiusura TWR + variazione di oggi":"coincide con la chiusura")}
+      ${tab("S&P 500 oggi (CHF)", bs?pcs(bs.var_chf_pct):"—", bs?cls(bs.var_chf_pct):"", bs?"ore "+bs.ora:"")}
+      ${tab("MSCI World oggi (CHF)", bw?pcs(bw.var_chf_pct):"—", bw?cls(bw.var_chf_pct):"", bw?"ore "+bw.ora:"")}
+      ${tab("USD/CHF", nf(q.usdchf.ultimo,4), "", pcs(q.usdchf.var_pct)+" oggi")}
+    </div>
+    <div class="grid2">${pannello("Percorso della seduta","Variazione cumulata in CHF dalla chiusura precedente, barre da 5 minuti.","curvaintra")}
+    ${tabella([{t:"ETF"},{t:"Ultimo",n:1},{t:"Ora",n:1},{t:"Var. locale",n:1},{t:"Var. CHF",n:1},{t:"Contributo",n:1}],
+      q.linee.map(l=>`<tr><td>${l.ticker} <span class="note">${l.valuta}</span></td>${td(nf(l.ultimo,l.ultimo<20?4:2))}${td(l.ora)}
+        <td class="num ${cls(l.var_locale_pct)}">${pcs(l.var_locale_pct)}</td><td class="num ${cls(l.var_chf_pct)}">${pcs(l.var_chf_pct)}</td>
+        ${td((l.contributo_pp>0?"+":"")+nf(l.contributo_pp,2)+" pp")}</tr>`), q.nota, "rep")}</div>`;
+  curvaIntraday(document.getElementById("curvaintra"), q.percorso);
 }

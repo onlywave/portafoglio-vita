@@ -65,6 +65,11 @@ non tocca `genera.py` né le pagine esistenti.
   drawdown, beta, tracking error, contributi di Euler, correlazioni, stress.
 - **Costi**: TER ponderato e costi di negoziazione per tranche (stima finché non arriva la contabile).
 - **Riconciliazione**: stato per voce; si aggiorna dopo il confronto con l'e-banking.
+- **Intraday**: `intraday.py` (workflow `intraday.yml`, ogni 15 minuti 08:00–22:00 nei giorni
+  feriali) legge da Yahoo le barre da 5 minuti, calcola la variazione del giorno in CHF ai pesi
+  della chiusura precedente e il rendimento dall'inizio stimato, e pubblica `intraday.json` sul
+  ramo `intraday` (riscritto a ogni giro). La pagina lo rilegge ogni 5 minuti. Prezzi ritardati
+  di circa 15–20 minuti; è una stima, la valorizzazione ufficiale resta quella di chiusura.
 - Nuova tranche: aggiungere gli acquisti a `acquisti` (rif., data, ticker, prezzo medio,
   cambio d'esecuzione, quota) e aggiornare `tranches`, `costi_tranche`, `riconciliazione`.
 

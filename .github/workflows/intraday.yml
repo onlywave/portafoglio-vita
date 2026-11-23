@@ -1,0 +1,42 @@
+name: intraday-vita5m-reale
+
+# Quotazione intraday dell'investimento reale VITA 5M (prezzi Yahoo ritardati).
+# Ogni 15 minuti nei giorni feriali, dall'apertura europea alla chiusura USA.
+# Il JSON va sul ramo `intraday`, riscritto a ogni giro (un solo commit), cosi'
+# main non si riempie di commit e Pages non viene ripubblicato ogni 15 minuti.
+on:
+  schedule:
+    - cron: "*/15 7-21 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: intraday
+  cancel-in-progress: true
+
+jobs:
+  intraday:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Quotazione intraday
+        run: python intraday.py /tmp/pub/intraday.json
+      - name: Pubblica sul ramo intraday
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd /tmp/pub
+          git init -q -b intraday
+          git config user.name "vita-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add intraday.json
+          git commit -q -m "Intraday $(date -u +%FT%H:%MZ)"
+          git push -q -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" intraday

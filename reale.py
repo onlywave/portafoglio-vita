@@ -140,7 +140,7 @@ def main(out_dir: str) -> None:
         f = f.reindex(s.index.union(f.index)).ffill().reindex(s.index)
         return s * f
 
-    prezzi, fonti, note = {}, {}, []
+    prezzi, fonti, note, locali = {}, {}, [], {}
     for l in lines:
         s, sym = storia(l["yf"], start)
         fonti[l["ticker"]] = sym
@@ -152,6 +152,7 @@ def main(out_dir: str) -> None:
             pre = pre / pre.iloc[-1] * s.iloc[0]
             s = pd.concat([pre[pre.index < prima], s])
             note.append(f"{l['ticker']}: {PROXY[l['ticker']]['nota']} ({psym}) fino al {prima.date()}")
+        locali[l["ticker"]] = s
         prezzi[l["ticker"]] = in_chf(s, l["ccy"])
     P = pd.DataFrame(prezzi).sort_index().ffill()
     P = P[P.index.dayofweek < 5]
@@ -285,6 +286,61 @@ def main(out_dir: str) -> None:
             "contrib_rischio_tgt_pct": ex_tgt["contributi_rischio_pct"][t],
         })
 
+    # ------------------------------------------------ cruscotto sala trading
+    FIN = [3, 5, 7, 15, 30]
+    RB = B.pct_change()
+    MW = list(BENCH)[1]
+
+    def met(r: pd.Series, rif: pd.Series | None) -> dict:
+        r = r.dropna()
+        nav = (1 + r).cumprod()
+        sd = r.std(ddof=1)
+        o = {"rend_pct": r2((nav.iloc[-1] - 1) * 100), "vol_pct": r2(sd * math.sqrt(TD) * 100),
+             "sharpe": r2(r.mean() / sd * math.sqrt(TD)) if sd else None,
+             "max_dd_pct": r2(min(0.0, (nav / nav.cummax() - 1).min()) * 100),
+             "var95_1d_pct": r2(1.645 * sd * 100), "giorni_pos_pct": r2((r > 0).mean() * 100, 0),
+             "miglior_pct": r2(r.max() * 100), "peggior_pct": r2(r.min() * 100)}
+        if rif is not None:
+            x = pd.concat([r, rif], axis=1).dropna()
+            if len(x) >= 3 and x.iloc[:, 1].var():
+                o["beta"] = r2(x.iloc[:, 0].cov(x.iloc[:, 1]) / x.iloc[:, 1].var())
+                o["corr"] = r2(x.iloc[:, 0].corr(x.iloc[:, 1]))
+        return o
+
+    finestre = {}
+    for W in FIN:
+        rpW = rl.tail(W) if len(rl) >= W else rp_cor.tail(W)  # reale se ci sono abbastanza sedute
+        dW = rpW.index
+        blocco = {"da": dW[0].strftime("%Y-%m-%d"), "a": dW[-1].strftime("%Y-%m-%d"),
+                  "VITA 5M": met(rpW, RB[MW].reindex(dW))}
+        for k in BENCH:
+            blocco[k] = met(RB[k].reindex(dW), RB[MW].reindex(dW) if k != MW else None)
+        blocco["asset"] = {}
+        for t in tick:
+            ra = R[t].tail(W)
+            rend = (1 + ra).prod() - 1
+            blocco["asset"][t] = {"rend_pct": r2(rend * 100), "contrib_pp": r2(peso[t] * rend * 100),
+                                  "vol_pct": r2(ra.std(ddof=1) * math.sqrt(TD) * 100)}
+        blocco["live_disponibile"] = len(rl) >= W
+        finestre[str(W)] = blocco
+
+    def medie(s: pd.Series) -> dict:
+        s = s.dropna()
+        m50, m200 = s.rolling(50).mean().iloc[-1], s.rolling(200).mean().iloc[-1]
+        ult = s.iloc[-1]
+        hi = s.tail(252).max()
+        return {"ultimo": r2(ult, 4), "sma50": r2(m50, 4), "sma200": r2(m200, 4),
+                "dist_sma50_pct": r2((ult / m50 - 1) * 100), "dist_sma200_pct": r2((ult / m200 - 1) * 100),
+                "dist_max52s_pct": r2((ult / hi - 1) * 100),
+                "trend": "rialzista" if ult > m200 and m50 > m200 else ("ribassista" if ult < m200 and m50 < m200 else "misto"),
+                "incrocio": "golden cross" if m50 > m200 else "death cross"}
+
+    medie_mobili = {t: {**medie(locali[t][locali[t].index <= oggi]), "valuta": next(l["ccy"] for l in lines if l["ticker"] == t)}
+                    for t in tick}
+    medie_mobili["VITA 5M (pesi correnti)"] = {**medie(100 * (1 + rp_cor).cumprod()), "valuta": "indice CHF"}
+    for k in BENCH:
+        medie_mobili[k] = {**medie(B[k]), "valuta": "CHF"}
+
     rl_stats = stats(rl) if len(rl) else {"n": 0}
     rel_live = {k: relativo(rl, rb[k]) for k in BENCH} if len(rl) >= 20 else {}
     out = {
@@ -311,6 +367,10 @@ def main(out_dir: str) -> None:
                    "equity_3a": eq3,
                    "correlazioni": {"labels": tick, "matrix": [[r2(v) for v in row] for row in corr.values]}},
         "linee": righe,
+        "trading": {"finestre": finestre, "medie_mobili": medie_mobili,
+                    "nota": "Finestre in sedute di borsa. Finché l'investimento reale non ha abbastanza sedute, il portafoglio "
+                            "è misurato a pesi correnti sui prezzi storici in CHF (pro forma). Medie mobili sul prezzo nella "
+                            "valuta di quotazione per gli ETF, in CHF per portafoglio e benchmark."},
         "costi": {"ter_corrente_pct": r2(ter_cor, 3), "ter_obiettivo_pct": r2(ter_tgt, 3), "tranche": costi},
         "allerte": allerte,
         "riconciliazione": spec.get("riconciliazione", []),

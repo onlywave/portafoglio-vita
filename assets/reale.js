@@ -19,7 +19,7 @@ async function avviaReale(){
   const vsS = L.rend_twr_pct - L.bench_pct[BN[0]], vsW = L.rend_twr_pct - L.bench_pct[BN[1]];
   const allerteOn = d.allerte.filter(a=>a.stato==="ALLERTA");
 
-  let h = `<div id="intra"></div>`;
+  let h = `<div id="intra"></div><div id="trading"></div>`;
   // ------------------------------------------------------------- 1. sintesi
   h += sez("01","Sintesi", `${n0(d.live.serie.date.length)} sedute dall'inception`);
   h += `<div class="tesi"><b>${pcs(L.rend_twr_pct)}</b> dall'inizio (rendimento ponderato nel tempo), contro
@@ -148,6 +148,7 @@ async function avviaReale(){
     ({name:k, color:["var(--s1)","var(--s2)","var(--s3)"][i], w:i?1.6:2.3, data:E.date.map((x,j)=>[x,E[k][j]])})),
     {fmt:v=>nf(v,0)});
   heatmap(document.getElementById("corr"), X.correlazioni.labels, X.correlazioni.matrix);
+  renderTrading(d, 5);
   caricaIntraday(d);
   setInterval(()=>caricaIntraday(d), 5*60*1000);
 }
@@ -211,4 +212,57 @@ async function caricaIntraday(daily){
         <td class="num ${cls(l.var_locale_pct)}">${pcs(l.var_locale_pct)}</td><td class="num ${cls(l.var_chf_pct)}">${pcs(l.var_chf_pct)}</td>
         ${td((l.contributo_pp>0?"+":"")+nf(l.contributo_pp,2)+" pp")}</tr>`), q.nota, "rep")}</div>`;
   curvaIntraday(document.getElementById("curvaintra"), q.percorso);
+  INTRA = q; renderTrading(daily, FIN_SEL);
+}
+
+/* ------------------------------------------------- cruscotto sala trading */
+let INTRA = null, FIN_SEL = 5;
+const FINS = ["3","5","7","15","30"];
+function renderTrading(d, W){
+  FIN_SEL = W;
+  const T = d.trading, box = document.getElementById("trading");
+  if(!T || !box) return;
+  const F = T.finestre, f = F[String(W)], nomi = ["VITA 5M", ...BN];
+  const oggi = {}; if(INTRA && INTRA.giorno > d.asof) INTRA.linee.forEach(l=>oggi[l.ticker]=l);
+  const qOggi = INTRA && INTRA.giorno > d.asof ? INTRA : null;
+  const bottoni = FINS.map(k=>`<button class="${+k===W?"on":""}" data-w="${k}">${k} sedute</button>`).join("");
+  let h = sez("TR","Cruscotto sala trading", `finestra ${dIT(f.da)} – ${dIT(f.a)} · ${f.live_disponibile?"dati reali":"pro forma a pesi correnti"}`);
+  h += `<div class="panel"><div class="periodo"><div class="presets" id="finbtn">${bottoni}</div>
+        <span class="note">${T.nota}</span></div></div>`;
+  // matrice dei rendimenti per finestra
+  const rigaRend = (n,lab) => `<tr><td>${lab||n}</td>${qOggi?`<td class="num ${cls(n==="VITA 5M"?qOggi.var_oggi_pct:(qOggi.benchmark[n]||{}).var_chf_pct)}">${pcs(n==="VITA 5M"?qOggi.var_oggi_pct:(qOggi.benchmark[n]||{}).var_chf_pct)}</td>`:""}
+     ${FINS.map(k=>{const v=F[k][n].rend_pct;return `<td class="num ${cls(v)} ${+k===W?"sel":""}">${pcs(v)}</td>`;}).join("")}</tr>`;
+  const extra = FINS.map(k=>{const v=F[k]["VITA 5M"].rend_pct-F[k][BN[1]].rend_pct;return `<td class="num ${cls(v)} ${+k===W?"sel":""}">${(v>0?"+":"")+nf(v,2)} pp</td>`;}).join("");
+  h += tabella([{t:"Rendimento"},...(qOggi?[{t:"Oggi",n:1}]:[]),...FINS.map(k=>({t:k+" sedute",n:1}))],
+    nomi.map(n=>rigaRend(n,n==="VITA 5M"?"VITA 5M (pesi correnti)":n)).join("")+
+    `<tr><td>Extra vs MSCI World</td>${qOggi?`<td class="num">${(()=>{const v=qOggi.var_oggi_pct-((qOggi.benchmark[BN[1]]||{}).var_chf_pct||0);return (v>0?"+":"")+nf(v,2)+" pp";})()}</td>`:""}${extra}</tr>`,
+    "In CHF. Oggi: variazione intraday stimata dalla chiusura precedente.","rep");
+  // parametri rischio/rendimento sulla finestra scelta
+  const M = [["Rendimento","rend_pct",v=>pcs(v)],["Volatilità annualizzata","vol_pct",v=>pc(v,1)],["Sharpe annualizzato","sharpe",v=>nf(v)],
+    ["Max drawdown","max_dd_pct",v=>pc(v,2)],["VaR 95% 1 giorno","var95_1d_pct",v=>pc(v,2)],["Beta vs MSCI World","beta",v=>nf(v)],
+    ["Correlazione vs MSCI World","corr",v=>nf(v)],["Sedute positive","giorni_pos_pct",v=>pc(v,0)],
+    ["Miglior seduta","miglior_pct",v=>pcs(v)],["Peggior seduta","peggior_pct",v=>pcs(v)]];
+  h += `<div class="grid2">${tabella([{t:"Su "+W+" sedute"},...nomi.map(n=>({t:n==="VITA 5M"?"VITA 5M":n.replace(" TR (CHF)",""),n:1}))],
+    M.map(([lab,k,fmt])=>`<tr><td>${lab}</td>${nomi.map(n=>{const v=f[n][k];return td(v==null?"—":fmt(v));}).join("")}</tr>`),
+    "Sharpe su finestre brevi: indicativo, tasso privo di rischio CHF a zero. VaR parametrico 1,645 σ.","rep")}
+    ${pannello("Contributo alla performance · "+W+" sedute","Peso corrente × rendimento della linea in CHF, punti percentuali.","contrib")}</div>`;
+  // per asset: rendimenti, contributi, medie mobili
+  const MM = T.medie_mobili;
+  h += tabella([{t:"ETF"},...(qOggi?[{t:"Oggi",n:1}]:[]),...FINS.map(k=>({t:k+"s",n:1})),{t:"Contrib. "+W+"s",n:1},{t:"Vol "+W+"s",n:1},
+      {t:"vs SMA50",n:1},{t:"vs SMA200",n:1},{t:"da max 52s",n:1},{t:"Trend"}],
+    d.linee.map(l=>{const t=l.ticker, m=MM[t], o=oggi[t];
+      return `<tr><td>${t} <span class="note">${m.valuta}</span></td>
+      ${qOggi?`<td class="num ${o?cls(o.var_chf_pct):""}">${o?pcs(o.var_chf_pct):"—"}</td>`:""}
+      ${FINS.map(k=>{const v=F[k].asset[t].rend_pct;return `<td class="num ${cls(v)} ${+k===W?"sel":""}">${pcs(v)}</td>`;}).join("")}
+      <td class="num ${cls(f.asset[t].contrib_pp)}">${(f.asset[t].contrib_pp>0?"+":"")+nf(f.asset[t].contrib_pp,2)} pp</td>${td(pc(f.asset[t].vol_pct,1))}
+      <td class="num ${cls(m.dist_sma50_pct)}">${pcs(m.dist_sma50_pct,1)}</td><td class="num ${cls(m.dist_sma200_pct)}"><b>${pcs(m.dist_sma200_pct,1)}</b></td>
+      ${td(pc(m.dist_max52s_pct,1))}<td>${stato(m.trend==="rialzista"?"OK":(m.trend==="ribassista"?"ALLERTA":"MISTO")).replace(/>[^<]+</,">"+m.trend+"<")}</td></tr>`;}).join("")+
+    ["VITA 5M (pesi correnti)",...BN].map(n=>{const m=MM[n];
+      return `<tr><td>${n}</td>${qOggi?"<td></td>":""}${FINS.map(()=>"<td></td>").join("")}<td></td><td></td>
+      <td class="num ${cls(m.dist_sma50_pct)}">${pcs(m.dist_sma50_pct,1)}</td><td class="num ${cls(m.dist_sma200_pct)}"><b>${pcs(m.dist_sma200_pct,1)}</b></td>
+      ${td(pc(m.dist_max52s_pct,1))}<td>${stato(m.trend==="rialzista"?"OK":(m.trend==="ribassista"?"ALLERTA":"MISTO")).replace(/>[^<]+</,">"+m.trend+"<")}</td></tr>`;}).join(""),
+    "s = sedute. SMA50/SMA200: distanza dell'ultima chiusura dalle medie mobili a 50 e 200 sedute. Trend rialzista: prezzo e SMA50 sopra la SMA200.","rep wide");
+  box.innerHTML = h;
+  barChart(document.getElementById("contrib"), d.linee.map(l=>[l.ticker, f.asset[l.ticker].contrib_pp]).concat([["Totale", f["VITA 5M"].rend_pct]]), {valori:true, vd:2});
+  box.querySelectorAll("#finbtn button").forEach(b=>b.addEventListener("click",()=>renderTrading(d, +b.dataset.w)));
 }

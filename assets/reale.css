@@ -23,3 +23,5 @@ table.rep td:first-child{font-weight:600}
 @media print{.mast{-webkit-print-color-adjust:exact;print-color-adjust:exact}.navlinks{display:none}}
 .colonne .scroll table,.grid2 .scroll table{min-width:0}
 .scroll table.rep.wide{min-width:980px}
+
+td.sel{background:rgba(42,120,214,.08);font-weight:600}

@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-23T16:52:08+00:00",
+ "generated": "2026-11-23T16:53:21+00:00",
  "portfolios": [
   {
    "portfolio": "vita5m",
@@ -34,7 +34,7 @@
     "rolling12_max_pct": 33.4,
     "rolling12_positive_pct": 100.0,
     "rolling12_n": 20,
-    "nav_last": 4016842.0
+    "nav_last": 4017012.0
    },
    "google_portfolio_id": "560ad9f3-5549-45cb-bbc3-29aa06774c03",
    "source": "Google Finance",
@@ -51,7 +51,7 @@
    "asof": "2026-11-23",
    "capitale_iniziale": 2941735.0,
    "metrics": {
-    "perf_total_pct": 36.69,
+    "perf_total_pct": 36.7,
     "cagr_pct": 12.96,
     "vol_ann_pct": 16.05,
     "sharpe": 0.83,
@@ -76,7 +76,7 @@
     "rolling12_max_pct": 31.2,
     "rolling12_positive_pct": 100.0,
     "rolling12_n": 20,
-    "nav_last": 4021067.0
+    "nav_last": 4021296.0
    },
    "google_portfolio_id": "3269abc3-92a4-4fe8-9d06-6d69ce57e051",
    "source": "Google Finance",
@@ -93,7 +93,7 @@
    "asof": "2026-11-23",
    "capitale_iniziale": 1000000.0,
    "metrics": {
-    "perf_total_pct": 91.97,
+    "perf_total_pct": 91.98,
     "cagr_pct": 21.05,
     "vol_ann_pct": 14.17,
     "sharpe": 1.4,
@@ -118,7 +118,7 @@
     "rolling12_max_pct": 45.2,
     "rolling12_positive_pct": 100.0,
     "rolling12_n": 30,
-    "nav_last": 1919736.0
+    "nav_last": 1919842.0
    },
    "google_portfolio_id": null,
    "source": "Quantistik",

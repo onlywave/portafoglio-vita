@@ -4,7 +4,7 @@
  "base_currency": "CHF",
  "inception": "2026-11-23",
  "asof": "2026-11-23",
- "generato": "2026-11-23T16:52:11+00:00",
+ "generato": "2026-11-23T16:53:23+00:00",
  "nota_privacy": "Nessun importo e nessuna quantità reale: ogni acquisto è espresso come quota del programma (costo in CHF diviso il capitale del programma). Rendimenti, pesi e rischio non cambiano; gli importi assoluti non sono ricostruibili.",
  "programma_investito_pct": 31.25,
  "tranches": [
@@ -38,7 +38,7 @@
   },
   "relativo": {},
   "bench_pct": {
-   "S&P 500 TR (CHF)": -0.0,
+   "S&P 500 TR (CHF)": 0.0,
    "MSCI World TR (CHF)": 0.0
   },
   "serie": {
@@ -126,7 +126,7 @@
      "a": "2026-11-23",
      "portafoglio_pct": -9.94,
      "S&P 500 TR (CHF)": -0.23,
-     "MSCI World TR (CHF)": -1.46
+     "MSCI World TR (CHF)": -1.47
     }
    ]
   },
@@ -136,7 +136,7 @@
    "cagr_pct": 16.9,
    "vol_pct": 15.12,
    "max_dd_pct": -16.71,
-   "dd_corrente_pct": -12.02,
+   "dd_corrente_pct": -12.03,
    "var95_1d_pct": 1.4,
    "cvar95_1d_pct": 2.31,
    "peggior_giorno_pct": -6.05,
@@ -196,7 +196,7 @@
      "a": "2026-11-23",
      "portafoglio_pct": -9.66,
      "S&P 500 TR (CHF)": -0.23,
-     "MSCI World TR (CHF)": -1.46
+     "MSCI World TR (CHF)": -1.47
     }
    ]
   },
@@ -220,11 +220,11 @@
    },
    "MSCI World TR (CHF)": {
     "n": 766,
-    "rend_pct": 52.87,
+    "rend_pct": 52.86,
     "cagr_pct": 14.98,
     "vol_pct": 15.95,
     "max_dd_pct": -22.57,
-    "dd_corrente_pct": -5.76,
+    "dd_corrente_pct": -5.77,
     "var95_1d_pct": 1.42,
     "cvar95_1d_pct": 2.32,
     "peggior_giorno_pct": -7.12,
@@ -3311,7 +3311,7 @@
     153.96,
     154.05,
     149.44,
-    152.87
+    152.86
    ]
   },
   "correlazioni": {
@@ -3479,7 +3479,7 @@
    "scostamento_pp": 0.47,
    "rend_dal_carico_pct": -0.15,
    "contributo_pp": -0.01,
-   "rend_3a_ann_pct": 25.64,
+   "rend_3a_ann_pct": 25.63,
    "vol_3a_pct": 22.3,
    "contrib_rischio_corr_pct": 6.8,
    "contrib_rischio_tgt_pct": 6.2
@@ -3534,9 +3534,9 @@
   {
    "controllo": "Volatilità ex ante (pesi correnti)",
    "valore": 15.38,
-   "soglia": 15.0,
+   "soglia": 18.0,
    "unita": "%",
-   "stato": "ALLERTA"
+   "stato": "OK"
   }
  ],
  "riconciliazione": [

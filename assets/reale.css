@@ -1,0 +1,25 @@
+/* report VITA 5M reale: impaginazione da research di banca d'affari */
+.mast{background:#0f2747;color:#fff;border-radius:10px;padding:16px 18px 14px;margin-bottom:14px}
+.mast .lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.75}
+.mast h1{font-size:26px;margin:4px 0 2px;letter-spacing:-.01em;color:#fff}
+.mast .meta{font-size:12.5px;opacity:.85}
+.mast .pill{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#e6edf7}
+.mast .navlinks a{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18);color:#e6edf7}
+.mast .navlinks a.qui{background:#fff;color:#0f2747;border-color:#fff}
+.sez{display:flex;align-items:baseline;gap:10px;margin:30px 0 8px;border-bottom:2px solid var(--ink);padding-bottom:4px}
+.sez .num{font-size:12px;font-weight:700;color:var(--s1);letter-spacing:.08em}
+.sez h2{margin:0;font-size:18px}
+.sez .meta{margin-left:auto;font-size:12px;color:var(--muted)}
+.tesi{font-size:14px;line-height:1.6;color:var(--ink2);background:var(--surface);border:1px solid var(--border);
+      border-left:4px solid #0f2747;border-radius:0 9px 9px 0;padding:11px 14px;margin:4px 0 12px}
+.tesi b{color:var(--ink)}
+.st{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;border-radius:5px;padding:2px 7px}
+.st.ok{background:rgba(10,122,41,.13);color:var(--good)}
+.st.al{background:rgba(217,58,56,.14);color:var(--neg)}
+.st.wa{background:rgba(184,134,11,.16);color:var(--warn)}
+.st.nd{background:var(--surface2);color:var(--muted)}
+table.rep td:first-child{font-weight:600}
+.colonne{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+@media print{.mast{-webkit-print-color-adjust:exact;print-color-adjust:exact}.navlinks{display:none}}
+.colonne .scroll table,.grid2 .scroll table{min-width:0}
+.scroll table.rep.wide{min-width:980px}

@@ -6,6 +6,7 @@ Cruscotto quantitativo di tre portafogli reali: **VITA 5M**, **VITA 5M-C40** ed 
 
 | | |
 |---|---|
+| **VITA 5M — investimento reale** (dal 23/11/2026, benchmark S&P 500 e MSCI World, rischio, costi, riconciliazione) | https://onlywave.github.io/portafoglio-vita/vita5m-reale.html |
 | Cruscotto completo e confronto a tre | https://onlywave.github.io/portafoglio-vita/ |
 | VITA 5M — indice base 100, periodo a scelta | https://onlywave.github.io/portafoglio-vita/vita5m.html |
 | VITA 5M-C40 — indice base 100, periodo a scelta | https://onlywave.github.io/portafoglio-vita/vita5m-c40.html |
@@ -47,6 +48,25 @@ ricostruito da dati EOD pubblici a quantità invariate.
 | Prezzi, cambi, NAV, serie giornaliere, tutte le metriche, confronto a tre | automatico, `aggiorna-dati` alle 20:30 UTC nei giorni feriali |
 | Quantità, prezzi di carico, elenco strumenti | manuale, modificando `portafogli/*.json` — solo se cambia la composizione |
 | Nuovo ribilanciamento di EMANUELE ETF | manuale: riesportare `/downloads/export-movements/175788332` e appendere gli eseguiti nuovi a `movements` |
+
+## VITA 5M — investimento reale
+
+Report di monitoraggio dell'investimento effettivo, separato dalle simulazioni: `reale.py`
+legge `reale/vita5m_reale.json` e scrive `data/vita5m_reale.json`, letto da
+`vita5m-reale.html` (`assets/reale.js`, `assets/reale.css`). Non usa `portafogli/`, quindi
+non tocca `genera.py` né le pagine esistenti.
+
+- **Nessun importo pubblico**: ogni acquisto è una *quota del programma* (costo in CHF /
+  capitale del programma). Rendimenti, pesi e rischio restano esatti; gli importi no.
+- **Rendimento ponderato nel tempo** dalla chiusura del giorno di inception, con il giorno
+  d'esecuzione (prezzo e cambio eseguiti → chiusura) mostrato a parte.
+- **Benchmark in CHF**: S&P 500 TR (CSPX.L) e MSCI World TR (IWDA.L).
+- **Rischio ex ante** su 3 anni sui pesi correnti e obiettivo: volatilità, VaR/CVaR,
+  drawdown, beta, tracking error, contributi di Euler, correlazioni, stress.
+- **Costi**: TER ponderato e costi di negoziazione per tranche (stima finché non arriva la contabile).
+- **Riconciliazione**: stato per voce; si aggiorna dopo il confronto con l'e-banking.
+- Nuova tranche: aggiungere gli acquisti a `acquisti` (rif., data, ticker, prezzo medio,
+  cambio d'esecuzione, quota) e aggiornare `tranches`, `costi_tranche`, `riconciliazione`.
 
 ## Il confronto a tre
 

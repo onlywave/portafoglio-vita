@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VITA 5M · Investimento reale — report di monitoraggio</title>
+<meta name="description" content="Report giornaliero dell'investimento reale VITA 5M: rendimento contro S&P 500 e MSCI World, rischio, costi, riconciliazione.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="assets/stile.css?v=ea2dd3a1a5">
+<link rel="stylesheet" href="assets/reale.css?v=b6dd549e5a">
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="lbl">Egonon · Monitoraggio portafoglio · Report giornaliero</div>
+    <h1>VITA 5M · Investimento reale</h1>
+    <div class="meta" id="meta">—</div>
+    <div style="margin-top:8px">
+      <span class="pill">Solo grandezze relative · nessun importo</span>
+      <span class="pill">Benchmark: S&amp;P 500 e MSCI World in CHF</span>
+      <span class="pill">Aggiornamento automatico a ogni chiusura</span>
+    </div>
+    <div class="navlinks">
+      <a href="vita5m-reale.html" class="qui">VITA 5M reale</a>
+      <a href="./">Cruscotto simulazioni</a>
+      <a href="vita5m.html">VITA 5M simulato — base 100</a>
+    </div>
+  </header>
+  <div id="app"><p class="note">Caricamento…</p></div>
+  <p class="foot" id="piede"></p>
+</div>
+<script src="assets/grafici.js?v=80e3233ef8"></script>
+<script src="assets/reale.js?v=06e07fce8c"></script>
+<script>
+avviaReale().catch(e=>{
+  document.getElementById("app").innerHTML =
+    '<div class="flag"><b>Errore nel caricamento dei dati.</b> '+e+'</div>';
+});
+</script>
+</body>
+</html>

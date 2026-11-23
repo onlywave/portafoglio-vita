@@ -1,0 +1,206 @@
+{
+ "portfolio": "vita5m_reale",
+ "label": "VITA 5M · investimento reale",
+ "base_currency": "CHF",
+ "inception": "2026-11-23",
+ "nota_privacy": "Nessun importo e nessuna quantità reale: ogni acquisto è espresso come quota del programma (costo in CHF diviso il capitale del programma). Rendimenti, pesi e rischio non cambiano; gli importi assoluti non sono ricostruibili.",
+ "lines": [
+  {
+   "ticker": "WORLD",
+   "name": "UBS Core MSCI World hCHF",
+   "isin": "IE000N6LBS91",
+   "ccy": "CHF",
+   "yf": [
+    "WORLD.SW"
+   ],
+   "target": 0.25,
+   "group": "Sviluppati CHF-hedged",
+   "ter_pct": 0.09
+  },
+  {
+   "ticker": "IWMO",
+   "name": "iShares MSCI World Momentum",
+   "isin": "IE00BP3QZ825",
+   "ccy": "USD",
+   "yf": [
+    "IWMO.SW",
+    "IWMO.L"
+   ],
+   "target": 0.25,
+   "group": "Momentum sviluppati",
+   "ter_pct": 0.25
+  },
+  {
+   "ticker": "EIMI",
+   "name": "iShares Core MSCI EM IMI",
+   "isin": "IE00BKM4GZ66",
+   "ccy": "USD",
+   "yf": [
+    "EIMI.SW",
+    "EIMI.L"
+   ],
+   "target": 0.2,
+   "group": "Emergenti",
+   "ter_pct": 0.18
+  },
+  {
+   "ticker": "ZGLD",
+   "name": "Swisscanto Gold ETF",
+   "isin": "CH0139101593",
+   "ccy": "CHF",
+   "yf": [
+    "ZGLD.SW"
+   ],
+   "target": 0.2,
+   "group": "Oro fisico CHF",
+   "ter_pct": 0.4
+  },
+  {
+   "ticker": "FWRA",
+   "name": "Invesco FTSE All-World",
+   "isin": "IE000716YHJ7",
+   "ccy": "CHF",
+   "yf": [
+    "FWRA.SW"
+   ],
+   "target": 0.05,
+   "group": "Mondo intero",
+   "ter_pct": 0.15
+  },
+  {
+   "ticker": "EMVL",
+   "name": "iShares MSCI EM Value",
+   "isin": "IE00BG0SKF03",
+   "ccy": "USD",
+   "yf": [
+    "EMVL.L"
+   ],
+   "target": 0.05,
+   "group": "Emergenti value",
+   "ter_pct": 0.4
+  }
+ ],
+ "soglie": {
+  "drawdown_pct": -5.0,
+  "vol20_pct": 15.0,
+  "scostamento_pp": 2.0,
+  "oro_max_pct": 20.0
+ },
+ "tranches": [
+  {
+   "id": "T1",
+   "data": "2026-11-23",
+   "stato": "eseguita",
+   "nota": "5 linee su 6; FWRA non eseguito"
+  },
+  {
+   "id": "T2",
+   "data": "2026-11-24",
+   "stato": "prevista",
+   "nota": "porta l'investito a 2/3 del programma ai pesi target"
+  },
+  {
+   "id": "T3",
+   "data": null,
+   "stato": "prevista",
+   "nota": "completa il programma"
+  }
+ ],
+ "acquisti": [
+  {
+   "rif": "T1-01",
+   "data": "2026-11-23",
+   "ticker": "WORLD",
+   "prezzo": 3.5356,
+   "fx_chf": 1,
+   "quota": 0.0824466564,
+   "stato": "Conteggiato (portale); contabile da verificare"
+  },
+  {
+   "rif": "T1-02",
+   "data": "2026-11-23",
+   "ticker": "IWMO",
+   "prezzo": 95.2802,
+   "fx_chf": 0.84555,
+   "quota": 0.0810744129,
+   "stato": "Conteggiato (portale); contabile da verificare"
+  },
+  {
+   "rif": "T1-03",
+   "data": "2026-11-23",
+   "ticker": "EIMI",
+   "prezzo": 47.60205456,
+   "fx_chf": 0.84555,
+   "quota": 0.0693506074,
+   "stato": "Conteggiato (portale); contabile da verificare"
+  },
+  {
+   "rif": "T1-04",
+   "data": "2026-11-23",
+   "ticker": "ZGLD",
+   "prezzo": 905.7708,
+   "fx_chf": 1,
+   "quota": 0.0621962616,
+   "stato": "Conteggiato (portale); contabile da verificare"
+  },
+  {
+   "rif": "T1-06",
+   "data": "2026-11-23",
+   "ticker": "EMVL",
+   "prezzo": 87.54,
+   "fx_chf": 0.84555,
+   "quota": 0.01739457,
+   "stato": "Conteggiato (portale); contabile da verificare"
+  }
+ ],
+ "costi_tranche": [
+  {
+   "tranche": "T1",
+   "data": "2026-11-23",
+   "fonte": "STIMA — da sostituire con le contabili",
+   "courtage_pct": 0.307,
+   "bollo_pct": 0.135,
+   "ricarico_cambio_pct": 0.451,
+   "spread_stimato_pct": 0.08,
+   "nota": "In % del controvalore investito nella tranche. Courtage da listino e-banking Raiffeisen 2026; bollo 0,15% ETF esteri / 0,075% ETF svizzeri; ricarico cambio contro ~0,8385 di mercato."
+  }
+ ],
+ "riconciliazione": [
+  {
+   "voce": "Quantità e prezzi T1 (5 acquisti, 14 fill)",
+   "fonte": "Registro ordini e-banking",
+   "stato": "OK",
+   "data": "2026-11-23"
+  },
+  {
+   "voce": "Contabili titoli T1: sede effettiva, courtage, bollo, addebito netto",
+   "fonte": "PDF contabili e-banking",
+   "stato": "DA VERIFICARE",
+   "data": null
+  },
+  {
+   "voce": "Cambi T1-FX-01/02 e addebiti USD",
+   "fonte": "Registro ordini divise / estratto conto",
+   "stato": "PARZIALE",
+   "data": "2026-11-23"
+  },
+  {
+   "voce": "FWRA T1-05: annullamento",
+   "fonte": "Registro ordini e-banking",
+   "stato": "DA VERIFICARE",
+   "data": null
+  },
+  {
+   "voce": "Autorizzazione rialzi limiti EIMI/EMVL/FWRA",
+   "fonte": "Consulente / mandante",
+   "stato": "DA VERIFICARE",
+   "data": null
+  },
+  {
+   "voce": "Eseguiti T2 del 24.11.2026",
+   "fonte": "Registro ordini e-banking",
+   "stato": "IN ATTESA",
+   "data": null
+  }
+ ]
+}

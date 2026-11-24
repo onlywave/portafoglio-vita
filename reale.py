@@ -451,6 +451,19 @@ def main(out_dir: str) -> None:
 
     rl_stats = stats(rl) if len(rl) else {"n": 0}
     rel_live = {k: relativo(rl, rb[k]) for k in BENCH} if len(rl) >= 20 else {}
+    # --------------------------------------- segnale di copertura (copertura.py)
+    copertura = None
+    fc = Path(out_dir) / "vita5m_copertura.json"
+    if fc.exists():
+        try:
+            cj = json.loads(fc.read_text())
+            copertura = {"stato": cj["stato"], "regola": cj["regola"], "asof": cj["asof"]}
+            st = cj["stato"]
+            al("Segnale copertura EMA 10 mesi (azionario vs media stimata a fine mese)", st["dist_ema_stimata_pct"],
+               -cj["regola"]["banda_pct"], st["se_chiudesse_oggi"] in ("VENDITA", "RESTA COPERTO") or st["stato_regola"] == "COPERTO")
+        except Exception as e:  # noqa: BLE001
+            note.append(f"segnale di copertura non disponibile: {e}")
+
     out = {
         "portfolio": spec["portfolio"], "label": spec["label"], "base_currency": "CHF",
         "inception": spec["inception"], "asof": oggi.strftime("%Y-%m-%d"),
@@ -486,6 +499,7 @@ def main(out_dir: str) -> None:
                             "valuta di quotazione per gli ETF, in CHF per portafoglio e benchmark."},
         "costi": {"ter_corrente_pct": r2(ter_cor, 3), "ter_obiettivo_pct": r2(ter_tgt, 3), "tranche": costi},
         "allerte": allerte,
+        "copertura": copertura,
         "riconciliazione": spec.get("riconciliazione", []),
         "marche_banca": marche,
         "studi": {"nota": studi.get("nota", ""), "scenari": posizioni, "coni": coni,

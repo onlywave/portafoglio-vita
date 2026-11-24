@@ -97,3 +97,6 @@ td.sel{background:rgba(42,120,214,.08);font-weight:600}
 .hb-btn{margin-left:auto;background:#fff;color:#0f2747;border:0;border-radius:6px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:12.5px}
 .hb-btn:disabled{opacity:.6;cursor:wait}
 .hb-msg{flex-basis:100%;font-size:12px;color:#ffe08a}
+
+/* selettori di finestra (studio copertura) */
+.pill.on{background:var(--s1);border-color:var(--s1);color:#fff}

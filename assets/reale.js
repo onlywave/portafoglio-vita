@@ -41,6 +41,14 @@ async function avviaReale(){
     ${tab("TER ponderato", pc(C.ter_corrente_pct,3), "", "obiettivo "+pc(C.ter_obiettivo_pct,3)+" annuo")}
   </div>`;
 
+  // --------------------------------- 1a. segnale di copertura (media esponenziale 10 mesi)
+  if(d.copertura && d.copertura.stato && typeof cpBloccoStato==="function"){
+    const CS = d.copertura.stato;
+    h += sez("CP","Segnale di copertura · media esponenziale a 10 mesi",
+      `azionario VITA 5M ai pesi obiettivo · controllo a fine mese · dati al ${dIT(d.copertura.asof)}`);
+    h += cpBloccoStato(CS, d.copertura.regola, true);
+  }
+
   // ------------------------------------- 1b. obiettivo, studi, ancoraggio banca
   const OB = d.obiettivo, ST = d.studi, MB = d.marche_banca||[];
   if(OB && OB.benchmark){

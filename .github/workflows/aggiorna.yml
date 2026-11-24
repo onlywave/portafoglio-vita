@@ -30,6 +30,9 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Genera i dati
         run: python genera.py data
+      - name: Studio di copertura VITA 5M (media esponenziale 10 mesi)
+        continue-on-error: true
+        run: python copertura.py data
       - name: Report investimento reale VITA 5M
         run: python reale.py data
       - name: Rinfresca l'impronta degli asset nelle pagine

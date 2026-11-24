@@ -7,7 +7,7 @@
 <meta name="description" content="Report giornaliero dell'investimento reale VITA 5M: rendimento contro S&P 500 e MSCI World, rischio, costi, riconciliazione.">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="assets/stile.css?v=ea2dd3a1a5">
-<link rel="stylesheet" href="assets/reale.css?v=44cd9c47cc">
+<link rel="stylesheet" href="assets/reale.css?v=942a5ac4c9">
 </head>
 <body>
 <div class="wrap">
@@ -22,6 +22,7 @@
     </div>
     <div class="navlinks">
       <a href="vita5m-reale.html" class="qui">VITA 5M reale</a>
+      <a href="vita5m-copertura.html">Studio copertura</a>
       <a href="./">Cruscotto simulazioni</a>
       <a href="vita5m.html">VITA 5M simulato — base 100</a>
     </div>
@@ -30,7 +31,8 @@
   <p class="foot" id="piede"></p>
 </div>
 <script src="assets/grafici.js?v=80e3233ef8"></script>
-<script src="assets/reale.js?v=bdcd4d2c36"></script>
+<script src="assets/copertura.js?v=99fac983b2"></script>
+<script src="assets/reale.js?v=f3a241b1e7"></script>
 <script>
 avviaReale().catch(e=>{
   document.getElementById("app").innerHTML =

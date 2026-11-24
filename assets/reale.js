@@ -200,8 +200,10 @@ async function avviaReale(){
   heatmap(document.getElementById("corr"), X.correlazioni.labels, X.correlazioni.matrix);
   renderHero(d);
   renderTrading(d, 5);
+  DAILY = d;
   caricaIntraday(d);
-  setInterval(()=>caricaIntraday(d), 5*60*1000);
+  setInterval(()=>{ if(Date.now() >= PROSSIMA) caricaIntraday(d); }, 5000);
+  setInterval(tickBarra, 1000);
 }
 
 /* ------------------------------------------------------------------ intraday */
@@ -241,9 +243,16 @@ function curvaIntraday(host, P){
   host.innerHTML = legenda(nomi.map((k,j)=>({name:k,color:col[j%3]}))) +
     `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="percorso intraday">${g}</svg>`;
 }
-async function caricaIntraday(daily){
+async function caricaIntraday(daily, manuale){
   const box=document.getElementById("intra"); if(!box) return;
+  STATO_LETTURA = "in corso"; tickBarra();
   const q=await leggiIntraday();
+  N_LETTURE++; ULTIMA_LETTURA = Date.now(); PROSSIMA = ULTIMA_LETTURA + POLL_MS;
+  const nuovo = q && (!INTRA || q.aggiornato !== INTRA.aggiornato);
+  if(nuovo) N_NUOVI++;
+  STATO_LETTURA = !q ? "errore" : (nuovo ? "nuovi prezzi" : "nessun prezzo nuovo");
+  if(manuale && q && !nuovo) MSG_BTN = `Nessun prezzo nuovo: il server li pubblica ogni 15 minuti, i prossimi verso le ${prossimoSlot()}.`;
+  else if(manuale && nuovo) MSG_BTN = "Prezzi aggiornati.";
   if(!q){ box.innerHTML = sez("00","Oggi, in tempo quasi reale") +
     `<div class="flag"><b>Quotazione intraday non ancora disponibile.</b> Si aggiorna ogni 15 minuti nei giorni di borsa.</div>`; return; }
   const B=q.benchmark||{}, bs=B[BN[0]], bw=B[BN[1]];
@@ -263,7 +272,7 @@ async function caricaIntraday(daily){
         <td class="num ${cls(l.var_locale_pct)}">${pcs(l.var_locale_pct)}</td><td class="num ${cls(l.var_chf_pct)}">${pcs(l.var_chf_pct)}</td>
         ${td((l.contributo_pp>0?"+":"")+nf(l.contributo_pp,2)+" pp")}</tr>`), q.nota, "rep")}</div>`;
   curvaIntraday(document.getElementById("curvaintra"), q.percorso);
-  INTRA = q; renderTrading(daily, FIN_SEL); renderHero(daily);
+  INTRA = q; renderTrading(daily, FIN_SEL); renderHero(daily); tickBarra();
 }
 
 /* ------------------------------------------------- cruscotto sala trading */
@@ -369,6 +378,7 @@ function renderHero(d){
   const vv = k => [ val(k,"VITA 5M"), val(k,BN[0]), val(k,BN[1]) ];
   let h = `<section class="hx">
     <div class="hx-top hx-qa">
+      <div class="hx-bar" id="hxbar"></div>
       ${capBox}
       <div class="qa-grid">
         ${card("1 · Quanto ho investito?", cap?chf(cq*cap):pc(cq*100,2)+" del programma", "",
@@ -429,3 +439,49 @@ const MB_ULT = d => (d.marche_banca||[]).at(-1);
 const INTRA_VALIDA = (q, d) => !!(q && q.giorno > d.asof);
 /* freschezza: quanti minuti fa e' stato generato il dato mostrato */
 const MINUTI_FA = iso => Math.round((Date.now() - new Date(iso).getTime())/60000);
+
+/* ------------------------------------------- barra di stato: ritardo, contatore, timer */
+const POLL_MS = 2*60*1000;          // la pagina controlla il server ogni 2 minuti
+let DAILY = null, N_LETTURE = 0, N_NUOVI = 0, ULTIMA_LETTURA = null, PROSSIMA = 0, STATO_LETTURA = "", MSG_BTN = "";
+const SLOT = [4,19,34,49];          // minuti del job intraday (ora UTC/locale indifferente: minuti)
+function prossimoSlot(){
+  const t = new Date(); t.setSeconds(0,0);
+  for(let i=0;i<60;i++){ t.setMinutes(t.getMinutes()+1); if(SLOT.includes(t.getMinutes())) break; }
+  t.setMinutes(t.getMinutes()+2);   // il job impiega ~1-2 minuti
+  return t.toLocaleTimeString("it-CH",{hour:"2-digit",minute:"2-digit"});
+}
+// ora di Zurigo "HH:MM" del giorno g -> istante assoluto
+function zurigo(g, hhmm){
+  const [Y,M,D] = g.split("-").map(Number), [h,m] = hhmm.split(":").map(Number);
+  const guess = Date.UTC(Y,M-1,D,h,m);
+  const f = new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/Zurich",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(new Date(guess));
+  const [fh,fm] = f.split(":").map(Number);
+  return guess - (((fh*60+fm) - (h*60+m) + 1440) % 1440)*60000;
+}
+const durata = ms => { const s=Math.max(0,Math.round(ms/1000)); const h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60;
+  return h ? `${h} h ${String(m).padStart(2,"0")} min` : (m ? `${m} min ${String(x).padStart(2,"0")} s` : `${x} s`); };
+function borsaAperta(){
+  const f = new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/Zurich",weekday:"short",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date());
+  const w=f.find(x=>x.type==="weekday").value, h=+f.find(x=>x.type==="hour").value, m=+f.find(x=>x.type==="minute").value, t=h*60+m;
+  if(w==="Sat"||w==="Sun") return "chiusa";
+  return (t>=9*60 && t<17*60+30) ? "aperta" : (t>=17*60+30 && t<22*60 ? "solo USA" : "chiusa");
+}
+function tickBarra(){
+  const el = document.getElementById("hxbar"); if(!el || !DAILY) return;
+  const q = INTRA_VALIDA(INTRA, DAILY) ? INTRA : null, now = Date.now(), b = borsaAperta();
+  let ritardo = null, ora = "—";
+  if(q){ const t = zurigo(q.giorno, q.ultimo_prezzo); ritardo = now - t; ora = q.ultimo_prezzo; }
+  const lvl = !q ? "nd" : (b!=="aperta" ? "chiusa" : (ritardo < 25*60000 ? "ok" : (ritardo < 45*60000 ? "wa" : "al")));
+  const testoStato = {ok:"Quasi tempo reale", wa:"Ritardo elevato", al:"Dato non aggiornato", chiusa: b==="solo USA" ? "Borse europee chiuse · USA aperte" : "Borse chiuse", nd:"Chiusura ufficiale"}[lvl];
+  el.innerHTML = `<span class="hb-dot hb-${lvl}"></span><b>${testoStato}</b>
+    <span class="hb-i">Prezzi delle <b>${q?ora:"chiusura del "+dIT(DAILY.asof)}</b></span>
+    <span class="hb-i">Ritardo sul tempo reale <b>${q?durata(ritardo):"—"}</b>${q&&b==="aperta"?' <span class="hb-n">(Yahoo ~15-20 min + pubblicazione ogni 15 min)</span>':""}</span>
+    <span class="hb-i">Ultima lettura <b>${ULTIMA_LETTURA?durata(now-ULTIMA_LETTURA)+" fa":"—"}</b> <span class="hb-n">${STATO_LETTURA}</span></span>
+    <span class="hb-i">Prossimo controllo tra <b>${PROSSIMA?durata(PROSSIMA-now):"—"}</b></span>
+    <span class="hb-i">Nuovi prezzi dal server verso le <b>${prossimoSlot()}</b></span>
+    <span class="hb-i">Letture <b>${N_LETTURE}</b> · aggiornamenti ricevuti <b>${N_NUOVI}</b></span>
+    <button id="hbbtn" class="hb-btn"${STATO_LETTURA==="in corso"?" disabled":""}>⟳ Aggiorna prezzi ora</button>
+    ${MSG_BTN?`<span class="hb-msg">${MSG_BTN}</span>`:""}`;
+  const bt = document.getElementById("hbbtn");
+  if(bt) bt.onclick = () => { MSG_BTN = ""; caricaIntraday(DAILY, true); };
+}

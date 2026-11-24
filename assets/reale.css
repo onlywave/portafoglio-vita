@@ -84,3 +84,16 @@ td.sel{background:rgba(42,120,214,.08);font-weight:600}
 .qa-bt .no{background:rgba(239,107,105,.22);color:#ffb9b7;font-weight:700;padding:3px 8px;border-radius:5px}
 @media(max-width:980px){.qa-grid{grid-template-columns:1fr 1fr}.qa-big{grid-column:1/-1}}
 .qa-bt .pa{background:rgba(255,255,255,.14);color:#e6edf7;font-weight:700;padding:3px 8px;border-radius:5px}
+
+/* barra di stato */
+.hx-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;font-size:12.5px;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.14);
+  border-radius:8px;padding:8px 12px;margin-bottom:12px;font-variant-numeric:tabular-nums}
+.hx-bar b{font-weight:700}
+.hb-i{opacity:.92}.hb-n{opacity:.6;font-size:11px}
+.hb-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.hb-ok{background:#3fbb5c;box-shadow:0 0 0 3px rgba(63,187,92,.25);animation:hbp 2s infinite}
+.hb-wa{background:#e0b341}.hb-al{background:#ef6b69}.hb-chiusa,.hb-nd{background:#8fa3bf}
+@keyframes hbp{50%{box-shadow:0 0 0 6px rgba(63,187,92,0)}}
+.hb-btn{margin-left:auto;background:#fff;color:#0f2747;border:0;border-radius:6px;padding:6px 12px;font-weight:700;cursor:pointer;font-size:12.5px}
+.hb-btn:disabled{opacity:.6;cursor:wait}
+.hb-msg{flex-basis:100%;font-size:12px;color:#ffe08a}

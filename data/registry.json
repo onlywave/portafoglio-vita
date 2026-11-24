@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-24T12:08:55+00:00",
+ "generated": "2026-11-24T12:11:15+00:00",
  "portfolios": [
   {
    "portfolio": "vita5m",
@@ -9,8 +9,8 @@
    "asof": "2026-11-24",
    "capitale_iniziale": 2955188.0,
    "metrics": {
-    "perf_total_pct": 33.69,
-    "cagr_pct": 11.97,
+    "perf_total_pct": 33.67,
+    "cagr_pct": 11.96,
     "vol_ann_pct": 16.56,
     "sharpe": 0.75,
     "sortino": 0.71,
@@ -34,7 +34,7 @@
     "rolling12_max_pct": 33.4,
     "rolling12_positive_pct": 100.0,
     "rolling12_n": 20,
-    "nav_last": 3950662.0
+    "nav_last": 3950247.0
    },
    "google_portfolio_id": "560ad9f3-5549-45cb-bbc3-29aa06774c03",
    "source": "Google Finance",
@@ -51,8 +51,8 @@
    "asof": "2026-11-24",
    "capitale_iniziale": 2941735.0,
    "metrics": {
-    "perf_total_pct": 34.58,
-    "cagr_pct": 12.26,
+    "perf_total_pct": 34.61,
+    "cagr_pct": 12.27,
     "vol_ann_pct": 16.09,
     "sharpe": 0.79,
     "sortino": 0.74,
@@ -67,7 +67,7 @@
     "months_positive_pct": 71.0,
     "best_month_pct": 7.95,
     "worst_month_pct": -6.54,
-    "var95_1m_hist_pct": 5.48,
+    "var95_1m_hist_pct": 5.47,
     "cvar95_1m_hist_pct": 6.33,
     "skew_monthly": -0.49,
     "kurtosis_monthly": -0.28,
@@ -76,7 +76,7 @@
     "rolling12_max_pct": 31.2,
     "rolling12_positive_pct": 100.0,
     "rolling12_n": 20,
-    "nav_last": 3959048.0
+    "nav_last": 3959863.0
    },
    "google_portfolio_id": "3269abc3-92a4-4fe8-9d06-6d69ce57e051",
    "source": "Google Finance",
@@ -93,7 +93,7 @@
    "asof": "2026-11-24",
    "capitale_iniziale": 1000000.0,
    "metrics": {
-    "perf_total_pct": 88.55,
+    "perf_total_pct": 88.51,
     "cagr_pct": 20.39,
     "vol_ann_pct": 14.14,
     "sharpe": 1.36,
@@ -110,15 +110,15 @@
     "best_month_pct": 8.61,
     "worst_month_pct": -7.33,
     "var95_1m_hist_pct": 4.55,
-    "cvar95_1m_hist_pct": 5.9,
+    "cvar95_1m_hist_pct": 5.91,
     "skew_monthly": -0.45,
-    "kurtosis_monthly": -0.08,
+    "kurtosis_monthly": -0.07,
     "rolling12_median_pct": 25.2,
     "rolling12_min_pct": 9.9,
     "rolling12_max_pct": 45.2,
     "rolling12_positive_pct": 100.0,
     "rolling12_n": 30,
-    "nav_last": 1885476.0
+    "nav_last": 1885120.0
    },
    "google_portfolio_id": null,
    "source": "Quantistik",

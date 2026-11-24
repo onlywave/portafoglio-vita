@@ -297,7 +297,7 @@ def main(out_dir: str) -> None:
     # rendimenti del portafoglio su finestre brevi: reali se le sedute bastano,
     # altrimenti pro forma a pesi correnti sulla storia in CHF
     finestre_brevi = {}
-    for W in (1, 3, 5, 21):
+    for W in (1, 3, 5, 21, 252):
         reale_ok = len(rl) >= W
         rp_w = rl.tail(W) if reale_ok else rp_cor.tail(W)
         blk = {"fonte": "reale" if reale_ok else "pro forma",
@@ -385,6 +385,7 @@ def main(out_dir: str) -> None:
         costo_m = sum(a["quota"] for a in acq if pd.Timestamp(a["data"]) <= dm)
         marche.append({"data": m["data"], "ora": m.get("ora"), "fonte": m.get("fonte"), "usdchf": m.get("usdchf"),
                        "rend_dal_costo_netto_pct": r2((val_b / costo_m - 1) * 100, 3) if costo_m else None,
+                       "liquidita_quota": m.get("liquidita_quota"),
                        "linee": righe_m, "nota": m.get("nota")})
     if marche:
         ult_m = marche[-1]
@@ -470,6 +471,9 @@ def main(out_dir: str) -> None:
                    "correlazioni": {"labels": tick, "matrix": [[r2(v) for v in row] for row in corr.values]}},
         "linee": righe,
         "finestre_brevi": finestre_brevi,
+        "capitale_chf": spec.get("capitale_programma_chf"),
+        "annuo_reale_pct": r2(((idx.iloc[-1] / 100) ** (TD / max(len(rl), 1)) - 1) * 100) if len(rl) >= 63 else None,
+        "annuo_bench_pct": {kb: r2(((bidx[kb].iloc[-1] / 100) ** (TD / max(len(rl), 1)) - 1) * 100) for kb in BENCH} if len(rl) >= 63 else None,
         "valore_quota": r2(float(val.sum()), 10), "costo_quota": r2(investito, 10),
         "trading": {"finestre": finestre, "medie_mobili": medie_mobili,
                     "nota": "Finestre in sedute di borsa. Finché l'investimento reale non ha abbastanza sedute, il portafoglio "

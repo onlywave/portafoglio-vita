@@ -3,7 +3,7 @@
  "label": "VITA 5M · investimento reale",
  "base_currency": "CHF",
  "inception": "2026-11-23",
- "nota_privacy": "Nessun importo e nessuna quantità reale: ogni acquisto è espresso come quota del programma (costo in CHF diviso il capitale del programma). Rendimenti, pesi e rischio non cambiano; gli importi assoluti non sono ricostruibili.",
+ "nota_privacy": "Importi in CHF calcolati dal capitale del programma (CHF 3.000.000) e dalle quote d'acquisto riconciliate con le contabili Raiffeisen. La pagina è raggiungibile da chiunque abbia il link.",
  "lines": [
   {
    "ticker": "WORLD",
@@ -239,7 +239,8 @@
     "EMVL": 87.68
    },
    "usdchf": 0.8393,
-   "nota": "Corsi esposti dalla banca in valuta di quotazione; USD/CHF implicito nel controvalore della banca."
+   "nota": "Corsi esposti dalla banca in valuta di quotazione; USD/CHF implicito nel controvalore della banca. Liquidità del programma = saldi dei conti di compensazione CHF e USD del deposito alla stessa ora.",
+   "liquidita_quota": 0.6871077684
   }
  ],
  "studi": {
@@ -275,5 +276,6 @@
    "S&P 500 TR (CHF)",
    "MSCI World TR (CHF)"
   ]
- }
+ },
+ "capitale_programma_chf": 3000000
 }

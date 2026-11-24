@@ -329,55 +329,75 @@ const chf = (v,d=0) => (v==null||!isFinite(v)) ? "—" : "CHF "+v.toLocaleString
 const chfs = v => (v==null||!isFinite(v)) ? "—" : (v>0?"+":v<0?"−":"")+chf(Math.abs(v));
 function renderHero(d){
   const box = document.getElementById("hero"); if(!box) return;
+  // link personale: #cap=3000000 salva il capitale in questo browser e sparisce dall'indirizzo
+  const m = (location.hash||"").match(/cap=(\d+)/);
+  if(m){ scriviCap(+m[1]); try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){} }
   const cap = leggiCap();
   const q = INTRA && INTRA.giorno > d.asof ? INTRA : null;
-  const fattOggi = q ? 1 + (q.var_oggi_pct||0)/100 : 1;
-  const vq = d.valore_quota * fattOggi, cq = d.costo_quota;
-  const rend = (vq/cq - 1)*100;
-  const FB = d.finestre_brevi || {};
-  const W = [["1","Oggi / ultima seduta"],["3","3 sedute"],["5","1 settimana"],["21","1 mese"]];
-  const big = cap ? chf(vq*cap) : pc(vq*100,2)+" del programma";
-  const linee = d.linee.filter(l=>l.costo_quota>0 || l.target_pct>0);
-  const fr = (v) => v==null ? "—" : pcs(v);
-  let h = `<div class="panel" style="padding:22px 24px;margin-bottom:18px">
-    <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-end;justify-content:space-between">
-      <div><div class="note" style="text-transform:uppercase;letter-spacing:.06em">Valore attuale del portafoglio titoli${q?" · stima intraday "+q.ultimo_prezzo:" · chiusura del "+dIT(d.asof)}</div>
-        <div style="font-size:46px;font-weight:700;line-height:1.1;margin-top:6px">${big}</div>
-        <div style="margin-top:6px;font-size:17px">Rendimento dall'acquisto <b class="${cls(rend)}">${pcs(rend)}</b>
-          ${cap?` · utile/perdita <b class="${cls(rend)}">${chfs((vq-cq)*cap)}</b>`:""}</div></div>
-      <div style="min-width:260px">
-        <div class="kv"><div>Prezzo d'acquisto totale (netto, bollo incluso)</div><div><b>${cap?chf(cq*cap):pc(cq*100,2)+" del programma"}</b></div>
-        <div>Investito sul programma</div><div>${pc(cq*100,1)}</div>
-        ${MB_ULT(d)?`<div>Verifica banca ${dIT(MB_ULT(d).data)} ${MB_ULT(d).ora}</div><div class="${cls(MB_ULT(d).rend_dal_costo_netto_pct)}">${pcs(MB_ULT(d).rend_dal_costo_netto_pct,2)} dal costo</div>`:""}</div>
-        <div style="margin-top:8px" class="note">${cap?`Importi calcolati sul capitale di ${chf(cap)}, salvato solo in questo browser. <a href="#" id="capreset">cambia</a>`:
-          `<label>Capitale del programma (CHF) <input id="capin" type="number" min="1" step="1000" style="width:120px"></label> <button id="capok">Mostra importi</button><br>Resta solo in questo browser: la pagina pubblica non contiene importi.`}</div>
-      </div></div>`;
-  // rendimenti per finestra: portafoglio e benchmark
-  h += `<table class="rep" style="margin-top:16px;width:100%"><thead><tr><th>Rendimento</th><th class="num">Dall'acquisto</th>${W.map(([k,t])=>`<th class="num">${t}</th>`).join("")}</tr></thead><tbody>
-    <tr><td><b>VITA 5M</b></td><td class="num ${cls(rend)}"><b>${pcs(rend)}</b></td>${W.map(([k])=>{const b=FB[k]||{};
-      return `<td class="num ${cls(b["VITA 5M"])}"><b>${fr(b["VITA 5M"])}</b>${b.fonte==="pro forma"?'<sup class="note">pf</sup>':""}</td>`;}).join("")}</tr>
-    ${BN.map(n=>`<tr><td>${n.replace(" TR (CHF)","")}</td><td class="num ${cls(d.live.bench_pct[n])}">${pcs(d.live.bench_pct[n])}</td>${W.map(([k])=>{const v=(FB[k]||{})[n];return `<td class="num ${cls(v)}">${fr(v)}</td>`;}).join("")}</tr>`).join("")}
-    <tr><td class="note">Extra vs MSCI World</td><td class="num note">${(()=>{const v=rend-d.live.bench_pct[BN[1]];return (v>0?"+":"")+nf(v,2)+" pp";})()}</td>${W.map(([k])=>{const b=FB[k]||{};const v=b["VITA 5M"]-b[BN[1]];return `<td class="num note ${cls(v)}">${isFinite(v)?(v>0?"+":"")+nf(v,2)+" pp":"—"}</td>`;}).join("")}</tr>
-    </tbody></table><p class="note" style="margin:4px 0 0">Dall'acquisto: VITA 5M dal carico netto (prezzo e cambio eseguiti, bollo incluso); benchmark total return in CHF dalla chiusura del ${dIT(d.inception)}. <sup>pf</sup> = pro forma a pesi correnti finché le sedute reali non coprono la finestra.</p>`;
-  // per linea
-  h += `<table class="rep" style="margin-top:14px;width:100%"><thead><tr><th>ETF</th><th class="num">Prezzo d'acquisto</th><th class="num">Valore attuale</th><th class="num">Utile/perdita</th><th class="num">Dall'acquisto</th>
-      ${W.map(([k,t])=>`<th class="num">${t}</th>`).join("")}<th class="num">Peso</th></tr></thead><tbody>
-    ${linee.map(l=>{const v=l.valore_quota*(q&&q.linee?(1+((q.linee.find(x=>x.ticker===l.ticker)||{}).var_chf_pct||0)/100):1), c=l.costo_quota;
-      const r=c?(v/c-1)*100:null;
-      return `<tr><td><b>${l.ticker}</b> <span class="note">${l.nome}</span></td>
-        ${td(c?(cap?chf(c*cap):pc(c*100,2)):"non acquistato")}${td(c?(cap?chf(v*cap):pc(v*100,2)):"—")}
-        <td class="num ${cls(r)}" style="white-space:nowrap">${c?(cap?chfs((v-c)*cap):"—"):"—"}</td><td class="num ${cls(r)}"><b>${r==null?"—":pcs(r)}</b></td>
-        ${W.map(([k])=>{const x=(l.var_pct||{})[k];return `<td class="num ${cls(x)}">${fr(x)}</td>`;}).join("")}${td(pc(l.peso_pct,1))}</tr>`;}).join("")}
-    <tr><td><b>Totale</b></td>${td("<b>"+(cap?chf(cq*cap):pc(cq*100,2))+"</b>")}${td("<b>"+(cap?chf(vq*cap):pc(vq*100,2))+"</b>")}
-      <td class="num ${cls(rend)}" style="white-space:nowrap"><b>${cap?chfs((vq-cq)*cap):"—"}</b></td><td class="num ${cls(rend)}"><b>${pcs(rend)}</b></td>${W.map(()=>"<td></td>").join("")}${td("100%")}</tr>
-    </tbody></table><p class="note" style="margin:4px 0 0">Prezzo d'acquisto = carico netto da contabile (bollo incluso), USD al cambio spot eseguito. Variazioni per linea in CHF (prezzo e cambio). Dall'acquisto per linea: include il giorno di esecuzione.</p>`;
-  h += `<div class="panel" style="margin-top:14px"><h4>VITA 5M contro S&amp;P 500 e MSCI World dall'acquisto</h4><p class="note">Base 100 alla chiusura del ${dIT(d.inception)}, in CHF.</p><div id="heroeq"></div></div></div>`;
+  const vq = d.valore_quota * (q ? 1 + (q.var_oggi_pct||0)/100 : 1), cq = d.costo_quota;
+  const rend = (vq/cq - 1)*100, FB = d.finestre_brevi || {};
+  const oggiV = q ? q.var_oggi_pct : (FB["1"]||{})["VITA 5M"];
+  const bOggi = n => q ? ((q.benchmark||{})[n]||{}).var_chf_pct : (FB["1"]||{})[n];
+  const W = [["oggi","Oggi"],["3","3 giorni"],["5","1 settimana"],["21","1 mese"]];
+  const val = (k,n) => k==="oggi" ? (n==="VITA 5M"?oggiV:bOggi(n)) : (FB[k]||{})[n];
+  const pf = k => k!=="oggi" && (FB[k]||{}).fonte==="pro forma";
+  const quando = q ? `stima intraday · ultimo prezzo ${q.ultimo_prezzo}` : `chiusura del ${dIT(d.asof)}`;
+  const kpi = (k,v,c="",n="") => `<div class="hx-k"><div class="hx-kl">${k}</div><div class="hx-kv ${c}">${v}</div>${n?`<div class="hx-kn">${n}</div>`:""}</div>`;
+  const twr = d.live.rend_twr_pct;  // stessa base dei benchmark: chiusura del giorno d'inception
+  const ex = n => twr - (d.live.bench_pct[n]||0);
+  const amm = v => cap ? chf(v*cap) : "—";
+  let h = `<section class="hx">
+    <div class="hx-top">
+      <div class="hx-main">
+        <div class="hx-lab">Valore attuale del portafoglio · VITA 5M</div>
+        ${cap ? `<div class="hx-big">${chf(vq*cap)}</div>`
+              : `<div class="hx-cap"><div class="hx-capt">Inserisci una volta il capitale del programma per vedere i valori in CHF</div>
+                  <input id="capin" type="number" min="1" step="1000" placeholder="3000000"> <button id="capok">Mostra in CHF</button></div>`}
+        <div class="hx-sub"><span class="hx-chip ${rend>=0?"pos":"neg"}">${pcs(rend)} dall'acquisto</span>
+          ${cap?`<span class="hx-chip ${rend>=0?"pos":"neg"}">${chfs((vq-cq)*cap)}</span>`:""}
+          <span class="hx-when">${quando}</span></div>
+      </div>
+      <div class="hx-grid">
+        ${kpi("Prezzo d'acquisto totale", cap?chf(cq*cap):pc(cq*100,2)+" progr.", "", "netto, bollo incluso")}
+        ${kpi("Utile / perdita", cap?chfs((vq-cq)*cap):"—", rend>=0?"pos":"neg", pcs(rend))}
+        ${kpi("Oggi", pcs(oggiV), (oggiV||0)>=0?"pos":"neg", q?"intraday":"ultima seduta")}
+        ${kpi("3 giorni", pcs(val("3","VITA 5M")), (val("3","VITA 5M")||0)>=0?"pos":"neg", pf("3")?"pro forma":"")}
+        ${kpi("1 settimana", pcs(val("5","VITA 5M")), (val("5","VITA 5M")||0)>=0?"pos":"neg", pf("5")?"pro forma":"")}
+        ${kpi("1 mese", pcs(val("21","VITA 5M")), (val("21","VITA 5M")||0)>=0?"pos":"neg", pf("21")?"pro forma":"")}
+        ${kpi("vs S&P 500", (ex(BN[0])>0?"+":"")+nf(ex(BN[0]),2)+" pp", ex(BN[0])>=0?"pos":"neg", "dal "+dIT(d.inception)+", stessa base")}
+        ${kpi("vs MSCI World", (ex(BN[1])>0?"+":"")+nf(ex(BN[1]),2)+" pp", ex(BN[1])>=0?"pos":"neg", "dal "+dIT(d.inception)+", stessa base")}
+      </div>
+    </div>
+    <div class="hx-body">
+      <table class="hx-t"><thead><tr><th>Confronto sulla stessa base</th><th>Dal ${dIT(d.inception)}</th>${W.map(([k,t])=>`<th>${t}</th>`).join("")}</tr></thead><tbody>
+        <tr class="hx-me"><td>VITA 5M</td><td class="${cls(twr)}">${pcs(twr)}</td>${W.map(([k])=>`<td class="${cls(val(k,"VITA 5M"))}">${pcs(val(k,"VITA 5M"))}${pf(k)?"<sup>pf</sup>":""}</td>`).join("")}</tr>
+        ${BN.map(n=>`<tr><td>${n.replace(" TR (CHF)","")}</td><td class="${cls(d.live.bench_pct[n])}">${pcs(d.live.bench_pct[n])}</td>${W.map(([k])=>`<td class="${cls(val(k,n))}">${pcs(val(k,n))}</td>`).join("")}</tr>`).join("")}
+        <tr><td>Extra vs S&amp;P 500</td><td class="${cls(ex(BN[0]))}">${(ex(BN[0])>0?"+":"")+nf(ex(BN[0]),2)} pp</td>${W.map(([k])=>{const v=val(k,"VITA 5M")-val(k,BN[0]);return `<td class="${cls(v)}">${isFinite(v)?(v>0?"+":"")+nf(v,2)+" pp":"—"}</td>`;}).join("")}</tr>
+        <tr><td>Extra vs MSCI World</td><td class="${cls(ex(BN[1]))}">${(ex(BN[1])>0?"+":"")+nf(ex(BN[1]),2)} pp</td>${W.map(([k])=>{const v=val(k,"VITA 5M")-val(k,BN[1]);return `<td class="${cls(v)}">${isFinite(v)?(v>0?"+":"")+nf(v,2)+" pp":"—"}</td>`;}).join("")}</tr>
+      </tbody></table>
+      <table class="hx-t hx-l"><thead><tr><th>ETF</th><th>Prezzo d'acquisto</th><th>Valore attuale</th><th>Utile / perdita</th><th>Dall'acquisto</th>${W.map(([k,t])=>`<th>${t}</th>`).join("")}<th>Peso</th></tr></thead><tbody>
+        ${d.linee.map(l=>{const ql=q&&q.linee?(q.linee.find(x=>x.ticker===l.ticker)||{}):{};
+          const v=l.valore_quota*(q?1+(ql.var_chf_pct||0)/100:1), c=l.costo_quota, r=c?(v/c-1)*100:null;
+          const vv=k=>k==="oggi"?(q?ql.var_chf_pct:(l.var_pct||{})["1"]):(l.var_pct||{})[k];
+          return `<tr><td><b>${l.ticker}</b><span>${l.nome}</span></td>
+            <td>${c?(cap?chf(c*cap):pc(c*100,2)):"non acquistato"}</td><td>${c?(cap?chf(v*cap):pc(v*100,2)):"—"}</td>
+            <td class="${cls(r)}">${c&&cap?chfs((v-c)*cap):"—"}</td><td class="${cls(r)}"><b>${r==null?"—":pcs(r)}</b></td>
+            ${W.map(([k])=>`<td class="${cls(vv(k))}">${pcs(vv(k))}</td>`).join("")}<td>${pc(l.peso_pct,1)}</td></tr>`;}).join("")}
+        <tr class="hx-tot"><td>Totale</td><td>${cap?chf(cq*cap):pc(cq*100,2)}</td><td>${cap?chf(vq*cap):pc(vq*100,2)}</td>
+          <td class="${cls(rend)}">${cap?chfs((vq-cq)*cap):"—"}</td><td class="${cls(rend)}">${pcs(rend)}</td>${W.map(([k])=>`<td class="${cls(val(k,"VITA 5M"))}">${pcs(val(k,"VITA 5M"))}</td>`).join("")}<td>100%</td></tr>
+      </tbody></table>
+      <div class="hx-chart"><div class="hx-ct">VITA 5M contro S&amp;P 500 e MSCI World <span>base 100 alla chiusura del ${dIT(d.inception)}, in CHF, stessa base per tutti</span></div><div id="heroeq"></div></div>
+      <div class="hx-foot">Prezzo d'acquisto = carico netto da contabile bancaria (bollo incluso), USD al cambio spot eseguito. «Dall'acquisto» (valore, utile/perdita, righe ETF) include il giorno di esecuzione (${pcs(d.live.giorno_esecuzione_pct)} da prezzo eseguito a chiusura); il confronto con i benchmark parte invece dalla chiusura del ${dIT(d.inception)}, unica base comune. Verifica col conto ${MB_ULT(d)?`del ${dIT(MB_ULT(d).data)} ore ${MB_ULT(d).ora}: <b>${pcs(MB_ULT(d).rend_dal_costo_netto_pct,2)}</b> dal costo ai prezzi della banca.`:"—"}
+        <sup>pf</sup> pro forma a pesi correnti finché le sedute reali non coprono la finestra. Benchmark total return in CHF.
+        ${cap?` Importi sul capitale di ${chf(cap)}, salvato solo in questo browser · <a href="#" id="capreset">cambia</a>`:""}</div>
+    </div></section>`;
   box.innerHTML = h;
   const S = d.live.serie, dt = S.date;
-  lineChart(document.getElementById("heroeq"), [["VITA 5M (TWR)","var(--s1)",2.6],[BN[0],"var(--s2)",1.8],[BN[1],"var(--s3)",1.8]]
-    .map(([k,c,w])=>({name:k.replace(" TR (CHF)",""), color:c, w, data: dt.map((x,i)=>[x,S[k][i]])})), {fmt:v=>nf(v,1), h:260});
+  lineChart(document.getElementById("heroeq"), [["VITA 5M (TWR)","var(--s1)",3],[BN[0],"var(--s2)",2],[BN[1],"var(--s3)",2]]
+    .map(([k,c,w])=>({name:k.replace(" TR (CHF)","").replace(" (TWR)",""), color:c, w, data: dt.map((x,i)=>[x,S[k][i]])})), {fmt:v=>nf(v,1), h:300});
   const ok = document.getElementById("capok");
-  if(ok) ok.addEventListener("click",()=>{ const v=+document.getElementById("capin").value; if(v>0){ scriviCap(v); renderHero(d);} });
+  if(ok){ const go=()=>{ const v=+document.getElementById("capin").value; if(v>0){ scriviCap(v); renderHero(d);} };
+    ok.addEventListener("click",go); document.getElementById("capin").addEventListener("keydown",e=>{ if(e.key==="Enter") go(); }); }
   const rs = document.getElementById("capreset");
   if(rs) rs.addEventListener("click",e=>{ e.preventDefault(); scriviCap(null); renderHero(d); });
 }

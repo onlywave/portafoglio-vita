@@ -93,7 +93,7 @@
    "id": "T1",
    "data": "2026-11-23",
    "stato": "eseguita",
-   "nota": "5 linee su 6; FWRA scaduto (0 quote). Riconciliata al centesimo sul conto reale il 24.11.2026"
+   "nota": "6 linee su 6. 23.11: 5 linee (FWRA scaduto). 24.11 completamento consulente: FWRA 6.801 a CHF 7,33 (14:13), IWMO +46 a USD 96,6525 (13:30), spot USD 1.000 a 0,8416; WORLD 249 non eseguito, annullamento in corso. Riconciliazione 23.11 al centesimo; completamento 24.11 da contabile"
   },
   {
    "id": "T2",
@@ -158,6 +158,26 @@
    "quota": 0.0174206637,
    "stato": "Contabile riconciliata con il conto reale (24.11.2026): addebito netto, bollo incluso",
    "prezzo_eseguito": 87.54
+  },
+  {
+   "rif": "T1-07",
+   "data": "2026-11-24",
+   "ticker": "FWRA",
+   "prezzo": 7.34099544,
+   "fx_chf": 1,
+   "quota": 0.0166420367,
+   "stato": "STIMA da registro ordini e-banking (24.11.2026 22:21): lordo eseguito + bollo 0,15% stimato; addebito netto da riconciliare con contabile",
+   "prezzo_eseguito": 7.33
+  },
+  {
+   "rif": "T1-08",
+   "data": "2026-11-24",
+   "ticker": "IWMO",
+   "prezzo": 96.7976087,
+   "fx_chf": 0.84466244,
+   "quota": 0.0012536733,
+   "stato": "STIMA da registro ordini e-banking (24.11.2026 22:21): lordo eseguito + bollo 0,15% stimato; addebito netto da riconciliare con contabile; USD finanziati con residuo T1 al cambio 0,84555 e spot T1-FX-03 USD 1.000 a 0,8416",
+   "prezzo_eseguito": 96.6525
   }
  ],
  "costi_tranche": [
@@ -218,6 +238,24 @@
    "fonte": "Consulente / mandante",
    "stato": "DA VERIFICARE",
    "data": null
+  },
+  {
+   "voce": "Completamento T1 24.11 (T1-07 FWRA 6.801, T1-08 IWMO 46, T1-FX-03 USD 1.000): quantità e prezzi",
+   "fonte": "Registro ordini titoli e divise e-banking",
+   "stato": "OK",
+   "data": "2026-11-24"
+  },
+  {
+   "voce": "Addebiti netti T1-07/T1-08/T1-FX-03 e saldi CHF/USD dopo completamento",
+   "fonte": "Contabili / estratti conti di compensazione",
+   "stato": "DA VERIFICARE",
+   "data": null
+  },
+  {
+   "voce": "WORLD 249 quote (lim. CHF 3,563): 0% eseguito, annullamento in corso",
+   "fonte": "Registro ordini e-banking",
+   "stato": "DA VERIFICARE",
+   "data": "2026-11-24"
   },
   {
    "voce": "Eseguiti T2",

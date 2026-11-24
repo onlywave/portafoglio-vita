@@ -288,7 +288,24 @@ def main(out_dir: str) -> None:
             "vol_3a_pct": r2(R[t].std(ddof=1) * math.sqrt(TD) * 100),
             "contrib_rischio_corr_pct": ex_cor["contributi_rischio_pct"][t],
             "contrib_rischio_tgt_pct": ex_tgt["contributi_rischio_pct"][t],
+            # frazioni del programma: la pagina le moltiplica per il capitale inserito
+            # dall'utente nel proprio browser; il JSON pubblico resta senza importi
+            "valore_quota": r2(val[t], 10), "costo_quota": r2(costo[t], 10),
+            "var_pct": {str(W): r2(((1 + R[t].tail(W)).prod() - 1) * 100) for W in (1, 3, 5, 21)},
         })
+
+    # rendimenti del portafoglio su finestre brevi: reali se le sedute bastano,
+    # altrimenti pro forma a pesi correnti sulla storia in CHF
+    finestre_brevi = {}
+    for W in (1, 3, 5, 21):
+        reale_ok = len(rl) >= W
+        rp_w = rl.tail(W) if reale_ok else rp_cor.tail(W)
+        blk = {"fonte": "reale" if reale_ok else "pro forma",
+               "da": rp_w.index[0].strftime("%Y-%m-%d"), "a": rp_w.index[-1].strftime("%Y-%m-%d"),
+               "VITA 5M": r2(((1 + rp_w).prod() - 1) * 100)}
+        for kb in BENCH:
+            blk[kb] = r2(((1 + B.pct_change()[kb].reindex(rp_w.index).fillna(0)).prod() - 1) * 100)
+        finestre_brevi[str(W)] = blk
 
     # ------------------------------------------------ cruscotto sala trading
     FIN = [3, 5, 7, 15, 30]
@@ -452,6 +469,8 @@ def main(out_dir: str) -> None:
                    "equity_3a": eq3,
                    "correlazioni": {"labels": tick, "matrix": [[r2(v) for v in row] for row in corr.values]}},
         "linee": righe,
+        "finestre_brevi": finestre_brevi,
+        "valore_quota": r2(float(val.sum()), 10), "costo_quota": r2(investito, 10),
         "trading": {"finestre": finestre, "medie_mobili": medie_mobili,
                     "nota": "Finestre in sedute di borsa. Finché l'investimento reale non ha abbastanza sedute, il portafoglio "
                             "è misurato a pesi correnti sui prezzi storici in CHF (pro forma). Medie mobili sul prezzo nella "

@@ -339,14 +339,18 @@ function renderHero(d){
   const oggiV = q ? q.var_oggi_pct : (FB["1"]||{})["VITA 5M"];
   const bOggi = n => q ? ((q.benchmark||{})[n]||{}).var_chf_pct : (FB["1"]||{})[n];
   const W = [["oggi","Oggi"],["3","3 giorni"],["5","1 settimana"],["21","1 mese"]];
-  const val = (k,n) => k==="oggi" ? (n==="VITA 5M"?oggiV:bOggi(n)) : (FB[k]||{})[n];
+  // durante la seduta le finestre chiuse ieri si compongono con la variazione di oggi
+  const conOggi = (x, n) => (x==null || !q) ? x : ((1+x/100)*(1+((n==="VITA 5M"?oggiV:bOggi(n))||0)/100)-1)*100;
+  const val = (k,n) => k==="oggi" ? (n==="VITA 5M"?oggiV:bOggi(n)) : conOggi((FB[k]||{})[n], n);
   const pf = k => k!=="oggi" && (FB[k]||{}).fonte==="pro forma";
   const mf = q ? MINUTI_FA(q.aggiornato) : null;
   const quando = q ? `prezzi delle ${q.ultimo_prezzo} (Yahoo, ritardo ~15-20 min) · letto ${mf} min fa${mf>45?' <b style="color:#ffcf6b">· dato non aggiornato</b>':""}`
                    : `chiusura del ${dIT(d.asof)}${INTRA&&INTRA.giorno===d.asof?" · borsa chiusa":""}`;
   const kpi = (k,v,c="",n="") => `<div class="hx-k"><div class="hx-kl">${k}</div><div class="hx-kv ${c}">${v}</div>${n?`<div class="hx-kn">${n}</div>`:""}</div>`;
-  const twr = d.live.rend_twr_pct;  // stessa base dei benchmark: chiusura del giorno d'inception
-  const ex = n => twr - (d.live.bench_pct[n]||0);
+  // stessa base dei benchmark: chiusura del giorno d'inception, piu' la seduta in corso
+  const twr = conOggi(d.live.rend_twr_pct, "VITA 5M");
+  const bDa = n => conOggi(d.live.bench_pct[n], n);
+  const ex = n => twr - (bDa(n)||0);
   const amm = v => cap ? chf(v*cap) : "—";
   const MBu = MB_ULT(d), liq = MBu && MBu.liquidita_quota != null ? MBu.liquidita_quota : null;
   const A = d.annuo_reale_pct, a12 = (FB["252"]||{});
@@ -359,10 +363,10 @@ function renderHero(d){
   const pcol = v => (v||0)>=0?"pos":"neg";
   const rigaB = (lab, v, s_, w_, nota) => {
     const nn = x => x!=null && isFinite(x);
-    const e1 = nn(v)&&nn(s_) ? v-s_ : null, e2 = nn(v)&&nn(w_) ? v-w_ : null, ok = x => nn(x) ? `<span class="${x>=0?"si":"no"}">${x>=0?"SÌ":"NO"} ${(x>0?"+":"")+nf(x,2)} pp</span>` : "—";
+    const e1 = nn(v)&&nn(s_) ? v-s_ : null, e2 = nn(v)&&nn(w_) ? v-w_ : null, ok = x => nn(x) ? (Math.abs(x)<0.005 ? `<span class="pa">PARI</span>` : `<span class="${x>0?"si":"no"}">${x>0?"SÌ":"NO"} ${(x>0?"+":"")+nf(x,2)} pp</span>`) : "—";
     return `<tr><td>${lab}${nota?`<span>${nota}</span>`:""}</td><td class="${pcol(v)}">${pcs(v)}</td><td>${pcs(s_)}</td><td>${pcs(w_)}</td><td>${ok(e1)}</td><td>${ok(e2)}</td></tr>`;
   };
-  const vv = k => [ (FB[k]||{})["VITA 5M"], (FB[k]||{})[BN[0]], (FB[k]||{})[BN[1]] ];
+  const vv = k => [ val(k,"VITA 5M"), val(k,BN[0]), val(k,BN[1]) ];
   let h = `<section class="hx">
     <div class="hx-top hx-qa">
       ${capBox}
@@ -378,11 +382,11 @@ function renderHero(d){
       </div>
       <div class="qa-bt"><div class="qa-btt">Sto battendo S&amp;P 500 e MSCI World?</div>
         <table><thead><tr><th>Periodo</th><th>VITA 5M</th><th>S&amp;P 500</th><th>MSCI World</th><th>Batto S&amp;P 500?</th><th>Batto MSCI World?</th></tr></thead><tbody>
-          ${rigaB("Dall'inizio", twr, d.live.bench_pct[BN[0]], d.live.bench_pct[BN[1]], "stessa base: chiusura "+dIT(d.inception))}
+          ${rigaB("Dall'inizio", twr, bDa(BN[0]), bDa(BN[1]), "stessa base: chiusura "+dIT(d.inception)+(q?", inclusa la seduta in corso":""))}
           ${rigaB("Oggi", oggiV, bOggi(BN[0]), bOggi(BN[1]), q?"intraday":"")}
-          ${rigaB("1 settimana", ...vv("5"), pf("5")?"pro forma":"")}
-          ${rigaB("1 mese", ...vv("21"), pf("21")?"pro forma":"")}
-          ${rigaB("12 mesi (tendenziale)", ...vv("252"), pf("252")?"pro forma a pesi attuali":"")}
+          ${rigaB("1 settimana", ...vv("5"), (pf("5")?"pro forma":"")+(q?(pf("5")?", ":"")+"con oggi":""))}
+          ${rigaB("1 mese", ...vv("21"), (pf("21")?"pro forma":"")+(q?(pf("21")?", ":"")+"con oggi":""))}
+          ${rigaB("12 mesi (tendenziale)", ...vv("252"), (pf("252")?"pro forma a pesi attuali":"")+(q?", con oggi":""))}
         </tbody></table></div>
     </div>
     <div class="hx-body">

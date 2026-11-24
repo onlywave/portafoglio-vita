@@ -83,3 +83,4 @@ td.sel{background:rgba(42,120,214,.08);font-weight:600}
 .qa-bt .si{background:rgba(63,187,92,.22);color:#9ff0b4;font-weight:700;padding:3px 8px;border-radius:5px}
 .qa-bt .no{background:rgba(239,107,105,.22);color:#ffb9b7;font-weight:700;padding:3px 8px;border-radius:5px}
 @media(max-width:980px){.qa-grid{grid-template-columns:1fr 1fr}.qa-big{grid-column:1/-1}}
+.qa-bt .pa{background:rgba(255,255,255,.14);color:#e6edf7;font-weight:700;padding:3px 8px;border-radius:5px}

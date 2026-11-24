@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S&amp;P 500 · Segnale della media esponenziale a 10 mesi — storico dal 1927</title>
+<meta name="description" content="S&P 500 dal 1927 con i segnali di vendita e rientro della media esponenziale a 10 mesi.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="assets/stile.css?v=ea2dd3a1a5">
+<link rel="stylesheet" href="assets/reale.css?v=942a5ac4c9">
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="lbl">Egonon · Monitoraggio portafoglio · Segnale di mercato</div>
+    <h1>S&amp;P 500 · Segnale media esponenziale a 10 mesi</h1>
+    <div class="meta" id="meta">—</div>
+    <div style="margin-top:8px">
+      <span class="pill">Storico più lungo disponibile</span>
+      <span class="pill">▼ vendita sotto media − 1% · ▲ rientro sopra media + 1%</span>
+      <span class="pill">Controllo solo a fine mese</span>
+    </div>
+    <div class="navlinks">
+      <a href="vita5m-reale.html">VITA 5M reale</a>
+      <a href="vita5m-copertura.html">Studio copertura</a>
+      <a href="spx-segnale.html" class="qui">S&amp;P 500 · segnale</a>
+      <a href="./">Cruscotto simulazioni</a>
+    </div>
+  </header>
+  <div id="app"><p class="note">Caricamento…</p></div>
+  <p class="foot" id="piede"></p>
+</div>
+<script src="assets/grafici.js?v=80e3233ef8"></script>
+<script src="assets/spx.js?v=c25bae6523"></script>
+<script>
+avviaSpx().catch(e=>{
+  document.getElementById("app").innerHTML =
+    '<div class="flag"><b>Errore nel caricamento dei dati.</b> '+e+'</div>';
+});
+</script>
+</body>
+</html>

@@ -33,6 +33,9 @@ jobs:
       - name: Studio di copertura VITA 5M (media esponenziale 10 mesi)
         continue-on-error: true
         run: python copertura.py data
+      - name: S&P 500 e segnale media esponenziale 10 mesi (storico dal 1927)
+        continue-on-error: true
+        run: python spx_segnale.py data
       - name: Report investimento reale VITA 5M
         run: python reale.py data
       - name: Rinfresca l'impronta degli asset nelle pagine

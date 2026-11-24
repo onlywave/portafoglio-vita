@@ -739,7 +739,7 @@
   ],
   [
    "2026-11-27",
-   174.23
+   174.27
   ]
  ],
  "base_currency": "EUR",
@@ -749,8 +749,8 @@
  "methodology": "Portafoglio a proporzioni costanti: 5 ETF UCITS ad accumulazione, base EUR, avviato il 26/06/2023 con un apporto unico di 1.000.000 EUR e pesi obiettivo 30% emergenti value, 22,5% mondo sviluppato, 22,5% momentum sviluppati, 20% oro fisico, 5% mondo intero. Ribilanciamento trimestrale il 26 di marzo, giugno, settembre e dicembre: 85 operazioni in 14 date, interamente autofinanziate (cassa residua 0,00 EUR) e senza alcun apporto o prelievo dopo l'avvio. Le quantita' giornaliere sono ricostruite dal registro movimenti esportato da Quantistik (portafoglio 175788332, export del 29/10/2026, sha256 2ed96123cb45); i prezzi EOD sono di fonte pubblica (Yahoo Finance) sulle linee di quotazione effettivamente detenute — ZGLD.SW, EMVL.L, IWMO.SW, IWDA.AS, FWRA.MI — convertiti in EUR ai cambi del giorno. A differenza dei due portafogli VITA questo NON e' buy & hold: i pesi tornano agli obiettivi ogni trimestre, quindi il confronto misura anche l'effetto del ribilanciamento e, essendo la base EUR e non CHF, l'effetto cambio.",
  "capitale_iniziale": 1000000.0,
  "metrics": {
-  "perf_total_pct": 85.74,
-  "cagr_pct": 19.87,
+  "perf_total_pct": 85.73,
+  "cagr_pct": 19.86,
   "vol_ann_pct": 14.2,
   "sharpe": 1.32,
   "sortino": 1.22,
@@ -774,7 +774,7 @@
   "rolling12_max_pct": 45.2,
   "rolling12_positive_pct": 100.0,
   "rolling12_n": 30,
-  "nav_last": 1857357.0
+  "nav_last": 1857256.0
  },
  "analitica": {
   "campione": {
@@ -789,10 +789,10 @@
    "n_prove_dsr": 6
   },
   "rendimento": {
-   "totale_pct": 85.74,
-   "cagr_pct": 19.87,
+   "totale_pct": 85.73,
+   "cagr_pct": 19.86,
    "media_ann_aritmetica_pct": 18.81,
-   "media_ann_geometrica_pct": 19.87,
+   "media_ann_geometrica_pct": 19.86,
    "miglior_giorno_pct": 4.31,
    "peggior_giorno_pct": -5.61,
    "miglior_settimana_pct": 4.1,
@@ -818,11 +818,11 @@
    "vol_ann_giornaliera_pct": 14.2,
    "vol_ann_settimanale_pct": 12.97,
    "vol_ann_mensile_pct": 13.01,
-   "vol_ewma_corrente_pct": 30.73,
+   "vol_ewma_corrente_pct": 30.74,
    "vol_30gg_corrente_pct": 27.07,
    "vol_90gg_corrente_pct": 19.62,
    "downside_deviation_pct": 15.47,
-   "semivarianza_ann_pct": 2.3928,
+   "semivarianza_ann_pct": 2.393,
    "max_drawdown_pct": -16.55,
    "max_dd_data": "2025-04-09",
    "ulcer_index_pct": 3.42,
@@ -868,16 +868,16 @@
    "curtosi_eccesso_giornaliera": 4.69,
    "asimmetria_mensile": -0.51,
    "curtosi_eccesso_mensile": -0.06,
-   "jarque_bera": 857.7,
+   "jarque_bera": 857.8,
    "jarque_bera_p": 0.0,
    "shapiro_p": 0.0,
    "normalita_rifiutata": true,
    "hurst": 0.59,
    "ljung_box": {
-    "Q": 12.07,
-    "p_value": 0.2802,
+    "Q": 12.08,
+    "p_value": 0.2799,
     "lags": 10,
-    "acf1": -0.0504
+    "acf1": -0.0505
    },
    "istogramma": {
     "centri_pct": [
@@ -990,13 +990,13 @@
      68.33,
      81.95,
      91.35,
-     94.64,
+     94.63,
      91.13,
      81.56,
      67.84,
      52.45,
      37.69,
-     25.17,
+     25.18,
      15.63,
      9.02,
      4.84,
@@ -1023,7 +1023,7 @@
     ],
     [
      -2.017,
-     -2.791
+     -2.796
     ],
     [
      -1.885,
@@ -1078,7 +1078,7 @@
      -1.093
     ],
     [
-     -1.222,
+     -1.223,
      -1.061
     ],
     [
@@ -1110,7 +1110,7 @@
      -0.858
     ],
     [
-     -1.022,
+     -1.023,
      -0.832
     ],
     [
@@ -1302,7 +1302,7 @@
      -0.229
     ],
     [
-     -0.321,
+     -0.322,
      -0.221
     ],
     [
@@ -1374,7 +1374,7 @@
      -0.029
     ],
     [
-     -0.126,
+     -0.127,
      -0.014
     ],
     [
@@ -1862,7 +1862,7 @@
      1.649
     ],
     [
-     1.725,
+     1.726,
      1.676
     ],
     [
@@ -1992,7 +1992,7 @@
     "mediana_pct": 11.08,
     "p75_pct": 14.93,
     "max_pct": 34.28,
-    "corrente_pct": 31.35
+    "corrente_pct": 31.36
    },
    {
     "finestra_gg": 63,
@@ -2141,7 +2141,7 @@
     },
     {
      "nome": "ZGLD",
-     "peso_pct": 19.79,
+     "peso_pct": 19.78,
      "vol_singola_pct": 19.07,
      "contrib_vol_pct": 1.87,
      "quota_rischio_pct": 13.32,
@@ -2372,16 +2372,16 @@
     "tracking_error_pct": 9.49,
     "information_ratio": 0.38,
     "up_capture_pct": 78.07,
-    "down_capture_pct": 90.21,
+    "down_capture_pct": 90.22,
     "beta_up": 0.78,
     "beta_down": 0.86,
     "batting_average_pct": 52.45,
-    "m2_ann_pct": 17.27,
+    "m2_ann_pct": 17.26,
     "perf_bench_pct": 64.8,
     "cagr_bench_pct": 15.74,
     "vol_bench_pct": 13.04,
     "maxdd_bench_pct": -21.59,
-    "extra_rendimento_pct": 20.94,
+    "extra_rendimento_pct": 20.93,
     "oss_n": 877
    },
    "MSCI EM IMI (EUR)": {
@@ -2392,7 +2392,7 @@
     "tracking_error_pct": 9.88,
     "information_ratio": 0.48,
     "up_capture_pct": 38.23,
-    "down_capture_pct": 79.29,
+    "down_capture_pct": 79.3,
     "beta_up": 0.64,
     "beta_down": 0.71,
     "batting_average_pct": 52.22,
@@ -2401,12 +2401,12 @@
     "cagr_bench_pct": 13.19,
     "vol_bench_pct": 19.58,
     "maxdd_bench_pct": -18.94,
-    "extra_rendimento_pct": 33.03,
+    "extra_rendimento_pct": 33.02,
     "oss_n": 877
    },
    "60/40 globale (EUR)": {
     "beta": 1.23,
-    "alpha_ann_pct": 6.08,
+    "alpha_ann_pct": 6.07,
     "correlazione": 0.77,
     "r_quadro": 0.59,
     "tracking_error_pct": 9.36,
@@ -2421,7 +2421,7 @@
     "cagr_bench_pct": 10.63,
     "vol_bench_pct": 8.81,
     "maxdd_bench_pct": -14.56,
-    "extra_rendimento_pct": 44.5,
+    "extra_rendimento_pct": 44.49,
     "oss_n": 877
    },
    "Oro (EUR)": {
@@ -2437,11 +2437,11 @@
     "beta_down": 0.39,
     "batting_average_pct": 51.31,
     "m2_ann_pct": 25.24,
-    "perf_bench_pct": 82.49,
-    "cagr_bench_pct": 19.25,
+    "perf_bench_pct": 82.44,
+    "cagr_bench_pct": 19.24,
     "vol_bench_pct": 19.06,
     "maxdd_bench_pct": -30.02,
-    "extra_rendimento_pct": 3.24,
+    "extra_rendimento_pct": 3.28,
     "oss_n": 877
    }
   }
@@ -3816,7 +3816,7 @@
    ],
    [
     "2026-11-27",
-    21.65
+    21.66
    ]
   ],
   "vol_90gg": [
@@ -5698,7 +5698,7 @@
    ],
    [
     "2026-11-27",
-    30.73
+    30.74
    ]
   ],
   "sharpe_126gg": [
@@ -7466,7 +7466,7 @@
    ],
    [
     "2026-11",
-    11.74
+    11.73
    ]
   ],
   "rolling6m": [
@@ -7612,7 +7612,7 @@
    ],
    [
     "2026-11",
-    -9.63
+    -9.64
    ]
   ],
   "beta_126gg__MSCI World (EUR)": [
@@ -11520,7 +11520,7 @@
    ],
    [
     "2026-11-27",
-    21.63
+    21.62
    ]
   ],
   "beta_126gg__60/40 globale (EUR)": [
@@ -13474,7 +13474,7 @@
    ],
    [
     "2026-11-27",
-    31.51
+    31.5
    ]
   ],
   "beta_126gg__Oro (EUR)": [
@@ -15428,7 +15428,7 @@
    ],
    [
     "2026-11-27",
-    1.78
+    1.8
    ]
   ]
  },
@@ -16147,7 +16147,7 @@
   ],
   [
    "2026-11-27",
-   1857357.0
+   1857256.0
   ]
  ],
  "index_weekly": [
@@ -16865,7 +16865,7 @@
   ],
   [
    "2026-11-27",
-   185.74
+   185.73
   ]
  ],
  "bench_index_weekly": {
@@ -19738,7 +19738,7 @@
    ],
    [
     "2026-11-27",
-    182.49
+    182.44
    ]
   ]
  },
@@ -19864,7 +19864,7 @@
   },
   {
    "anno": "2026",
-   "ret_pct": 10.11,
+   "ret_pct": 10.1,
    "parziale": true,
    "da": "2026-01-01",
    "a": "2026-11-24"
@@ -19989,7 +19989,7 @@
   ],
   [
    "2026-11",
-   11.74
+   11.73
   ]
  ],
  "drawdown_weekly": [
@@ -20875,13 +20875,13 @@
    "ccy": "EUR",
    "shares": 382.015752,
    "cost_px": 652.6122,
-   "last_px": 962.0438,
-   "pl_pct": 47.41,
-   "pl_base_pct": 47.41,
-   "value_base": 367516.0,
+   "last_px": 961.7793,
+   "pl_pct": 47.37,
+   "pl_base_pct": 47.37,
+   "value_base": 367415.0,
    "cost_base": 249308.0,
-   "contrib_pp": 15.76,
-   "weight_now_pct": 19.79,
+   "contrib_pp": 15.75,
+   "weight_now_pct": 19.78,
    "weight_cost_pct": 21.37,
    "vol_ann_pct": 19.07,
    "max_dd_pct": -30.02,

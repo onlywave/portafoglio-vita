@@ -46,6 +46,10 @@ STRESS = [
 ]
 
 
+def dIT(s: str) -> str:
+    return ".".join(reversed(s.split("-"))) if s else "—"
+
+
 def r2(x, d=2):
     return None if x is None or (isinstance(x, float) and not math.isfinite(x)) else round(float(x), d)
 
@@ -341,6 +345,87 @@ def main(out_dir: str) -> None:
     for k in BENCH:
         medie_mobili[k] = {**medie(B[k]), "valuta": "CHF"}
 
+    # ------------------------------------------- ancoraggio alle marcature banca
+    # La banca e' la fonte di verita': ogni marcatura letta dall'e-banking (corsi
+    # in valuta di quotazione e USD/CHF implicito) viene confrontata con i prezzi
+    # pubblici usati dal report e con il costo netto da contabile.
+    u_fin = unita.iloc[-1]
+    ccy_of = {l["ticker"]: l["ccy"] for l in lines}
+    marche = []
+    soglia_banca = s.get("scarto_banca_pct", 1.0)
+    for m in spec.get("marche_banca", []):
+        dm = pd.Timestamp(m["data"])
+        righe_m, val_b = [], 0.0
+        for t, pb in m["prezzi"].items():
+            fxb = 1.0 if ccy_of[t] == "CHF" else m.get("usdchf", 1.0)
+            ub = float(unita.loc[unita.index <= dm, t].iloc[-1]) if (unita.index <= dm).any() else float(u_fin[t])
+            val_b += ub * pb * fxb
+            loc = locali[t][locali[t].index <= dm]
+            py, dy = (float(loc.iloc[-1]), loc.index[-1].strftime("%Y-%m-%d")) if len(loc) else (None, None)
+            sc = (py / pb - 1) * 100 if py else None
+            righe_m.append({"ticker": t, "prezzo_banca": pb, "prezzo_pubblico": r2(py, 4), "data_pubblico": dy,
+                            "scarto_pct": r2(sc), "stato": "n.d." if sc is None else ("OK" if abs(sc) < soglia_banca else "ALLERTA")})
+        costo_m = sum(a["quota"] for a in acq if pd.Timestamp(a["data"]) <= dm)
+        marche.append({"data": m["data"], "ora": m.get("ora"), "fonte": m.get("fonte"), "usdchf": m.get("usdchf"),
+                       "rend_dal_costo_netto_pct": r2((val_b / costo_m - 1) * 100, 3) if costo_m else None,
+                       "linee": righe_m, "nota": m.get("nota")})
+    if marche:
+        ult_m = marche[-1]
+        peggio = max((abs(x["scarto_pct"]) for x in ult_m["linee"] if x["scarto_pct"] is not None), default=None)
+        al(f"Scarto prezzi pubblici vs marcatura banca ({dIT(ult_m['data'])})", peggio, soglia_banca,
+           peggio is not None and peggio >= soglia_banca)
+
+    # ------------------------------------------ attese dagli studi (cono) e obiettivo
+    k_sed = np.arange(len(idx))  # sedute dalla base 100
+    studi = spec.get("studi", {})
+    coni, posizioni = {}, []
+    for sc_ in studi.get("scenari", []):
+        if sc_.get("cagr_pct") is None or sc_.get("vol_pct") is None:
+            continue
+        mu = math.log(1 + sc_["cagr_pct"] / 100) / TD
+        sg = sc_["vol_pct"] / 100 / math.sqrt(TD)
+        cono = {"mediana": [], "p1_su": [], "p1_giu": [], "p2_su": [], "p2_giu": []}
+        for k in k_sed:
+            m_, s_ = mu * k, sg * math.sqrt(k)
+            cono["mediana"].append(r2(100 * math.exp(m_)))
+            cono["p1_su"].append(r2(100 * math.exp(m_ + s_))); cono["p1_giu"].append(r2(100 * math.exp(m_ - s_)))
+            cono["p2_su"].append(r2(100 * math.exp(m_ + 2 * s_))); cono["p2_giu"].append(r2(100 * math.exp(m_ - 2 * s_)))
+        kk = int(k_sed[-1])
+        z = (math.log(idx.iloc[-1] / 100) - mu * kk) / (sg * math.sqrt(kk)) if kk > 0 else None
+        atteso = (math.exp(mu * kk) - 1) * 100
+        posizioni.append({"id": sc_["id"], "nome": sc_["nome"], "cagr_pct": sc_["cagr_pct"], "vol_pct": sc_["vol_pct"],
+                          "max_dd_pct": sc_.get("max_dd_pct"), "sedute": kk,
+                          "atteso_pct": r2(atteso), "reale_pct": r2((idx.iloc[-1] / 100 - 1) * 100),
+                          "scostamento_pp": r2((idx.iloc[-1] / 100 - 1) * 100 - atteso),
+                          "banda1_pct": [r2((math.exp(mu * kk - sg * math.sqrt(kk)) - 1) * 100), r2((math.exp(mu * kk + sg * math.sqrt(kk)) - 1) * 100)],
+                          "banda2_pct": [r2((math.exp(mu * kk - 2 * sg * math.sqrt(kk)) - 1) * 100), r2((math.exp(mu * kk + 2 * sg * math.sqrt(kk)) - 1) * 100)],
+                          "z": r2(z), "stato": "n.d." if z is None else ("OK" if abs(z) < 1 else ("ATTENZIONE" if abs(z) < 2 else "ALLERTA")),
+                          "principale": bool(sc_.get("principale"))})
+        coni[sc_["id"]] = cono
+    princ = next((p for p in posizioni if p["principale"]), None)
+    if princ:
+        al("Rendimento reale vs cono dello studio base (z-score)", princ["z"], 2.0,
+           princ["z"] is not None and abs(princ["z"]) >= 2, "σ")
+    # scostamento del rischio realizzato dalle attese
+    if princ and vol20 is not None:
+        al("Volatilità 20 sedute vs studio base", vol20, princ["vol_pct"] * 1.5, vol20 >= princ["vol_pct"] * 1.5)
+
+    obiettivo = {"testo": spec.get("obiettivo", {}).get("testo", ""), "benchmark": []}
+    for kb in BENCH:
+        extra = (idx.iloc[-1] / 100 - 1) * 100 - (bidx[kb].iloc[-1] / 100 - 1) * 100
+        te = (ex_tgt["relativo"].get(kb) or {}).get("tracking_error_pct")
+        kk = int(k_sed[-1])
+        band = te * math.sqrt(kk / TD) if te and kk else None
+        rel_rl = rl - rb[kb].reindex(rl.index).fillna(0) if len(rl) else pd.Series(dtype=float)
+        obiettivo["benchmark"].append({
+            "nome": kb, "extra_pp": r2(extra), "stato": "SOPRA" if extra > 0.005 else ("SOTTO" if extra < -0.005 else "PARI"),
+            "te_exante_pct": te, "banda1_pp": r2(band), "z": r2(extra / band) if band else None,
+            "sedute_sopra_pct": r2((rel_rl > 0).mean() * 100, 0) if len(rel_rl) else None,
+            "info_ratio_exante": (ex_tgt["relativo"].get(kb) or {}).get("info_ratio"),
+            "serie_extra": [r2(a - b) for a, b in zip(idx.values, bidx[kb].reindex(idx.index).values)]})
+        al(f"Extra-rendimento vs {kb.replace(' TR (CHF)', '')} dall'inizio", extra, 0.0,
+           band is not None and extra < -band, "pp")
+
     rl_stats = stats(rl) if len(rl) else {"n": 0}
     rel_live = {k: relativo(rl, rb[k]) for k in BENCH} if len(rl) >= 20 else {}
     out = {
@@ -374,10 +459,14 @@ def main(out_dir: str) -> None:
         "costi": {"ter_corrente_pct": r2(ter_cor, 3), "ter_obiettivo_pct": r2(ter_tgt, 3), "tranche": costi},
         "allerte": allerte,
         "riconciliazione": spec.get("riconciliazione", []),
-        "acquisti": [{k: a[k] for k in ("rif", "data", "ticker", "prezzo", "stato")} for a in acq],
+        "marche_banca": marche,
+        "studi": {"nota": studi.get("nota", ""), "scenari": posizioni, "coni": coni,
+                  "anno2026": [x for x in studi.get("scenari", []) if x.get("cagr_pct") is None]},
+        "obiettivo": obiettivo,
+        "acquisti": [{k: a.get(k) for k in ("rif", "data", "ticker", "prezzo", "prezzo_eseguito", "stato")} for a in acq],
         "fonti": fonti, "note": note,
-        "disclaimer": "Report di monitoraggio interno. Non è consulenza finanziaria. Valori lordi da prezzi EOD pubblici, "
-                      "senza commissioni né fiscalità salvo dove indicato. Le performance passate non sono indicative di quelle future.",
+        "disclaimer": "Report di monitoraggio interno. Non è consulenza finanziaria. Prezzi EOD pubblici, ancorati alle marcature "
+                      "dell'e-banking; carichi netti da contabile (tassa di bollo inclusa), fiscalità esclusa. Le performance passate non sono indicative di quelle future.",
     }
     Path(out_dir).mkdir(parents=True, exist_ok=True)
     (Path(out_dir) / "vita5m_reale.json").write_text(json.dumps(out, ensure_ascii=False, indent=1))

@@ -41,12 +41,50 @@ async function avviaReale(){
     ${tab("TER ponderato", pc(C.ter_corrente_pct,3), "", "obiettivo "+pc(C.ter_obiettivo_pct,3)+" annuo")}
   </div>`;
 
+  // ------------------------------------- 1b. obiettivo, studi, ancoraggio banca
+  const OB = d.obiettivo, ST = d.studi, MB = d.marche_banca||[];
+  if(OB && OB.benchmark){
+    h += sez("OB","Obiettivo: battere S&amp;P 500 e MSCI World", OB.testo);
+    h += `<div class="tiles">${OB.benchmark.map(b=>tabB("Extra vs "+b.nome.replace(" TR (CHF)",""),
+        (b.extra_pp>0?"+":"")+nf(b.extra_pp,2)+" pp", cls(b.extra_pp),
+        b.stato+(b.banda1_pp!=null?" · banda ±1σ "+nf(b.banda1_pp,2)+" pp":"")+(b.sedute_sopra_pct!=null?" · sedute sopra "+nf(b.sedute_sopra_pct,0)+"%":""))).join("")}</div>`;
+    h += tabella([{t:"Benchmark"},{t:"Extra dall'inizio",n:1},{t:"Stato"},{t:"z (extra / TE·√t)",n:1},{t:"TE ex ante",n:1},{t:"Info ratio ex ante",n:1},{t:"Sedute sopra",n:1}],
+      OB.benchmark.map(b=>`<tr><td>${b.nome}</td><td class="num ${cls(b.extra_pp)}"><b>${(b.extra_pp>0?"+":"")+nf(b.extra_pp,2)} pp</b></td>
+        <td>${stato(b.stato==="SOPRA"?"OK":(b.stato==="PARI"?"PARI":"SOTTO"))}</td>${td(nf(b.z))}${td(pc(b.te_exante_pct,1))}${td(nf(b.info_ratio_exante))}
+        ${td(b.sedute_sopra_pct==null?"—":pc(b.sedute_sopra_pct,0))}</tr>`),
+      "Extra-rendimento = TWR VITA 5M − rendimento del benchmark in CHF, stessa base. La banda ±1σ scala il tracking error ex ante (3 anni, pesi obiettivo) con la radice del tempo: dentro la banda lo scarto è rumore statistico, sotto −1σ scatta l'allerta.","rep");
+    h += pannello("Extra-rendimento cumulato contro i due benchmark","Punti di indice base 100: sopra lo zero VITA 5M sta battendo il benchmark.","extra");
+  }
+  if(ST && ST.scenari && ST.scenari.length){
+    h += sez("ST","Scostamenti dagli studi interni", "rendimento reale contro la distribuzione attesa");
+    h += tabella([{t:"Studio"},{t:"CAGR",n:1},{t:"Vol.",n:1},{t:"Max DD storico",n:1},{t:"Sedute",n:1},{t:"Atteso",n:1},{t:"Reale",n:1},{t:"Scost.",n:1},{t:"Banda ±1σ",n:1},{t:"Banda ±2σ",n:1},{t:"z",n:1},{t:"Stato"}],
+      ST.scenari.map(x=>`<tr><td>${x.principale?"<b>"+x.nome+"</b>":x.nome}</td>${td(pc(x.cagr_pct,1))}${td(pc(x.vol_pct,1))}${td(pc(x.max_dd_pct,1))}${td(x.sedute)}
+        ${td(pcs(x.atteso_pct))}<td class="num ${cls(x.reale_pct)}"><b>${pcs(x.reale_pct)}</b></td><td class="num ${cls(x.scostamento_pp)}">${(x.scostamento_pp>0?"+":"")+nf(x.scostamento_pp,2)} pp</td>
+        ${td(pcs(x.banda1_pct[0])+" / "+pcs(x.banda1_pct[1]))}${td(pcs(x.banda2_pct[0])+" / "+pcs(x.banda2_pct[1]))}${td(nf(x.z))}<td>${stato(x.stato)}</td></tr>`).join("")+
+      (ST.anno2026||[]).map(x=>`<tr><td class="note">${x.nome}</td><td class="num note" colspan="11">rendimento ${pcs(x.rend_pct,1)} · max drawdown ${pc(x.max_dd_pct,1)} (riferimento, non entra nel cono)</td></tr>`).join(""),
+      ST.nota+" z = (log-rendimento reale − atteso) / σ·√t. OK entro 1σ, ATTENZIONE fra 1σ e 2σ, ALLERTA oltre 2σ.","rep wide");
+    h += pannello("VITA 5M dentro il cono dello studio base","Mediana attesa e bande a 1σ e 2σ (CAGR e volatilità dello studio), base 100 alla chiusura dell'inception.","cono");
+  }
+  if(MB.length){
+    const m = MB.at(-1);
+    h += sez("BK","Ancoraggio al conto reale", `marcatura e-banking del ${dIT(m.data)} ore ${m.ora} · USD/CHF ${nf(m.usdchf,4)}`);
+    h += `<div class="tiles">${tabB("Dal costo netto, prezzi banca", pcs(m.rend_dal_costo_netto_pct,3), cls(m.rend_dal_costo_netto_pct), "valore ai corsi bancari / carico netto da contabile − 1")}
+      ${tab("Dal costo, prezzi pubblici", pcs(L.rend_dal_costo_pct), cls(L.rend_dal_costo_pct), "chiusura EOD del "+dIT(d.asof))}
+      ${tab("Differenza banca − pubblico", (()=>{const v=m.rend_dal_costo_netto_pct-L.rend_dal_costo_pct;return (v>0?"+":"")+nf(v,2)+" pp";})(), "", "orari e fonti diverse")}</div>`;
+    h += tabella([{t:"ETF"},{t:"Corso banca",n:1},{t:"Prezzo pubblico",n:1},{t:"Del",n:1},{t:"Scarto",n:1},{t:"Stato"}],
+      m.linee.map(x=>`<tr><td>${x.ticker}</td>${td(nf(x.prezzo_banca,x.prezzo_banca<20?4:2))}${td(nf(x.prezzo_pubblico,x.prezzo_pubblico<20?4:2))}${td(dIT(x.data_pubblico))}
+        <td class="num ${Math.abs(x.scarto_pct||0)>=1?"down":""}">${pcs(x.scarto_pct)}</td><td>${stato(x.stato)}</td></tr>`),
+      (m.nota||"")+" Uno scarto oltre l'1% indica un prezzo pubblico non aggiornato o un orario diverso: fa fede la banca.","rep");
+  }
+
   // -------------------------------------------------------------- 2. allerte
   h += sez("02","Allerte e soglie di rischio");
   h += tabella([{t:"Controllo"},{t:"Valore",n:1},{t:"Soglia",n:1},{t:"Stato"}],
-    d.allerte.map(a=>`<tr><td>${a.controllo}</td>${td(a.valore==null?"—":nf(a.valore,2)+(a.unita==="pp"?" pp":"%"))}
-      ${td((a.unita==="pp"?"≥ ":(a.soglia<0?"≤ ":(a.controllo.startsWith("Oro")?"> ":"≥ ")))+nf(a.soglia,1)+(a.unita==="pp"?" pp":"%"))}
-      <td>${stato(a.stato)}</td></tr>`), "Lo scostamento dai pesi resta in allerta finché la linea FWRA non viene acquistata (tranche 2).", "rep");
+    d.allerte.map(a=>{const u=a.unita==="pp"?" pp":(a.unita==="σ"?" σ":"%");
+      const pre=a.controllo.startsWith("Extra")?"allerta sotto −1σ TE · obiettivo > ":(a.unita==="σ"?"|z| ≥ ":(a.controllo.startsWith("Scarto")?"|scarto| ≥ ":(a.soglia<0?"≤ ":(a.controllo.startsWith("Oro")?"> ":"≥ "))));
+      return `<tr><td>${a.controllo}</td>${td(a.valore==null?"—":nf(a.valore,2)+u)}
+      ${td(pre+nf(a.soglia,1)+u)}
+      <td>${stato(a.stato)}</td></tr>`;}), "Lo scostamento dai pesi resta in allerta finché la linea FWRA non viene acquistata (tranche 2).", "rep");
 
   // ------------------------------------------------- 3. equity vs benchmark
   h += sez("03","Andamento dall'inizio contro i benchmark","base 100 alla chiusura del "+dIT(d.inception));
@@ -104,21 +142,21 @@ async function avviaReale(){
     ${tabella([{t:"Negoziazione"},...t1.map(t=>({t:t.tranche+" · "+dIT(t.data),n:1}))],
       [["Commissioni (courtage)","courtage_pct"],["Tassa di bollo","bollo_pct"],["Ricarico sul cambio","ricarico_cambio_pct"],
        ["Spread denaro/lettera (stima)","spread_stimato_pct"],["Totale una tantum","totale_pct"]].map(([k,f])=>
-        `<tr><td>${k}</td>${t1.map(t=>td(f==="totale_pct"?"<b>"+pc(t[f],2)+"</b>":pc(t[f],3))).join("")}</tr>`).join("")+
+        `<tr><td>${k}${t1.some(t=>(t.stime||[]).includes(f))?' <span class="note">(stima)</span>':""}</td>${t1.map(t=>td(f==="totale_pct"?"<b>"+pc(t[f],2)+"</b>":pc(t[f],3))).join("")}</tr>`).join("")+
       `<tr><td>Fonte</td>${t1.map(t=>`<td class="num">${stato(t.fonte.startsWith("STIMA")?"STIMA":"CONTABILE")}</td>`).join("")}</tr>`,
       "In % del controvalore della tranche. "+(t1[0]?t1[0].nota:""),"rep")}</div>`;
   const anno1 = (t1.reduce((a,t)=>a+(t.totale_pct||0),0)/Math.max(t1.length,1)) + C.ter_obiettivo_pct;
   h += `<div class="flag"><b>Costo totale stimato del primo anno: circa ${pc(anno1,2)}</b> del capitale
-    (negoziazione una tantum più TER). La voce più pesante è il ricarico sul cambio: negoziare il margine sulle prossime tranche è la leva principale.</div>`;
+    (negoziazione una tantum più TER). Courtage zero e bollo da contabile; il ricarico sul cambio resta la voce più pesante (stima): negoziare il margine sulle prossime tranche è la leva principale.</div>`;
 
   // -------------------------------------------------------- 7. riconciliazione
   h += sez("07","Riconciliazione con gli eseguiti bancari");
   h += tabella([{t:"Voce"},{t:"Fonte"},{t:"Data"},{t:"Stato"}],
     d.riconciliazione.map(r=>`<tr><td>${r.voce}</td><td>${r.fonte}</td><td>${dIT(r.data)}</td><td>${stato(r.stato)}</td></tr>`),
     "Si aggiorna quando le contabili dell'e-banking vengono lette e confrontate con il registro permanente.","rep");
-  h += `<div class="colonne">${tabella([{t:"Rif."},{t:"Data"},{t:"ETF"},{t:"Prezzo",n:1},{t:"Stato"}],
-      d.acquisti.map(a=>`<tr><td>${a.rif}</td><td>${dIT(a.data)}</td><td>${a.ticker}</td>${td(nf(a.prezzo,4))}<td class="note">${a.stato}</td></tr>`),
-      "Prezzi medi eseguiti in valuta di negoziazione. Quantità e importi restano nel registro interno.","rep")}
+  h += `<div class="colonne">${tabella([{t:"Rif."},{t:"Data"},{t:"ETF"},{t:"Eseguito",n:1},{t:"Carico netto",n:1},{t:"Stato"}],
+      d.acquisti.map(a=>`<tr><td>${a.rif}</td><td>${dIT(a.data)}</td><td>${a.ticker}</td>${td(nf(a.prezzo_eseguito,4))}${td("<b>"+nf(a.prezzo,4)+"</b>")}<td class="note">${a.stato}</td></tr>`),
+      "Prezzo medio eseguito e carico netto unitario (bollo incluso) in valuta di negoziazione. Quantità e importi restano nel registro interno.","rep")}
     ${tabella([{t:"Tranche"},{t:"Data"},{t:"Stato"},{t:"Nota"}],
       d.tranches.map(t=>`<tr><td>${t.id}</td><td>${dIT(t.data)}</td><td>${stato(t.stato==="eseguita"?"OK":t.stato.toUpperCase())}</td><td class="note">${t.nota}</td></tr>`),"","rep")}</div>`;
 
@@ -140,6 +178,18 @@ async function avviaReale(){
     [ser("VITA 5M (TWR)","var(--s1)",2.4), ser(BN[0],"var(--s2)"), ser(BN[1],"var(--s3)")],
     [{name:"Drawdown VITA 5M", color:"var(--neg)", data: dt.map((x,i)=>[x,S.drawdown[i]])}],
     {fmt:v=>nf(v,1), tit:"Base 100"});
+  if(OB && OB.benchmark && document.getElementById("extra")){
+    lineChart(document.getElementById("extra"), OB.benchmark.map((b,i)=>({name:"vs "+b.nome.replace(" TR (CHF)",""), color:["var(--s2)","var(--s3)"][i], w:2,
+      data: dt.map((x,j)=>[x,b.serie_extra[j]])})), {fmt:v=>nf(v,1), zero:true});
+  }
+  if(ST && ST.coni && ST.coni.base && document.getElementById("cono")){
+    const K = ST.coni.base, z = (k,c,w,dash) => ({name:k, color:c, w, dash, data: dt.map((x,j)=>[x,K[k][j]])});
+    lineChart(document.getElementById("cono"), [
+      {name:"VITA 5M (TWR)", color:"var(--s1)", w:2.6, data: dt.map((x,i)=>[x,S["VITA 5M (TWR)"][i]])},
+      z("mediana","var(--s4)",1.6,"6 4"), z("p1_su","var(--s5)",1.2,"3 3"), z("p1_giu","var(--s5)",1.2,"3 3"),
+      z("p2_su","var(--neg)",1,"2 4"), z("p2_giu","var(--neg)",1,"2 4")].map(x=>({...x,
+        name:{mediana:"Mediana attesa",p1_su:"+1σ",p1_giu:"−1σ",p2_su:"+2σ",p2_giu:"−2σ"}[x.name]||x.name})), {fmt:v=>nf(v,1)});
+  }
   barChart(document.getElementById("scost"), d.linee.map(l=>[l.ticker,l.scostamento_pp]), {valori:true});
   barPair(document.getElementById("rischio"), d.linee.map(l=>({k:l.ticker,a:l.peso_pct,b:l.contrib_rischio_corr_pct})),
     {a:"peso corrente", b:"quota di rischio"});

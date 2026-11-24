@@ -85,20 +85,21 @@
   "vol20_pct": 15.0,
   "scostamento_pp": 2.0,
   "oro_max_pct": 20.0,
-  "vol_exante_pct": 18.0
+  "vol_exante_pct": 18.0,
+  "scarto_banca_pct": 1.0
  },
  "tranches": [
   {
    "id": "T1",
    "data": "2026-11-23",
    "stato": "eseguita",
-   "nota": "5 linee su 6; FWRA non eseguito"
+   "nota": "5 linee su 6; FWRA scaduto (0 quote). Riconciliata al centesimo sul conto reale il 24.11.2026"
   },
   {
    "id": "T2",
-   "data": "2026-11-24",
+   "data": null,
    "stato": "prevista",
-   "nota": "porta l'investito a 2/3 del programma ai pesi target"
+   "nota": "da eseguire: circa 2/3 del programma residui, liquidità già sul conto"
   },
   {
    "id": "T3",
@@ -112,58 +113,67 @@
    "rif": "T1-01",
    "data": "2026-11-23",
    "ticker": "WORLD",
-   "prezzo": 3.5356,
+   "prezzo": 3.54090341,
    "fx_chf": 1,
-   "quota": 0.0824466564,
-   "stato": "Conteggiato (portale); contabile da verificare"
+   "quota": 0.0825703267,
+   "stato": "Contabile riconciliata con il conto reale (24.11.2026): addebito netto, bollo incluso",
+   "prezzo_eseguito": 3.5356
   },
   {
    "rif": "T1-02",
    "data": "2026-11-23",
    "ticker": "IWMO",
-   "prezzo": 95.2802,
+   "prezzo": 95.42312024,
    "fx_chf": 0.84555,
-   "quota": 0.0810744129,
-   "stato": "Conteggiato (portale); contabile da verificare"
+   "quota": 0.0811960244,
+   "stato": "Contabile riconciliata con il conto reale (24.11.2026): addebito netto, bollo incluso",
+   "prezzo_eseguito": 95.2802
   },
   {
    "rif": "T1-03",
    "data": "2026-11-23",
    "ticker": "EIMI",
-   "prezzo": 47.60205456,
+   "prezzo": 47.67345715,
    "fx_chf": 0.84555,
-   "quota": 0.0693506074,
-   "stato": "Conteggiato (portale); contabile da verificare"
+   "quota": 0.0694546326,
+   "stato": "Contabile riconciliata con il conto reale (24.11.2026): addebito netto, bollo incluso",
+   "prezzo_eseguito": 47.60205456
   },
   {
    "rif": "T1-04",
    "data": "2026-11-23",
    "ticker": "ZGLD",
-   "prezzo": 905.7708,
+   "prezzo": 906.45009709,
    "fx_chf": 1,
-   "quota": 0.0621962616,
-   "stato": "Conteggiato (portale); contabile da verificare"
+   "quota": 0.0622429067,
+   "stato": "Contabile riconciliata con il conto reale (24.11.2026): addebito netto, bollo incluso",
+   "prezzo_eseguito": 905.7708
   },
   {
    "rif": "T1-06",
    "data": "2026-11-23",
    "ticker": "EMVL",
-   "prezzo": 87.54,
+   "prezzo": 87.67131915,
    "fx_chf": 0.84555,
-   "quota": 0.01739457,
-   "stato": "Conteggiato (portale); contabile da verificare"
+   "quota": 0.0174206637,
+   "stato": "Contabile riconciliata con il conto reale (24.11.2026): addebito netto, bollo incluso",
+   "prezzo_eseguito": 87.54
   }
  ],
  "costi_tranche": [
   {
    "tranche": "T1",
    "data": "2026-11-23",
-   "fonte": "STIMA — da sostituire con le contabili",
-   "courtage_pct": 0.307,
+   "fonte": "CONTABILE",
+   "courtage_pct": 0.0,
    "bollo_pct": 0.135,
    "ricarico_cambio_pct": 0.451,
    "spread_stimato_pct": 0.08,
-   "nota": "In % del controvalore investito nella tranche. Courtage da listino e-banking Raiffeisen 2026; bollo 0,15% ETF esteri / 0,075% ETF svizzeri; ricarico cambio contro ~0,8385 di mercato."
+   "stime": [
+    "ricarico_cambio_pct",
+    "spread_stimato_pct"
+   ],
+   "nota": "Courtage e bollo dagli addebiti netti del conto reale (24.11.2026): nessun courtage addebitato, bollo 0,15% ETF esteri / 0,075% ZGLD. Ricarico cambio e spread restano stime: spot 0,8451/0,8460 contro ~0,8385 di mercato indicativo, da confermare con una quotazione comparabile all'ora degli spot."
   }
  ],
  "riconciliazione": [
@@ -174,20 +184,32 @@
    "data": "2026-11-23"
   },
   {
-   "voce": "Contabili titoli T1: sede effettiva, courtage, bollo, addebito netto",
-   "fonte": "PDF contabili e-banking",
-   "stato": "DA VERIFICARE",
-   "data": null
+   "voce": "Addebiti netti T1 e costi (bollo; nessun courtage)",
+   "fonte": "Estratti conto di compensazione CHF e USD",
+   "stato": "OK",
+   "data": "2026-11-24"
+  },
+  {
+   "voce": "Cassa: programma interamente versato; saldi CHF e USD ricostruiti al centesimo",
+   "fonte": "Estratti conto di compensazione",
+   "stato": "OK",
+   "data": "2026-11-24"
   },
   {
    "voce": "Cambi T1-FX-01/02 e addebiti USD",
-   "fonte": "Registro ordini divise / estratto conto",
-   "stato": "PARZIALE",
-   "data": "2026-11-23"
+   "fonte": "Estratto conto USD",
+   "stato": "OK",
+   "data": "2026-11-24"
   },
   {
-   "voce": "FWRA T1-05: annullamento",
+   "voce": "FWRA T1-05: ordine scaduto, 0 quote, nessun ordine aperto",
    "fonte": "Registro ordini e-banking",
+   "stato": "OK",
+   "data": "2026-11-24"
+  },
+  {
+   "voce": "Sede effettiva e data valuta titoli",
+   "fonte": "PDF contabili e-banking",
    "stato": "DA VERIFICARE",
    "data": null
   },
@@ -198,10 +220,60 @@
    "data": null
   },
   {
-   "voce": "Eseguiti T2 del 24.11.2026",
+   "voce": "Eseguiti T2",
    "fonte": "Registro ordini e-banking",
    "stato": "IN ATTESA",
    "data": null
   }
- ]
+ ],
+ "marche_banca": [
+  {
+   "data": "2026-11-24",
+   "ora": "12:47",
+   "fonte": "e-banking Raiffeisen, estratto di deposito «ETF»",
+   "prezzi": {
+    "WORLD": 3.58,
+    "IWMO": 98.36,
+    "EIMI": 47.7,
+    "ZGLD": 901.3,
+    "EMVL": 87.68
+   },
+   "usdchf": 0.8393,
+   "nota": "Corsi esposti dalla banca in valuta di quotazione; USD/CHF implicito nel controvalore della banca."
+  }
+ ],
+ "studi": {
+  "nota": "Attese dagli studi interni su VITA 5M (pesi 25/25/20/20/5/5), in CHF. Il cono confronta il rendimento reale con la distribuzione attesa: rendimento medio ± 1 e 2 deviazioni standard, scalate con la radice del tempo.",
+  "scenari": [
+   {
+    "id": "base",
+    "nome": "Backtest base 06/2019–2025 (studio 14.10.2026)",
+    "cagr_pct": 10.6,
+    "vol_pct": 11.4,
+    "max_dd_pct": -19.0,
+    "sharpe": 0.94,
+    "principale": true
+   },
+   {
+    "id": "lungo",
+    "nome": "Backtest lungo 03/2007–10/2026 (studio 14.10.2026)",
+    "cagr_pct": 6.9,
+    "vol_pct": 12.4,
+    "max_dd_pct": -45.2
+   },
+   {
+    "id": "anno2026",
+    "nome": "Test reale 2026 al 14.10 (studio 14.10.2026)",
+    "rend_pct": 16.7,
+    "max_dd_pct": -9.0
+   }
+  ]
+ },
+ "obiettivo": {
+  "testo": "Battere S&P 500 e MSCI World (total return, in CHF)",
+  "benchmark": [
+   "S&P 500 TR (CHF)",
+   "MSCI World TR (CHF)"
+  ]
+ }
 }

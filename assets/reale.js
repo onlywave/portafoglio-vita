@@ -247,7 +247,7 @@ async function caricaIntraday(daily){
   if(!q){ box.innerHTML = sez("00","Oggi, in tempo quasi reale") +
     `<div class="flag"><b>Quotazione intraday non ancora disponibile.</b> Si aggiorna ogni 15 minuti nei giorni di borsa.</div>`; return; }
   const B=q.benchmark||{}, bs=B[BN[0]], bw=B[BN[1]];
-  const aperta = q.giorno > daily.asof;
+  const aperta = INTRA_VALIDA(q, daily);
   box.innerHTML = sez("00","Oggi, in tempo quasi reale",
       `seduta del ${dIT(q.giorno)} · ultimo prezzo ${q.ultimo_prezzo} · aggiornato ${new Date(q.aggiornato).toLocaleTimeString("it-CH",{hour:"2-digit",minute:"2-digit"})} · ritardo ~15-20 min`) +
     `<div class="tiles">
@@ -274,8 +274,8 @@ function renderTrading(d, W){
   const T = d.trading, box = document.getElementById("trading");
   if(!T || !box) return;
   const F = T.finestre, f = F[String(W)], nomi = ["VITA 5M", ...BN];
-  const oggi = {}; if(INTRA && INTRA.giorno > d.asof) INTRA.linee.forEach(l=>oggi[l.ticker]=l);
-  const qOggi = INTRA && INTRA.giorno > d.asof ? INTRA : null;
+  const oggi = {}; if(INTRA_VALIDA(INTRA, d)) INTRA.linee.forEach(l=>oggi[l.ticker]=l);
+  const qOggi = INTRA_VALIDA(INTRA, d) ? INTRA : null;
   const bottoni = FINS.map(k=>`<button class="${+k===W?"on":""}" data-w="${k}">${k} sedute</button>`).join("");
   let h = sez("TR","Cruscotto sala trading", `finestra ${dIT(f.da)} – ${dIT(f.a)} · ${f.live_disponibile?"dati reali":"pro forma a pesi correnti"}`);
   h += `<div class="panel"><div class="periodo"><div class="presets" id="finbtn">${bottoni}</div>
@@ -333,7 +333,7 @@ function renderHero(d){
   const m = (location.hash||"").match(/cap=(\d+)/);
   if(m){ scriviCap(+m[1]); try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){} }
   const cap = d.capitale_chf || leggiCap();
-  const q = INTRA && INTRA.giorno > d.asof ? INTRA : null;
+  const q = INTRA_VALIDA(INTRA, d) ? INTRA : null;
   const vq = d.valore_quota * (q ? 1 + (q.var_oggi_pct||0)/100 : 1), cq = d.costo_quota;
   const rend = (vq/cq - 1)*100, FB = d.finestre_brevi || {};
   const oggiV = q ? q.var_oggi_pct : (FB["1"]||{})["VITA 5M"];
@@ -341,7 +341,9 @@ function renderHero(d){
   const W = [["oggi","Oggi"],["3","3 giorni"],["5","1 settimana"],["21","1 mese"]];
   const val = (k,n) => k==="oggi" ? (n==="VITA 5M"?oggiV:bOggi(n)) : (FB[k]||{})[n];
   const pf = k => k!=="oggi" && (FB[k]||{}).fonte==="pro forma";
-  const quando = q ? `stima intraday · ultimo prezzo ${q.ultimo_prezzo}` : `chiusura del ${dIT(d.asof)}`;
+  const mf = q ? MINUTI_FA(q.aggiornato) : null;
+  const quando = q ? `prezzi delle ${q.ultimo_prezzo} (Yahoo, ritardo ~15-20 min) · letto ${mf} min fa${mf>45?' <b style="color:#ffcf6b">· dato non aggiornato</b>':""}`
+                   : `chiusura del ${dIT(d.asof)}${INTRA&&INTRA.giorno===d.asof?" · borsa chiusa":""}`;
   const kpi = (k,v,c="",n="") => `<div class="hx-k"><div class="hx-kl">${k}</div><div class="hx-kv ${c}">${v}</div>${n?`<div class="hx-kn">${n}</div>`:""}</div>`;
   const twr = d.live.rend_twr_pct;  // stessa base dei benchmark: chiusura del giorno d'inception
   const ex = n => twr - (d.live.bench_pct[n]||0);
@@ -417,3 +419,9 @@ function renderHero(d){
   if(rs) rs.addEventListener("click",e=>{ e.preventDefault(); scriviCap(null); renderHero(d); });
 }
 const MB_ULT = d => (d.marche_banca||[]).at(-1);
+
+/* la quotazione intraday vale se riguarda una seduta successiva all'ultima chiusura
+   del file giornaliero (che contiene solo sedute chiuse) */
+const INTRA_VALIDA = (q, d) => !!(q && q.giorno > d.asof);
+/* freschezza: quanti minuti fa e' stato generato il dato mostrato */
+const MINUTI_FA = iso => Math.round((Date.now() - new Date(iso).getTime())/60000);

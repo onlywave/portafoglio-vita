@@ -64,6 +64,11 @@ def storia(cands: list[str], start: str) -> tuple[pd.Series, str]:
             h.index = pd.DatetimeIndex(h.index).tz_localize(None).normalize()
             s = h["Close"].astype(float)
             s = s[~s.index.duplicated(keep="last")]
+            # solo sedute chiuse: la seduta in corso la gestisce intraday.py.
+            # Prima delle 21:15 UTC (chiusura USA 21:00 UTC) la barra di oggi e' parziale.
+            ora = pd.Timestamp.now(tz="UTC")
+            if len(s) and s.index[-1] >= ora.tz_localize(None).normalize() and (ora.hour, ora.minute) < (21, 15):
+                s = s.iloc[:-1]
             if sym.endswith(".L") and s.median() > 500:  # GBp
                 s = s / 100.0
             return s, sym

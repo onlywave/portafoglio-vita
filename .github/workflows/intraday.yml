@@ -6,7 +6,7 @@ name: intraday-vita5m-reale
 # main non si riempie di commit e Pages non viene ripubblicato ogni 15 minuti.
 on:
   schedule:
-    - cron: "*/15 7-21 * * 1-5"
+    - cron: "4,19,34,49 7-21 * * 1-5"  # minuti sfalsati: GitHub ritarda o salta i cron sui quarti d'ora
   workflow_dispatch:
 
 permissions:

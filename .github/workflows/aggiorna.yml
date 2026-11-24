@@ -7,7 +7,7 @@ name: aggiorna-dati
 # cambia la composizione alla fonte (Google Finance, Quantistik).
 on:
   schedule:
-    - cron: "30 20 * * 1-5"   # lun-ven 20:30 UTC, dopo la chiusura delle borse europee
+    - cron: "37 21 * * 1-5"   # lun-ven 21:37 UTC, dopo la chiusura USA (solo sedute chiuse)
   workflow_dispatch:
 
 permissions:

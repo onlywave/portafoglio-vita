@@ -93,7 +93,7 @@
    "id": "T1",
    "data": "2026-11-23",
    "stato": "eseguita",
-   "nota": "6 linee su 6. 23.11: 5 linee (FWRA scaduto). 24.11 completamento consulente: FWRA 6.801 a CHF 7,33 (14:13), IWMO +46 a USD 96,6525 (13:30), spot USD 1.000 a 0,8416; WORLD 249 non eseguito, annullamento in corso. Riconciliazione 23.11 al centesimo; completamento 24.11 da contabile"
+   "nota": "6 linee su 6. 23.11: 5 linee (FWRA scaduto). 24.11 completamento consulente: FWRA 6.801 a CHF 7,33 (14:13), IWMO +46 a USD 96,6525 (13:30), spot USD 1.000 a 0,8416; WORLD 249 (T1-09) risultato poi eseguito a 3,563; 25.11 nuovo WORLD 249 (T1-10) a 3,5175, possibile doppione. Riconciliazione 23.11 al centesimo; completamento 24.11 da contabile"
   },
   {
    "id": "T2",
@@ -178,6 +178,26 @@
    "quota": 0.0012536733,
    "stato": "STIMA da registro ordini e-banking (24.11.2026 22:21): lordo eseguito + bollo 0,15% stimato; addebito netto da riconciliare con contabile; USD finanziati con residuo T1 al cambio 0,84555 e spot T1-FX-03 USD 1.000 a 0,8416",
    "prezzo_eseguito": 96.6525
+  },
+  {
+   "rif": "T1-09",
+   "data": "2026-11-24",
+   "ticker": "WORLD",
+   "prezzo": 3.5683445,
+   "fx_chf": 1,
+   "quota": 0.0002961726,
+   "stato": "STIMA da notifica email Raiffeisen (25.11.2026): lordo eseguito + bollo 0,15% stimato; addebito netto da riconciliare con contabile — ordine del 24.11 13:28 dato per annullato, risulta Completo il 25.11 10:13",
+   "prezzo_eseguito": 3.563
+  },
+  {
+   "rif": "T1-10",
+   "data": "2026-11-25",
+   "ticker": "WORLD",
+   "prezzo": 3.52277625,
+   "fx_chf": 1,
+   "quota": 0.0002923904,
+   "stato": "STIMA da notifica email Raiffeisen (25.11.2026): lordo eseguito + bollo 0,15% stimato; addebito netto da riconciliare con contabile — nuovo ordine 25.11 15:34 della stessa quantità: possibile doppione di T1-09, da chiarire col consulente",
+   "prezzo_eseguito": 3.5175
   }
  ],
  "costi_tranche": [
@@ -252,16 +272,22 @@
    "data": null
   },
   {
-   "voce": "WORLD 249 quote (lim. CHF 3,563): 0% eseguito, annullamento in corso",
-   "fonte": "Registro ordini e-banking",
-   "stato": "DA VERIFICARE",
-   "data": "2026-11-24"
+   "voce": "WORLD 249 quote T1-09 (24.11, lim. CHF 3,563): risulta COMPLETO a 3,563 (email banca 25.11 10:13), non annullato",
+   "fonte": "Notifica email Raiffeisen e-banking",
+   "stato": "OK",
+   "data": "2026-11-25"
   },
   {
    "voce": "Eseguiti T2",
    "fonte": "Registro ordini e-banking",
    "stato": "IN ATTESA",
    "data": null
+  },
+  {
+   "voce": "WORLD 249 quote T1-10 (25.11 15:34) a CHF 3,5175: possibile doppione di T1-09; deposito e addebiti T1-09/T1-10 da confermare",
+   "fonte": "E-banking / consulente / contabili",
+   "stato": "DA VERIFICARE",
+   "data": "2026-11-25"
   }
  ],
  "marche_banca": [

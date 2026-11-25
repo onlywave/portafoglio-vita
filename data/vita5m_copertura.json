@@ -1,6 +1,6 @@
 {
  "asof": "2026-11-24",
- "generato": "2026-11-25T15:06:54+00:00",
+ "generato": "2026-11-25T16:36:37+00:00",
  "regola": {
   "media": "esponenziale a 10 mesi su chiusure di fine mese",
   "banda_pct": 1.0,

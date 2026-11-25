@@ -4,15 +4,15 @@
  "base_currency": "CHF",
  "inception": "2026-11-23",
  "asof": "2026-11-24",
- "generato": "2026-11-25T15:06:57+00:00",
+ "generato": "2026-11-25T16:36:40+00:00",
  "nota_privacy": "Importi in CHF calcolati dal capitale del programma (CHF 3.000.000) e dalle quote d'acquisto riconciliate con le contabili Raiffeisen. La pagina è raggiungibile da chiunque abbia il link.",
- "programma_investito_pct": 33.11,
+ "programma_investito_pct": 33.08,
  "tranches": [
   {
    "id": "T1",
    "data": "2026-11-23",
    "stato": "eseguita",
-   "nota": "6 linee su 6. 23.11: 5 linee (FWRA scaduto). 24.11 completamento consulente: FWRA 6.801 a CHF 7,33 (14:13), IWMO +46 a USD 96,6525 (13:30), spot USD 1.000 a 0,8416; WORLD 249 (T1-09) risultato poi eseguito a 3,563; 25.11 nuovo WORLD 249 (T1-10) a 3,5175, possibile doppione. Riconciliazione 23.11 al centesimo; completamento 24.11 da contabile"
+   "nota": "6 linee su 6. 23.11: 5 linee (FWRA scaduto). 24.11 completamento consulente: FWRA 6.801 a CHF 7,33 (14:13), IWMO +46 a USD 96,6525 (13:30), spot USD 1.000 a 0,8416; WORLD 249 (T1-09) eseguito a 3,563 per errore e stornato (25.11); WORLD 249 (T1-10) a 3,5175 valido. Riconciliazione 23.11 al centesimo; completamento 24.11 da contabile"
   },
   {
    "id": "T2",
@@ -67,11 +67,11 @@
  "exante": {
   "pesi_correnti": {
    "n": 766,
-   "rend_pct": 55.7,
+   "rend_pct": 55.71,
    "cagr_pct": 15.68,
    "vol_pct": 15.27,
    "max_dd_pct": -16.94,
-   "dd_corrente_pct": -14.58,
+   "dd_corrente_pct": -14.59,
    "var95_1d_pct": 1.4,
    "cvar95_1d_pct": 2.36,
    "peggior_giorno_pct": -6.09,
@@ -82,7 +82,7 @@
    "peggior_mese_pct": -7.14,
    "mesi_positivi_pct": 72.22,
    "contributi_rischio_pct": {
-    "WORLD": 19.0,
+    "WORLD": 18.9,
     "IWMO": 33.5,
     "EIMI": 25.2,
     "ZGLD": 11.9,
@@ -96,7 +96,7 @@
      "correlazione": 0.81,
      "tracking_error_pct": 9.79,
      "info_ratio": 0.04,
-     "up_capture_pct": 75.97,
+     "up_capture_pct": 75.98,
      "down_capture_pct": 71.36
     },
     "MSCI World TR (CHF)": {
@@ -104,8 +104,8 @@
      "correlazione": 0.84,
      "tracking_error_pct": 8.86,
      "info_ratio": 0.14,
-     "up_capture_pct": 81.0,
-     "down_capture_pct": 76.41
+     "up_capture_pct": 81.01,
+     "down_capture_pct": 76.42
     }
    },
    "stress": [
@@ -121,7 +121,7 @@
      "nome": "Correzione estate 2024",
      "da": "2024-07-16",
      "a": "2024-08-05",
-     "portafoglio_pct": -11.85,
+     "portafoglio_pct": -11.86,
      "S&P 500 TR (CHF)": -11.86,
      "MSCI World TR (CHF)": -11.76
     },
@@ -129,7 +129,7 @@
      "nome": "Ultimi 3 mesi",
      "da": "2026-08-24",
      "a": "2026-11-24",
-     "portafoglio_pct": -12.15,
+     "portafoglio_pct": -12.16,
      "S&P 500 TR (CHF)": -1.71,
      "MSCI World TR (CHF)": -2.67
     }
@@ -3389,17 +3389,17 @@
    "valuta": "CHF",
    "fonte_prezzi": "WORLD.SW",
    "ter_pct": 0.09,
-   "peso_pct": 25.66,
+   "peso_pct": 25.59,
    "target_pct": 25.0,
-   "scostamento_pp": 0.66,
+   "scostamento_pp": 0.59,
    "rend_dal_carico_pct": 1.02,
    "contributo_pp": 0.25,
    "rend_3a_ann_pct": 12.59,
    "vol_3a_pct": 13.33,
-   "contrib_rischio_corr_pct": 19.0,
+   "contrib_rischio_corr_pct": 18.9,
    "contrib_rischio_tgt_pct": 18.5,
-   "valore_quota": 0.0837089518,
-   "costo_quota": 0.0828664993,
+   "valore_quota": 0.0834120608,
+   "costo_quota": 0.0825703267,
    "var_pct": {
     "1": -1.16,
     "3": -1.81,
@@ -3415,9 +3415,9 @@
    "valuta": "USD",
    "fonte_prezzi": "IWMO.SW",
    "ter_pct": 0.25,
-   "peso_pct": 25.03,
+   "peso_pct": 25.05,
    "target_pct": 25.0,
-   "scostamento_pp": 0.03,
+   "scostamento_pp": 0.05,
    "rend_dal_carico_pct": -0.94,
    "contributo_pp": -0.24,
    "rend_3a_ann_pct": 14.78,
@@ -3441,9 +3441,9 @@
    "valuta": "USD",
    "fonte_prezzi": "EIMI.SW",
    "ter_pct": 0.18,
-   "peso_pct": 20.52,
+   "peso_pct": 20.54,
    "target_pct": 20.0,
-   "scostamento_pp": 0.52,
+   "scostamento_pp": 0.54,
    "rend_dal_carico_pct": -3.59,
    "contributo_pp": -0.75,
    "rend_3a_ann_pct": 12.69,
@@ -3467,9 +3467,9 @@
    "valuta": "CHF",
    "fonte_prezzi": "ZGLD.SW",
    "ter_pct": 0.4,
-   "peso_pct": 18.56,
+   "peso_pct": 18.57,
    "target_pct": 20.0,
-   "scostamento_pp": -1.44,
+   "scostamento_pp": -1.43,
    "rend_dal_carico_pct": -2.72,
    "contributo_pp": -0.51,
    "rend_3a_ann_pct": 18.37,
@@ -3519,9 +3519,9 @@
    "valuta": "USD",
    "fonte_prezzi": "EMVL.L",
    "ter_pct": 0.4,
-   "peso_pct": 5.14,
+   "peso_pct": 5.15,
    "target_pct": 5.0,
-   "scostamento_pp": 0.14,
+   "scostamento_pp": 0.15,
    "rend_dal_carico_pct": -3.66,
    "contributo_pp": -0.19,
    "rend_3a_ann_pct": 24.27,
@@ -3583,8 +3583,8 @@
  "capitale_chf": 3000000,
  "annuo_reale_pct": null,
  "annuo_bench_pct": null,
- "valore_quota": 0.3262765442,
- "costo_quota": 0.3310764367,
+ "valore_quota": 0.3259796532,
+ "costo_quota": 0.3307802641,
  "trading": {
   "finestre": {
    "3": {
@@ -3592,7 +3592,7 @@
     "a": "2026-11-24",
     "VITA 5M": {
      "rend_pct": -3.3,
-     "vol_pct": 69.18,
+     "vol_pct": 69.2,
      "sharpe": -3.82,
      "max_dd_pct": -2.79,
      "var95_1d_pct": 7.17,
@@ -3663,10 +3663,10 @@
     "a": "2026-11-24",
     "VITA 5M": {
      "rend_pct": -4.31,
-     "vol_pct": 49.16,
+     "vol_pct": 49.17,
      "sharpe": -4.3,
      "max_dd_pct": -4.64,
-     "var95_1d_pct": 5.09,
+     "var95_1d_pct": 5.1,
      "giorni_pos_pct": 20.0,
      "miglior_pct": 3.91,
      "peggior_pct": -4.27,
@@ -3734,10 +3734,10 @@
     "a": "2026-11-24",
     "VITA 5M": {
      "rend_pct": -6.83,
-     "vol_pct": 40.48,
+     "vol_pct": 40.49,
      "sharpe": -6.09,
      "max_dd_pct": -6.9,
-     "var95_1d_pct": 4.19,
+     "var95_1d_pct": 4.2,
      "giorni_pos_pct": 14.0,
      "miglior_pct": 3.91,
      "peggior_pct": -4.27,
@@ -3805,7 +3805,7 @@
     "a": "2026-11-24",
     "VITA 5M": {
      "rend_pct": -6.51,
-     "vol_pct": 33.56,
+     "vol_pct": 33.57,
      "sharpe": -3.2,
      "max_dd_pct": -8.8,
      "var95_1d_pct": 3.48,
@@ -3845,7 +3845,7 @@
      },
      "IWMO": {
       "rend_pct": -9.0,
-      "contrib_pp": -2.25,
+      "contrib_pp": -2.26,
       "vol_pct": 43.6
      },
      "EIMI": {
@@ -3875,10 +3875,10 @@
     "da": "2026-10-14",
     "a": "2026-11-24",
     "VITA 5M": {
-     "rend_pct": -12.81,
-     "vol_pct": 26.51,
+     "rend_pct": -12.82,
+     "vol_pct": 26.52,
      "sharpe": -4.21,
-     "max_dd_pct": -12.79,
+     "max_dd_pct": -12.8,
      "var95_1d_pct": 2.75,
      "giorni_pos_pct": 30.0,
      "miglior_pct": 3.91,
@@ -3911,7 +3911,7 @@
     "asset": {
      "WORLD": {
       "rend_pct": -7.39,
-      "contrib_pp": -1.9,
+      "contrib_pp": -1.89,
       "vol_pct": 18.47
      },
      "IWMO": {
@@ -4011,12 +4011,12 @@
     "valuta": "USD"
    },
    "VITA 5M (pesi correnti)": {
-    "ultimo": 155.7037,
-    "sma50": 172.4715,
-    "sma200": 169.1461,
-    "dist_sma50_pct": -9.72,
+    "ultimo": 155.7139,
+    "sma50": 172.4898,
+    "sma200": 169.1646,
+    "dist_sma50_pct": -9.73,
     "dist_sma200_pct": -7.95,
-    "dist_max52s_pct": -14.58,
+    "dist_max52s_pct": -14.59,
     "trend": "misto",
     "incrocio": "golden cross",
     "valuta": "indice CHF"
@@ -4084,14 +4084,14 @@
   },
   {
    "controllo": "Scostamento massimo dai pesi obiettivo",
-   "valore": 1.44,
+   "valore": 1.43,
    "soglia": 2.0,
    "unita": "pp",
    "stato": "OK"
   },
   {
    "controllo": "Oro (ZGLD) sul portafoglio",
-   "valore": 18.56,
+   "valore": 18.57,
    "soglia": 20.0,
    "unita": "%",
    "stato": "OK"
@@ -4119,7 +4119,7 @@
   },
   {
    "controllo": "Extra-rendimento vs S&P 500 dall'inizio",
-   "valore": -1.59,
+   "valore": -1.6,
    "soglia": 0.0,
    "unita": "pp",
    "stato": "ALLERTA"
@@ -4231,9 +4231,9 @@
    "data": null
   },
   {
-   "voce": "WORLD 249 quote T1-09 (24.11, lim. CHF 3,563): risulta COMPLETO a 3,563 (email banca 25.11 10:13), non annullato",
+   "voce": "WORLD 249 quote T1-09 (24.11, CHF 3,563): doppione STORNATO per decisione di Emanuele (25.11); contabile di storno da verificare",
    "fonte": "Notifica email Raiffeisen e-banking",
-   "stato": "OK",
+   "stato": "DA VERIFICARE",
    "data": "2026-11-25"
   },
   {
@@ -4243,9 +4243,9 @@
    "data": null
   },
   {
-   "voce": "WORLD 249 quote T1-10 (25.11 15:34) a CHF 3,5175: possibile doppione di T1-09; deposito e addebiti T1-09/T1-10 da confermare",
+   "voce": "WORLD 249 quote T1-10 (25.11, CHF 3,5175): ordine valido; WORLD totale 70.206 quote",
    "fonte": "E-banking / consulente / contabili",
-   "stato": "DA VERIFICARE",
+   "stato": "OK",
    "data": "2026-11-25"
   }
  ],
@@ -4255,7 +4255,7 @@
    "ora": "12:47",
    "fonte": "e-banking Raiffeisen, estratto di deposito «ETF»",
    "usdchf": 0.8393,
-   "rend_dal_costo_netto_pct": -4.468,
+   "rend_dal_costo_netto_pct": -4.472,
    "liquidita_quota": 0.6871077684,
    "linee": [
     {
@@ -4410,16 +4410,16 @@
   "benchmark": [
    {
     "nome": "S&P 500 TR (CHF)",
-    "extra_pp": -1.59,
+    "extra_pp": -1.6,
     "stato": "SOTTO",
     "te_exante_pct": 9.91,
     "banda1_pp": 0.62,
-    "z": -2.55,
+    "z": -2.56,
     "sedute_sopra_pct": 0.0,
     "info_ratio_exante": 0.04,
     "serie_extra": [
      0.0,
-     -1.59
+     -1.6
     ]
    },
    {
@@ -4496,20 +4496,12 @@
    "stato": "STIMA da registro ordini e-banking (24.11.2026 22:21): lordo eseguito + bollo 0,15% stimato; addebito netto da riconciliare con contabile; USD finanziati con residuo T1 al cambio 0,84555 e spot T1-FX-03 USD 1.000 a 0,8416"
   },
   {
-   "rif": "T1-09",
-   "data": "2026-11-24",
-   "ticker": "WORLD",
-   "prezzo": 3.5683445,
-   "prezzo_eseguito": 3.563,
-   "stato": "STIMA da notifica email Raiffeisen (25.11.2026): lordo eseguito + bollo 0,15% stimato; addebito netto da riconciliare con contabile — ordine del 24.11 13:28 dato per annullato, risulta Completo il 25.11 10:13"
-  },
-  {
    "rif": "T1-10",
    "data": "2026-11-25",
    "ticker": "WORLD",
    "prezzo": 3.52277625,
    "prezzo_eseguito": 3.5175,
-   "stato": "STIMA da notifica email Raiffeisen (25.11.2026): lordo eseguito + bollo 0,15% stimato; addebito netto da riconciliare con contabile — nuovo ordine 25.11 15:34 della stessa quantità: possibile doppione di T1-09, da chiarire col consulente"
+   "stato": "STIMA da notifica email Raiffeisen (25.11.2026): lordo eseguito + bollo 0,15% stimato; addebito netto da riconciliare con contabile — ordine valido; il doppione T1-09 del 24.11 è stornato (decisione Emanuele 25.11.2026)"
   }
  ],
  "fonti": {

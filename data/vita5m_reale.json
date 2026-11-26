@@ -3,10 +3,10 @@
  "label": "VITA 5M · investimento reale",
  "base_currency": "CHF",
  "inception": "2026-11-23",
- "asof": "2026-11-24",
- "generato": "2026-11-25T16:36:40+00:00",
+ "asof": "2026-11-25",
+ "generato": "2026-11-26T03:45:09+00:00",
  "nota_privacy": "Importi in CHF calcolati dal capitale del programma (CHF 3.000.000) e dalle quote d'acquisto riconciliate con le contabili Raiffeisen. La pagina è raggiungibile da chiunque abbia il link.",
- "programma_investito_pct": 33.08,
+ "programma_investito_pct": 33.11,
  "tranches": [
   {
    "id": "T1",
@@ -29,12 +29,21 @@
  ],
  "live": {
   "rend_twr_pct": -2.84,
-  "rend_giorno_pct": -2.84,
+  "rend_giorno_pct": 0.0,
   "giorno_esecuzione_pct": 1.34,
   "rend_dal_costo_pct": -1.45,
   "vol20_pct": null,
   "stats": {
-   "n": 1
+   "n": 2,
+   "rend_pct": -2.84,
+   "cagr_pct": null,
+   "vol_pct": 31.86,
+   "max_dd_pct": 0.0,
+   "dd_corrente_pct": 0.0,
+   "var95_1d_pct": null,
+   "cvar95_1d_pct": null,
+   "peggior_giorno_pct": -2.84,
+   "miglior_giorno_pct": 0.0
   },
   "relativo": {},
   "bench_pct": {
@@ -44,45 +53,50 @@
   "serie": {
    "date": [
     "2026-11-23",
-    "2026-11-24"
+    "2026-11-24",
+    "2026-11-25"
    ],
    "VITA 5M (TWR)": [
     100.0,
+    97.16,
     97.16
    ],
    "S&P 500 TR (CHF)": [
     100.0,
+    98.76,
     98.76
    ],
    "MSCI World TR (CHF)": [
     100.0,
+    99.01,
     99.01
    ],
    "drawdown": [
     0.0,
+    -2.84,
     -2.84
    ]
   }
  },
  "exante": {
   "pesi_correnti": {
-   "n": 766,
-   "rend_pct": 55.71,
-   "cagr_pct": 15.68,
-   "vol_pct": 15.27,
+   "n": 767,
+   "rend_pct": 55.7,
+   "cagr_pct": 15.66,
+   "vol_pct": 15.26,
    "max_dd_pct": -16.94,
-   "dd_corrente_pct": -14.59,
+   "dd_corrente_pct": -14.58,
    "var95_1d_pct": 1.4,
    "cvar95_1d_pct": 2.36,
    "peggior_giorno_pct": -6.09,
    "miglior_giorno_pct": 4.96,
    "sharpe": 1.03,
-   "calmar": 0.93,
+   "calmar": 0.92,
    "sortino": 1.44,
    "peggior_mese_pct": -7.14,
    "mesi_positivi_pct": 72.22,
    "contributi_rischio_pct": {
-    "WORLD": 18.9,
+    "WORLD": 19.0,
     "IWMO": 33.5,
     "EIMI": 25.2,
     "ZGLD": 11.9,
@@ -94,9 +108,9 @@
     "S&P 500 TR (CHF)": {
      "beta": 0.75,
      "correlazione": 0.81,
-     "tracking_error_pct": 9.79,
+     "tracking_error_pct": 9.78,
      "info_ratio": 0.04,
-     "up_capture_pct": 75.98,
+     "up_capture_pct": 75.97,
      "down_capture_pct": 71.36
     },
     "MSCI World TR (CHF)": {
@@ -104,8 +118,8 @@
      "correlazione": 0.84,
      "tracking_error_pct": 8.86,
      "info_ratio": 0.14,
-     "up_capture_pct": 81.01,
-     "down_capture_pct": 76.42
+     "up_capture_pct": 81.0,
+     "down_capture_pct": 76.41
     }
    },
    "stress": [
@@ -121,25 +135,25 @@
      "nome": "Correzione estate 2024",
      "da": "2024-07-16",
      "a": "2024-08-05",
-     "portafoglio_pct": -11.86,
+     "portafoglio_pct": -11.85,
      "S&P 500 TR (CHF)": -11.86,
      "MSCI World TR (CHF)": -11.76
     },
     {
      "nome": "Ultimi 3 mesi",
-     "da": "2026-08-24",
-     "a": "2026-11-24",
-     "portafoglio_pct": -12.16,
-     "S&P 500 TR (CHF)": -1.71,
-     "MSCI World TR (CHF)": -2.67
+     "da": "2026-08-25",
+     "a": "2026-11-25",
+     "portafoglio_pct": -11.75,
+     "S&P 500 TR (CHF)": -1.51,
+     "MSCI World TR (CHF)": -2.53
     }
    ]
   },
   "pesi_obiettivo": {
-   "n": 766,
+   "n": 767,
    "rend_pct": 56.04,
-   "cagr_pct": 15.76,
-   "vol_pct": 15.19,
+   "cagr_pct": 15.74,
+   "vol_pct": 15.18,
    "max_dd_pct": -16.71,
    "dd_corrente_pct": -14.6,
    "var95_1d_pct": 1.4,
@@ -197,20 +211,20 @@
     },
     {
      "nome": "Ultimi 3 mesi",
-     "da": "2026-08-24",
-     "a": "2026-11-24",
-     "portafoglio_pct": -12.3,
-     "S&P 500 TR (CHF)": -1.71,
-     "MSCI World TR (CHF)": -2.67
+     "da": "2026-08-25",
+     "a": "2026-11-25",
+     "portafoglio_pct": -11.92,
+     "S&P 500 TR (CHF)": -1.51,
+     "MSCI World TR (CHF)": -2.53
     }
    ]
   },
   "benchmark": {
    "S&P 500 TR (CHF)": {
-    "n": 766,
+    "n": 767,
     "rend_pct": 54.25,
-    "cagr_pct": 15.33,
-    "vol_pct": 16.48,
+    "cagr_pct": 15.3,
+    "vol_pct": 16.47,
     "max_dd_pct": -23.95,
     "dd_corrente_pct": -7.44,
     "var95_1d_pct": 1.43,
@@ -224,10 +238,10 @@
     "mesi_positivi_pct": 63.89
    },
    "MSCI World TR (CHF)": {
-    "n": 766,
+    "n": 767,
     "rend_pct": 50.83,
-    "cagr_pct": 14.48,
-    "vol_pct": 15.95,
+    "cagr_pct": 14.46,
+    "vol_pct": 15.94,
     "max_dd_pct": -22.57,
     "dd_corrente_pct": -6.92,
     "var95_1d_pct": 1.42,
@@ -236,14 +250,14 @@
     "miglior_giorno_pct": 6.42,
     "sharpe": 0.91,
     "calmar": 0.64,
-    "sortino": 1.28,
+    "sortino": 1.27,
     "peggior_mese_pct": -6.4,
     "mesi_positivi_pct": 66.67
    }
   },
   "finestra": [
    "2023-11-27",
-   "2026-11-24"
+   "2026-11-25"
   ],
   "equity_3a": {
    "date": [
@@ -1012,7 +1026,8 @@
     "2026-11-19",
     "2026-11-20",
     "2026-11-23",
-    "2026-11-24"
+    "2026-11-24",
+    "2026-11-25"
    ],
    "VITA 5M (pesi obiettivo)": [
     99.71,
@@ -1780,6 +1795,7 @@
     161.4,
     154.51,
     160.55,
+    156.04,
     156.04
    ],
    "S&P 500 TR (CHF)": [
@@ -2548,6 +2564,7 @@
     157.78,
     152.54,
     156.19,
+    154.25,
     154.25
    ],
    "MSCI World TR (CHF)": [
@@ -3316,6 +3333,7 @@
     153.89,
     149.28,
     152.33,
+    150.83,
     150.83
    ]
   },
@@ -3389,22 +3407,22 @@
    "valuta": "CHF",
    "fonte_prezzi": "WORLD.SW",
    "ter_pct": 0.09,
-   "peso_pct": 25.59,
+   "peso_pct": 25.66,
    "target_pct": 25.0,
-   "scostamento_pp": 0.59,
+   "scostamento_pp": 0.66,
    "rend_dal_carico_pct": 1.02,
-   "contributo_pp": 0.25,
-   "rend_3a_ann_pct": 12.59,
-   "vol_3a_pct": 13.33,
-   "contrib_rischio_corr_pct": 18.9,
+   "contributo_pp": 0.26,
+   "rend_3a_ann_pct": 12.57,
+   "vol_3a_pct": 13.32,
+   "contrib_rischio_corr_pct": 19.0,
    "contrib_rischio_tgt_pct": 18.5,
-   "valore_quota": 0.0834120608,
-   "costo_quota": 0.0825703267,
+   "valore_quota": 0.0837089518,
+   "costo_quota": 0.0828627171,
    "var_pct": {
-    "1": -1.16,
-    "3": -1.81,
-    "5": -2.45,
-    "21": -6.19
+    "1": 0.0,
+    "3": 1.37,
+    "5": -2.4,
+    "21": -6.69
    }
   },
   {
@@ -3415,22 +3433,22 @@
    "valuta": "USD",
    "fonte_prezzi": "IWMO.SW",
    "ter_pct": 0.25,
-   "peso_pct": 25.05,
+   "peso_pct": 25.03,
    "target_pct": 25.0,
-   "scostamento_pp": 0.05,
+   "scostamento_pp": 0.03,
    "rend_dal_carico_pct": -0.94,
    "contributo_pp": -0.24,
-   "rend_3a_ann_pct": 14.78,
-   "vol_3a_pct": 22.69,
+   "rend_3a_ann_pct": 14.76,
+   "vol_3a_pct": 22.67,
    "contrib_rischio_corr_pct": 33.5,
    "contrib_rischio_tgt_pct": 33.5,
    "valore_quota": 0.0816707041,
    "costo_quota": 0.0824496977,
    "var_pct": {
-    "1": -3.43,
-    "3": -5.21,
-    "5": -5.1,
-    "21": -12.54
+    "1": 0.0,
+    "3": 0.0,
+    "5": -4.89,
+    "21": -14.11
    }
   },
   {
@@ -3441,22 +3459,22 @@
    "valuta": "USD",
    "fonte_prezzi": "EIMI.SW",
    "ter_pct": 0.18,
-   "peso_pct": 20.54,
+   "peso_pct": 20.52,
    "target_pct": 20.0,
-   "scostamento_pp": 0.54,
+   "scostamento_pp": 0.52,
    "rend_dal_carico_pct": -3.59,
    "contributo_pp": -0.75,
-   "rend_3a_ann_pct": 12.69,
-   "vol_3a_pct": 21.02,
+   "rend_3a_ann_pct": 12.67,
+   "vol_3a_pct": 21.0,
    "contrib_rischio_corr_pct": 25.2,
    "contrib_rischio_tgt_pct": 24.6,
    "valore_quota": 0.0669606574,
    "costo_quota": 0.0694546326,
    "var_pct": {
-    "1": -3.19,
-    "3": -2.55,
-    "5": -2.93,
-    "21": -6.94
+    "1": 0.0,
+    "3": 2.29,
+    "5": -2.74,
+    "21": -8.46
    }
   },
   {
@@ -3467,22 +3485,22 @@
    "valuta": "CHF",
    "fonte_prezzi": "ZGLD.SW",
    "ter_pct": 0.4,
-   "peso_pct": 18.57,
+   "peso_pct": 18.56,
    "target_pct": 20.0,
-   "scostamento_pp": -1.43,
+   "scostamento_pp": -1.44,
    "rend_dal_carico_pct": -2.72,
    "contributo_pp": -0.51,
-   "rend_3a_ann_pct": 18.37,
-   "vol_3a_pct": 19.39,
+   "rend_3a_ann_pct": 18.35,
+   "vol_3a_pct": 19.38,
    "contrib_rischio_corr_pct": 11.9,
    "contrib_rischio_tgt_pct": 13.3,
    "valore_quota": 0.0605502659,
    "costo_quota": 0.0622429067,
    "var_pct": {
-    "1": -3.72,
-    "3": -3.94,
-    "5": -8.1,
-    "21": -10.41
+    "1": 0.0,
+    "3": 0.19,
+    "5": -5.29,
+    "21": -11.44
    }
   },
   {
@@ -3498,17 +3516,17 @@
    "scostamento_pp": 0.09,
    "rend_dal_carico_pct": -0.23,
    "contributo_pp": -0.01,
-   "rend_3a_ann_pct": 14.23,
-   "vol_3a_pct": 15.25,
+   "rend_3a_ann_pct": 14.21,
+   "vol_3a_pct": 15.24,
    "contrib_rischio_corr_pct": 4.1,
    "contrib_rischio_tgt_pct": 4.0,
    "valore_quota": 0.0166035078,
    "costo_quota": 0.0166420367,
    "var_pct": {
-    "1": -2.39,
-    "3": -2.71,
-    "5": -2.71,
-    "21": -5.61
+    "1": 0.0,
+    "3": 1.09,
+    "5": -3.02,
+    "21": -6.35
    }
   },
   {
@@ -3519,154 +3537,154 @@
    "valuta": "USD",
    "fonte_prezzi": "EMVL.L",
    "ter_pct": 0.4,
-   "peso_pct": 5.15,
+   "peso_pct": 5.14,
    "target_pct": 5.0,
-   "scostamento_pp": 0.15,
+   "scostamento_pp": 0.14,
    "rend_dal_carico_pct": -3.66,
    "contributo_pp": -0.19,
-   "rend_3a_ann_pct": 24.27,
-   "vol_3a_pct": 22.36,
+   "rend_3a_ann_pct": 24.24,
+   "vol_3a_pct": 22.34,
    "contrib_rischio_corr_pct": 6.4,
    "contrib_rischio_tgt_pct": 6.2,
    "valore_quota": 0.0167824572,
    "costo_quota": 0.0174206637,
    "var_pct": {
-    "1": -3.14,
-    "3": -2.77,
-    "5": -3.02,
-    "21": -8.57
+    "1": 0.0,
+    "3": 1.82,
+    "5": -2.83,
+    "21": -10.62
    }
   }
  ],
  "finestre_brevi": {
   "1": {
    "fonte": "reale",
-   "da": "2026-11-24",
-   "a": "2026-11-24",
-   "VITA 5M": -2.84,
-   "S&P 500 TR (CHF)": -1.24,
-   "MSCI World TR (CHF)": -0.99
+   "da": "2026-11-25",
+   "a": "2026-11-25",
+   "VITA 5M": 0.0,
+   "S&P 500 TR (CHF)": 0.0,
+   "MSCI World TR (CHF)": 0.0
   },
   "3": {
    "fonte": "pro forma",
-   "da": "2026-11-20",
-   "a": "2026-11-24",
-   "VITA 5M": -3.3,
-   "S&P 500 TR (CHF)": -2.23,
-   "MSCI World TR (CHF)": -1.99
+   "da": "2026-11-23",
+   "a": "2026-11-25",
+   "VITA 5M": 1.02,
+   "S&P 500 TR (CHF)": 1.12,
+   "MSCI World TR (CHF)": 1.03
   },
   "5": {
    "fonte": "pro forma",
-   "da": "2026-11-18",
-   "a": "2026-11-24",
-   "VITA 5M": -4.31,
-   "S&P 500 TR (CHF)": -2.03,
-   "MSCI World TR (CHF)": -2.28
+   "da": "2026-11-19",
+   "a": "2026-11-25",
+   "VITA 5M": -3.68,
+   "S&P 500 TR (CHF)": -2.07,
+   "MSCI World TR (CHF)": -1.93
   },
   "21": {
    "fonte": "pro forma",
-   "da": "2026-10-27",
-   "a": "2026-11-24",
-   "VITA 5M": -8.75,
-   "S&P 500 TR (CHF)": -4.69,
-   "MSCI World TR (CHF)": -4.4
+   "da": "2026-10-28",
+   "a": "2026-11-25",
+   "VITA 5M": -9.93,
+   "S&P 500 TR (CHF)": -5.67,
+   "MSCI World TR (CHF)": -5.27
   },
   "252": {
    "fonte": "pro forma",
-   "da": "2025-11-28",
-   "a": "2026-11-24",
-   "VITA 5M": 4.37,
-   "S&P 500 TR (CHF)": 11.02,
-   "MSCI World TR (CHF)": 11.14
+   "da": "2025-12-01",
+   "a": "2026-11-25",
+   "VITA 5M": 3.77,
+   "S&P 500 TR (CHF)": 10.48,
+   "MSCI World TR (CHF)": 10.53
   }
  },
  "capitale_chf": 3000000,
  "annuo_reale_pct": null,
  "annuo_bench_pct": null,
- "valore_quota": 0.3259796532,
- "costo_quota": 0.3307802641,
+ "valore_quota": 0.3262765441,
+ "costo_quota": 0.3310726545,
  "trading": {
   "finestre": {
    "3": {
-    "da": "2026-11-20",
-    "a": "2026-11-24",
+    "da": "2026-11-23",
+    "a": "2026-11-25",
     "VITA 5M": {
-     "rend_pct": -3.3,
-     "vol_pct": 69.2,
-     "sharpe": -3.82,
+     "rend_pct": 1.02,
+     "vol_pct": 53.39,
+     "sharpe": 1.77,
      "max_dd_pct": -2.79,
-     "var95_1d_pct": 7.17,
+     "var95_1d_pct": 5.53,
      "giorni_pos_pct": 33.0,
      "miglior_pct": 3.91,
-     "peggior_pct": -4.27,
-     "beta": 1.67,
-     "corr": 0.97
+     "peggior_pct": -2.79,
+     "beta": 2.17,
+     "corr": 0.99
     },
     "S&P 500 TR (CHF)": {
-     "rend_pct": -2.23,
-     "vol_pct": 45.93,
-     "sharpe": -3.96,
+     "rend_pct": 1.12,
+     "vol_pct": 29.36,
+     "sharpe": 3.3,
      "max_dd_pct": -1.24,
-     "var95_1d_pct": 4.76,
+     "var95_1d_pct": 3.04,
      "giorni_pos_pct": 33.0,
      "miglior_pct": 2.4,
-     "peggior_pct": -3.32,
-     "beta": 1.14,
+     "peggior_pct": -1.24,
+     "beta": 1.2,
      "corr": 1.0
     },
     "MSCI World TR (CHF)": {
-     "rend_pct": -1.99,
-     "vol_pct": 40.23,
-     "sharpe": -4.05,
+     "rend_pct": 1.03,
+     "vol_pct": 24.52,
+     "sharpe": 3.61,
      "max_dd_pct": -0.99,
-     "var95_1d_pct": 4.17,
+     "var95_1d_pct": 2.54,
      "giorni_pos_pct": 33.0,
      "miglior_pct": 2.04,
-     "peggior_pct": -2.99
+     "peggior_pct": -0.99
     },
     "asset": {
      "WORLD": {
-      "rend_pct": -1.81,
-      "contrib_pp": -0.46,
-      "vol_pct": 46.0
+      "rend_pct": 1.37,
+      "contrib_pp": 0.35,
+      "vol_pct": 30.26
      },
      "IWMO": {
-      "rend_pct": -5.21,
-      "contrib_pp": -1.3,
-      "vol_pct": 73.6
+      "rend_pct": 0.0,
+      "contrib_pp": 0.0,
+      "vol_pct": 55.51
      },
      "EIMI": {
-      "rend_pct": -2.55,
-      "contrib_pp": -0.52,
-      "vol_pct": 88.97
+      "rend_pct": 2.29,
+      "contrib_pp": 0.47,
+      "vol_pct": 71.09
      },
      "ZGLD": {
-      "rend_pct": -3.94,
-      "contrib_pp": -0.73,
-      "vol_pct": 73.33
+      "rend_pct": 0.19,
+      "contrib_pp": 0.04,
+      "vol_pct": 61.86
      },
      "FWRA": {
-      "rend_pct": -2.71,
-      "contrib_pp": -0.14,
-      "vol_pct": 61.77
+      "rend_pct": 1.09,
+      "contrib_pp": 0.06,
+      "vol_pct": 47.51
      },
      "EMVL": {
-      "rend_pct": -2.77,
-      "contrib_pp": -0.14,
-      "vol_pct": 82.8
+      "rend_pct": 1.82,
+      "contrib_pp": 0.09,
+      "vol_pct": 66.28
      }
     },
     "live_disponibile": false
    },
    "5": {
-    "da": "2026-11-18",
-    "a": "2026-11-24",
+    "da": "2026-11-19",
+    "a": "2026-11-25",
     "VITA 5M": {
-     "rend_pct": -4.31,
-     "vol_pct": 49.17,
-     "sharpe": -4.3,
-     "max_dd_pct": -4.64,
-     "var95_1d_pct": 5.1,
+     "rend_pct": -3.68,
+     "vol_pct": 49.53,
+     "sharpe": -3.6,
+     "max_dd_pct": -4.27,
+     "var95_1d_pct": 5.13,
      "giorni_pos_pct": 20.0,
      "miglior_pct": 3.91,
      "peggior_pct": -4.27,
@@ -3674,82 +3692,82 @@
      "corr": 0.97
     },
     "S&P 500 TR (CHF)": {
-     "rend_pct": -2.03,
-     "vol_pct": 33.27,
-     "sharpe": -2.97,
+     "rend_pct": -2.07,
+     "vol_pct": 33.23,
+     "sharpe": -3.04,
      "max_dd_pct": -3.32,
-     "var95_1d_pct": 3.45,
-     "giorni_pos_pct": 60.0,
+     "var95_1d_pct": 3.44,
+     "giorni_pos_pct": 40.0,
      "miglior_pct": 2.4,
      "peggior_pct": -3.32,
-     "beta": 1.15,
+     "beta": 1.14,
      "corr": 1.0
     },
     "MSCI World TR (CHF)": {
-     "rend_pct": -2.28,
-     "vol_pct": 28.87,
-     "sharpe": -3.9,
+     "rend_pct": -1.93,
+     "vol_pct": 29.05,
+     "sharpe": -3.26,
      "max_dd_pct": -2.99,
-     "var95_1d_pct": 2.99,
+     "var95_1d_pct": 3.01,
      "giorni_pos_pct": 40.0,
      "miglior_pct": 2.04,
      "peggior_pct": -2.99
     },
     "asset": {
      "WORLD": {
-      "rend_pct": -2.45,
-      "contrib_pp": -0.63,
-      "vol_pct": 32.75
+      "rend_pct": -2.4,
+      "contrib_pp": -0.62,
+      "vol_pct": 32.79
      },
      "IWMO": {
-      "rend_pct": -5.1,
-      "contrib_pp": -1.28,
-      "vol_pct": 54.33
+      "rend_pct": -4.89,
+      "contrib_pp": -1.22,
+      "vol_pct": 54.55
      },
      "EIMI": {
-      "rend_pct": -2.93,
-      "contrib_pp": -0.6,
-      "vol_pct": 63.1
+      "rend_pct": -2.74,
+      "contrib_pp": -0.56,
+      "vol_pct": 63.18
      },
      "ZGLD": {
-      "rend_pct": -8.1,
-      "contrib_pp": -1.5,
-      "vol_pct": 53.19
+      "rend_pct": -5.29,
+      "contrib_pp": -0.98,
+      "vol_pct": 52.68
      },
      "FWRA": {
-      "rend_pct": -2.71,
-      "contrib_pp": -0.14,
-      "vol_pct": 44.46
+      "rend_pct": -3.02,
+      "contrib_pp": -0.15,
+      "vol_pct": 44.14
      },
      "EMVL": {
-      "rend_pct": -3.02,
-      "contrib_pp": -0.16,
-      "vol_pct": 58.88
+      "rend_pct": -2.83,
+      "contrib_pp": -0.15,
+      "vol_pct": 58.97
      }
     },
     "live_disponibile": false
    },
    "7": {
-    "da": "2026-11-16",
-    "a": "2026-11-24",
+    "da": "2026-11-17",
+    "a": "2026-11-25",
     "VITA 5M": {
-     "rend_pct": -6.83,
-     "vol_pct": 40.49,
-     "sharpe": -6.09,
-     "max_dd_pct": -6.9,
-     "var95_1d_pct": 4.2,
+     "rend_pct": -5.96,
+     "vol_pct": 40.91,
+     "sharpe": -5.21,
+     "max_dd_pct": -5.27,
+     "var95_1d_pct": 4.24,
      "giorni_pos_pct": 14.0,
      "miglior_pct": 3.91,
      "peggior_pct": -4.27,
-     "beta": 1.49,
+     "beta": 1.5,
      "corr": 0.94
     },
     "S&P 500 TR (CHF)": {
-     "rend_pct": -4.29,
-     "vol_pct": 29.05,
-     "sharpe": -5.29,
-     "max_dd_pct": -5.13,
-     "var95_1d_pct": 3.01,
+     "rend_pct": -4.06,
+     "vol_pct": 29.22,
+     "sharpe": -4.97,
+     "max_dd_pct": -3.32,
+     "var95_1d_pct": 3.03,
      "giorni_pos_pct": 43.0,
      "miglior_pct": 2.4,
      "peggior_pct": -3.32,
@@ -3757,129 +3775,129 @@
      "corr": 1.0
     },
     "MSCI World TR (CHF)": {
-     "rend_pct": -4.48,
-     "vol_pct": 25.49,
-     "sharpe": -6.34,
-     "max_dd_pct": -5.23,
-     "var95_1d_pct": 2.64,
+     "rend_pct": -4.25,
+     "vol_pct": 25.69,
+     "sharpe": -5.95,
+     "max_dd_pct": -3.28,
+     "var95_1d_pct": 2.66,
      "giorni_pos_pct": 29.0,
      "miglior_pct": 2.04,
      "peggior_pct": -2.99
     },
     "asset": {
      "WORLD": {
-      "rend_pct": -5.11,
-      "contrib_pp": -1.31,
-      "vol_pct": 28.52
+      "rend_pct": -4.55,
+      "contrib_pp": -1.17,
+      "vol_pct": 28.86
      },
      "IWMO": {
-      "rend_pct": -8.1,
-      "contrib_pp": -2.03,
-      "vol_pct": 44.88
+      "rend_pct": -7.13,
+      "contrib_pp": -1.78,
+      "vol_pct": 45.43
      },
      "EIMI": {
-      "rend_pct": -6.42,
-      "contrib_pp": -1.32,
-      "vol_pct": 52.58
+      "rend_pct": -5.06,
+      "contrib_pp": -1.04,
+      "vol_pct": 52.67
      },
      "ZGLD": {
-      "rend_pct": -8.49,
-      "contrib_pp": -1.58,
-      "vol_pct": 45.01
+      "rend_pct": -7.86,
+      "contrib_pp": -1.46,
+      "vol_pct": 45.54
      },
      "FWRA": {
-      "rend_pct": -5.61,
-      "contrib_pp": -0.29,
-      "vol_pct": 37.97
+      "rend_pct": -5.03,
+      "contrib_pp": -0.26,
+      "vol_pct": 38.27
      },
      "EMVL": {
-      "rend_pct": -6.44,
-      "contrib_pp": -0.33,
-      "vol_pct": 49.16
+      "rend_pct": -5.18,
+      "contrib_pp": -0.27,
+      "vol_pct": 49.33
      }
     },
     "live_disponibile": false
    },
    "15": {
-    "da": "2026-11-04",
-    "a": "2026-11-24",
+    "da": "2026-11-05",
+    "a": "2026-11-25",
     "VITA 5M": {
-     "rend_pct": -6.51,
-     "vol_pct": 33.57,
-     "sharpe": -3.2,
+     "rend_pct": -7.2,
+     "vol_pct": 33.23,
+     "sharpe": -3.61,
      "max_dd_pct": -8.8,
-     "var95_1d_pct": 3.48,
-     "giorni_pos_pct": 27.0,
+     "var95_1d_pct": 3.44,
+     "giorni_pos_pct": 20.0,
      "miglior_pct": 3.91,
      "peggior_pct": -4.27,
-     "beta": 1.2,
-     "corr": 0.91
+     "beta": 1.25,
+     "corr": 0.92
     },
     "S&P 500 TR (CHF)": {
-     "rend_pct": -2.68,
-     "vol_pct": 28.04,
-     "sharpe": -1.49,
+     "rend_pct": -4.18,
+     "vol_pct": 27.01,
+     "sharpe": -2.52,
      "max_dd_pct": -6.16,
-     "var95_1d_pct": 2.91,
-     "giorni_pos_pct": 47.0,
+     "var95_1d_pct": 2.8,
+     "giorni_pos_pct": 40.0,
      "miglior_pct": 2.4,
      "peggior_pct": -3.32,
      "beta": 1.09,
      "corr": 0.99
     },
     "MSCI World TR (CHF)": {
-     "rend_pct": -2.7,
-     "vol_pct": 25.59,
-     "sharpe": -1.68,
+     "rend_pct": -4.19,
+     "vol_pct": 24.48,
+     "sharpe": -2.82,
      "max_dd_pct": -6.05,
-     "var95_1d_pct": 2.65,
-     "giorni_pos_pct": 40.0,
+     "var95_1d_pct": 2.54,
+     "giorni_pos_pct": 33.0,
      "miglior_pct": 2.04,
      "peggior_pct": -2.99
     },
     "asset": {
      "WORLD": {
-      "rend_pct": -5.12,
-      "contrib_pp": -1.31,
-      "vol_pct": 24.81
+      "rend_pct": -6.45,
+      "contrib_pp": -1.65,
+      "vol_pct": 23.66
      },
      "IWMO": {
-      "rend_pct": -9.0,
-      "contrib_pp": -2.26,
-      "vol_pct": 43.6
+      "rend_pct": -7.52,
+      "contrib_pp": -1.88,
+      "vol_pct": 43.43
      },
      "EIMI": {
-      "rend_pct": -5.16,
-      "contrib_pp": -1.06,
-      "vol_pct": 44.4
+      "rend_pct": -6.21,
+      "contrib_pp": -1.27,
+      "vol_pct": 43.99
      },
      "ZGLD": {
-      "rend_pct": -7.61,
-      "contrib_pp": -1.41,
-      "vol_pct": 37.97
+      "rend_pct": -9.92,
+      "contrib_pp": -1.84,
+      "vol_pct": 35.62
      },
      "FWRA": {
-      "rend_pct": -3.86,
-      "contrib_pp": -0.2,
-      "vol_pct": 30.68
+      "rend_pct": -4.73,
+      "contrib_pp": -0.24,
+      "vol_pct": 30.28
      },
      "EMVL": {
-      "rend_pct": -6.75,
-      "contrib_pp": -0.35,
-      "vol_pct": 45.15
+      "rend_pct": -7.31,
+      "contrib_pp": -0.38,
+      "vol_pct": 44.97
      }
     },
     "live_disponibile": false
    },
    "30": {
-    "da": "2026-10-14",
-    "a": "2026-11-24",
+    "da": "2026-10-15",
+    "a": "2026-11-25",
     "VITA 5M": {
-     "rend_pct": -12.82,
-     "vol_pct": 26.52,
-     "sharpe": -4.21,
-     "max_dd_pct": -12.8,
-     "var95_1d_pct": 2.75,
+     "rend_pct": -11.91,
+     "vol_pct": 26.48,
+     "sharpe": -3.89,
+     "max_dd_pct": -11.93,
+     "var95_1d_pct": 2.74,
      "giorni_pos_pct": 30.0,
      "miglior_pct": 3.91,
      "peggior_pct": -4.27,
@@ -3887,10 +3905,10 @@
      "corr": 0.91
     },
     "S&P 500 TR (CHF)": {
-     "rend_pct": -7.16,
-     "vol_pct": 21.75,
-     "sharpe": -2.76,
-     "max_dd_pct": -7.5,
+     "rend_pct": -6.46,
+     "vol_pct": 21.7,
+     "sharpe": -2.48,
+     "max_dd_pct": -7.17,
      "var95_1d_pct": 2.25,
      "giorni_pos_pct": 43.0,
      "miglior_pct": 2.4,
@@ -3899,45 +3917,45 @@
      "corr": 0.99
     },
     "MSCI World TR (CHF)": {
-     "rend_pct": -6.51,
-     "vol_pct": 20.25,
-     "sharpe": -2.69,
-     "max_dd_pct": -6.75,
-     "var95_1d_pct": 2.1,
+     "rend_pct": -5.78,
+     "vol_pct": 20.19,
+     "sharpe": -2.38,
+     "max_dd_pct": -6.6,
+     "var95_1d_pct": 2.09,
      "giorni_pos_pct": 40.0,
      "miglior_pct": 2.04,
      "peggior_pct": -2.99
     },
     "asset": {
      "WORLD": {
-      "rend_pct": -7.39,
-      "contrib_pp": -1.89,
+      "rend_pct": -6.95,
+      "contrib_pp": -1.78,
       "vol_pct": 18.47
      },
      "IWMO": {
-      "rend_pct": -17.72,
-      "contrib_pp": -4.44,
-      "vol_pct": 35.59
+      "rend_pct": -16.64,
+      "contrib_pp": -4.17,
+      "vol_pct": 35.57
      },
      "EIMI": {
-      "rend_pct": -13.43,
-      "contrib_pp": -2.76,
-      "vol_pct": 34.97
+      "rend_pct": -12.08,
+      "contrib_pp": -2.48,
+      "vol_pct": 34.84
      },
      "ZGLD": {
-      "rend_pct": -14.04,
-      "contrib_pp": -2.61,
-      "vol_pct": 29.49
+      "rend_pct": -13.14,
+      "contrib_pp": -2.44,
+      "vol_pct": 29.48
      },
      "FWRA": {
-      "rend_pct": -7.6,
+      "rend_pct": -7.62,
       "contrib_pp": -0.39,
       "vol_pct": 23.03
      },
      "EMVL": {
-      "rend_pct": -14.64,
-      "contrib_pp": -0.75,
-      "vol_pct": 35.95
+      "rend_pct": -13.4,
+      "contrib_pp": -0.69,
+      "vol_pct": 35.86
      }
     },
     "live_disponibile": false
@@ -4011,22 +4029,22 @@
     "valuta": "USD"
    },
    "VITA 5M (pesi correnti)": {
-    "ultimo": 155.7139,
-    "sma50": 172.4898,
-    "sma200": 169.1646,
-    "dist_sma50_pct": -9.73,
-    "dist_sma200_pct": -7.95,
-    "dist_max52s_pct": -14.59,
+    "ultimo": 155.7037,
+    "sma50": 172.0475,
+    "sma200": 169.1343,
+    "dist_sma50_pct": -9.5,
+    "dist_sma200_pct": -7.94,
+    "dist_max52s_pct": -14.58,
     "trend": "misto",
     "incrocio": "golden cross",
     "valuta": "indice CHF"
    },
    "S&P 500 TR (CHF)": {
     "ultimo": 6.5078,
-    "sma50": 6.8147,
-    "sma200": 6.3781,
-    "dist_sma50_pct": -4.5,
-    "dist_sma200_pct": 2.03,
+    "sma50": 6.8104,
+    "sma200": 6.3824,
+    "dist_sma50_pct": -4.44,
+    "dist_sma200_pct": 1.97,
     "dist_max52s_pct": -7.44,
     "trend": "rialzista",
     "incrocio": "golden cross",
@@ -4034,10 +4052,10 @@
    },
    "MSCI World TR (CHF)": {
     "ultimo": 114.9518,
-    "sma50": 120.1582,
-    "sma200": 113.377,
-    "dist_sma50_pct": -4.33,
-    "dist_sma200_pct": 1.39,
+    "sma50": 120.0674,
+    "sma200": 113.4389,
+    "dist_sma50_pct": -4.26,
+    "dist_sma200_pct": 1.33,
     "dist_max52s_pct": -6.92,
     "trend": "rialzista",
     "incrocio": "golden cross",
@@ -4084,21 +4102,21 @@
   },
   {
    "controllo": "Scostamento massimo dai pesi obiettivo",
-   "valore": 1.43,
+   "valore": 1.44,
    "soglia": 2.0,
    "unita": "pp",
    "stato": "OK"
   },
   {
    "controllo": "Oro (ZGLD) sul portafoglio",
-   "valore": 18.57,
+   "valore": 18.56,
    "soglia": 20.0,
    "unita": "%",
    "stato": "OK"
   },
   {
    "controllo": "Volatilità ex ante (pesi correnti)",
-   "valore": 15.27,
+   "valore": 15.26,
    "soglia": 18.0,
    "unita": "%",
    "stato": "OK"
@@ -4112,14 +4130,14 @@
   },
   {
    "controllo": "Rendimento reale vs cono dello studio base (z-score)",
-   "valore": -4.06,
+   "valore": -2.91,
    "soglia": 2.0,
    "unita": "σ",
    "stato": "ALLERTA"
   },
   {
    "controllo": "Extra-rendimento vs S&P 500 dall'inizio",
-   "valore": -1.6,
+   "valore": -1.59,
    "soglia": 0.0,
    "unita": "pp",
    "stato": "ALLERTA"
@@ -4141,7 +4159,7 @@
  ],
  "copertura": {
   "stato": {
-   "data": "2026-11-24",
+   "data": "2026-11-25",
    "livello": 263.55,
    "ema_fine_mese_precedente": 279.08,
    "ema_stimata_fine_mese": 276.26,
@@ -4158,7 +4176,7 @@
    "ultimo_controllo": "2026-10-30",
    "mese_in_corso": true,
    "prossimo_controllo": "2026-11-30",
-   "giorni_al_controllo": 4,
+   "giorni_al_controllo": 3,
    "frase": "Se il mese chiudesse oggi la regola venderebbe il 75% dell'azionario. Per evitarlo serve un rialzo di almeno +4,6% entro la chiusura del 30.11.2026.",
    "avvertenza": "Prezzi di chiusura pubblici (Yahoo). Il segnale vale sulle chiusure ufficiali dell'ultima seduta del mese; confrontarle con le marcature della banca prima di eseguire.",
    "calo_dal_massimo_12m_pct": -14.84,
@@ -4173,7 +4191,7 @@
    "esecuzione": "prima seduta del mese successivo al controllo",
    "liquidita": "CHF al tasso guida BNS"
   },
-  "asof": "2026-11-24"
+  "asof": "2026-11-25"
  },
  "riconciliazione": [
   {
@@ -4311,19 +4329,19 @@
     "cagr_pct": 10.6,
     "vol_pct": 11.4,
     "max_dd_pct": -19.0,
-    "sedute": 1,
-    "atteso_pct": 0.04,
+    "sedute": 2,
+    "atteso_pct": 0.08,
     "reale_pct": -2.84,
-    "scostamento_pp": -2.88,
+    "scostamento_pp": -2.92,
     "banda1_pct": [
-     -0.68,
-     0.76
+     -0.93,
+     1.1
     ],
     "banda2_pct": [
-     -1.39,
-     1.49
+     -1.93,
+     2.13
     ],
-    "z": -4.06,
+    "z": -2.91,
     "stato": "ALLERTA",
     "principale": true
    },
@@ -4333,19 +4351,19 @@
     "cagr_pct": 6.9,
     "vol_pct": 12.4,
     "max_dd_pct": -45.2,
-    "sedute": 1,
-    "atteso_pct": 0.03,
+    "sedute": 2,
+    "atteso_pct": 0.05,
     "reale_pct": -2.84,
-    "scostamento_pp": -2.86,
+    "scostamento_pp": -2.89,
     "banda1_pct": [
-     -0.75,
-     0.81
+     -1.05,
+     1.16
     ],
     "banda2_pct": [
-     -1.52,
-     1.6
+     -2.13,
+     2.29
     ],
-    "z": -3.72,
+    "z": -2.65,
     "stato": "ALLERTA",
     "principale": false
    }
@@ -4354,45 +4372,55 @@
    "base": {
     "mediana": [
      100.0,
-     100.04
+     100.04,
+     100.08
     ],
     "p1_su": [
      100.0,
-     100.76
+     100.76,
+     101.1
     ],
     "p1_giu": [
      100.0,
-     99.32
+     99.32,
+     99.07
     ],
     "p2_su": [
      100.0,
-     101.49
+     101.49,
+     102.13
     ],
     "p2_giu": [
      100.0,
-     98.61
+     98.61,
+     98.07
     ]
    },
    "lungo": {
     "mediana": [
      100.0,
-     100.03
+     100.03,
+     100.05
     ],
     "p1_su": [
      100.0,
-     100.81
+     100.81,
+     101.16
     ],
     "p1_giu": [
      100.0,
-     99.25
+     99.25,
+     98.95
     ],
     "p2_su": [
      100.0,
-     101.6
+     101.6,
+     102.29
     ],
     "p2_giu": [
      100.0,
-     98.48
+     98.48,
+     97.87
     ]
    }
   },
@@ -4410,16 +4438,17 @@
   "benchmark": [
    {
     "nome": "S&P 500 TR (CHF)",
-    "extra_pp": -1.6,
+    "extra_pp": -1.59,
     "stato": "SOTTO",
     "te_exante_pct": 9.91,
-    "banda1_pp": 0.62,
-    "z": -2.56,
-    "sedute_sopra_pct": 0.0,
+    "banda1_pp": 0.88,
+    "z": -1.81,
+    "sedute_sopra_pct": 50.0,
     "info_ratio_exante": 0.04,
     "serie_extra": [
      0.0,
-     -1.6
+     -1.6,
+     -1.59
     ]
    },
    {
@@ -4427,12 +4456,13 @@
     "extra_pp": -1.85,
     "stato": "SOTTO",
     "te_exante_pct": 8.98,
-    "banda1_pp": 0.57,
-    "z": -3.27,
-    "sedute_sopra_pct": 0.0,
+    "banda1_pp": 0.8,
+    "z": -2.31,
+    "sedute_sopra_pct": 50.0,
     "info_ratio_exante": 0.14,
     "serie_extra": [
      0.0,
+     -1.85,
      -1.85
     ]
    }

@@ -1,6 +1,6 @@
 {
- "asof": "2026-11-25",
- "generato": "2026-11-26T03:45:06+00:00",
+ "asof": "2026-11-26",
+ "generato": "2026-11-27T03:46:08+00:00",
  "regola": {
   "media": "esponenziale a 10 mesi su chiusure di fine mese",
   "banda_pct": 1.0,
@@ -2804,7 +2804,8 @@
    "2026-11-20",
    "2026-11-23",
    "2026-11-24",
-   "2026-11-25"
+   "2026-11-25",
+   "2026-11-26"
   ],
   "VITA 5M senza copertura": [
    100.0,
@@ -5599,7 +5600,8 @@
    270.77,
    281.36,
    273.45,
-   273.45
+   264.79,
+   264.79
   ],
   "VITA 5M con copertura (EMA 10 mesi)": [
    100.0,
@@ -8394,7 +8396,8 @@
    238.19,
    247.5,
    240.55,
-   240.55
+   232.93,
+   232.93
   ],
   "S&P 500 TR (CHF)": [
    100.0,
@@ -11189,7 +11192,8 @@
    347.25,
    355.57,
    351.15,
-   351.15
+   341.06,
+   341.06
   ],
   "MSCI World TR (CHF)": [
    100.0,
@@ -13984,7 +13988,8 @@
    284.94,
    290.76,
    287.88,
-   287.88
+   280.46,
+   280.46
   ],
   "quota_venduta_pct": [
    0.0,
@@ -16398,6 +16403,7 @@
    75.0,
    75.0,
    75.0,
+   0.0,
    0.0,
    0.0,
    0.0,
@@ -19576,7 +19582,8 @@
    -15.49,
    -12.19,
    -14.65,
-   -14.65
+   -17.36,
+   -17.36
   ],
   "VITA 5M con copertura (EMA 10 mesi)": [
    0.0,
@@ -22371,7 +22378,8 @@
    -15.49,
    -12.19,
    -14.65,
-   -14.65
+   -17.36,
+   -17.36
   ],
   "S&P 500 TR (CHF)": [
    0.0,
@@ -25166,7 +25174,8 @@
    -8.47,
    -6.27,
    -7.44,
-   -7.44
+   -10.1,
+   -10.1
   ],
   "MSCI World TR (CHF)": [
    0.0,
@@ -27961,7 +27970,8 @@
    -7.87,
    -5.99,
    -6.92,
-   -6.92
+   -9.32,
+   -9.32
   ]
  },
  "mensile": [
@@ -29318,197 +29328,197 @@
  "metriche": {
   "Dal 2016": {
    "VITA 5M senza copertura": {
-    "rend_pct": 173.45,
-    "cagr_pct": 9.5,
-    "vol_pct": 13.79,
+    "rend_pct": 164.79,
+    "cagr_pct": 9.18,
+    "vol_pct": 13.82,
     "max_dd_pct": -26.83,
-    "sharpe": 0.69,
-    "calmar": 0.35
+    "sharpe": 0.66,
+    "calmar": 0.34
    },
    "VITA 5M con copertura (EMA 10 mesi)": {
-    "rend_pct": 140.55,
-    "cagr_pct": 8.24,
-    "vol_pct": 11.38,
-    "max_dd_pct": -16.66,
-    "sharpe": 0.72,
-    "calmar": 0.49
+    "rend_pct": 132.93,
+    "cagr_pct": 7.93,
+    "vol_pct": 11.42,
+    "max_dd_pct": -17.36,
+    "sharpe": 0.69,
+    "calmar": 0.46
    },
    "S&P 500 TR (CHF)": {
-    "rend_pct": 251.15,
-    "cagr_pct": 12.0,
-    "vol_pct": 17.63,
+    "rend_pct": 241.06,
+    "cagr_pct": 11.71,
+    "vol_pct": 17.65,
     "max_dd_pct": -33.76,
-    "sharpe": 0.68,
-    "calmar": 0.36
+    "sharpe": 0.66,
+    "calmar": 0.35
    },
    "MSCI World TR (CHF)": {
-    "rend_pct": 187.88,
-    "cagr_pct": 10.01,
-    "vol_pct": 17.35,
+    "rend_pct": 180.46,
+    "cagr_pct": 9.75,
+    "vol_pct": 17.36,
     "max_dd_pct": -33.93,
-    "sharpe": 0.58,
-    "calmar": 0.3
+    "sharpe": 0.56,
+    "calmar": 0.29
    }
   },
   "Dal 2020": {
    "VITA 5M senza copertura": {
-    "rend_pct": 79.35,
-    "cagr_pct": 8.68,
-    "vol_pct": 15.7,
+    "rend_pct": 73.67,
+    "cagr_pct": 8.18,
+    "vol_pct": 15.74,
     "max_dd_pct": -26.83,
-    "sharpe": 0.55,
-    "calmar": 0.32
+    "sharpe": 0.52,
+    "calmar": 0.3
    },
    "VITA 5M con copertura (EMA 10 mesi)": {
-    "rend_pct": 68.09,
-    "cagr_pct": 7.68,
-    "vol_pct": 12.75,
-    "max_dd_pct": -16.66,
-    "sharpe": 0.6,
-    "calmar": 0.46
+    "rend_pct": 62.76,
+    "cagr_pct": 7.18,
+    "vol_pct": 12.8,
+    "max_dd_pct": -17.36,
+    "sharpe": 0.56,
+    "calmar": 0.41
    },
    "S&P 500 TR (CHF)": {
-    "rend_pct": 109.07,
-    "cagr_pct": 11.08,
-    "vol_pct": 19.53,
+    "rend_pct": 103.06,
+    "cagr_pct": 10.61,
+    "vol_pct": 19.55,
     "max_dd_pct": -33.76,
-    "sharpe": 0.57,
-    "calmar": 0.33
+    "sharpe": 0.54,
+    "calmar": 0.31
    },
    "MSCI World TR (CHF)": {
-    "rend_pct": 87.46,
-    "cagr_pct": 9.36,
-    "vol_pct": 19.2,
+    "rend_pct": 82.63,
+    "cagr_pct": 8.95,
+    "vol_pct": 19.22,
     "max_dd_pct": -33.93,
-    "sharpe": 0.49,
-    "calmar": 0.28
+    "sharpe": 0.47,
+    "calmar": 0.26
    }
   },
   "Ultimi 3 anni": {
    "VITA 5M senza copertura": {
-    "rend_pct": 55.61,
-    "cagr_pct": 15.66,
-    "vol_pct": 15.16,
-    "max_dd_pct": -16.66,
-    "sharpe": 1.03,
-    "calmar": 0.94
+    "rend_pct": 50.68,
+    "cagr_pct": 14.42,
+    "vol_pct": 15.26,
+    "max_dd_pct": -17.36,
+    "sharpe": 0.95,
+    "calmar": 0.83
    },
    "VITA 5M con copertura (EMA 10 mesi)": {
-    "rend_pct": 49.24,
-    "cagr_pct": 14.08,
-    "vol_pct": 15.01,
-    "max_dd_pct": -16.66,
-    "sharpe": 0.94,
-    "calmar": 0.85
+    "rend_pct": 44.52,
+    "cagr_pct": 12.86,
+    "vol_pct": 15.12,
+    "max_dd_pct": -17.36,
+    "sharpe": 0.85,
+    "calmar": 0.74
    },
    "S&P 500 TR (CHF)": {
-    "rend_pct": 54.68,
-    "cagr_pct": 15.43,
-    "vol_pct": 16.48,
+    "rend_pct": 50.24,
+    "cagr_pct": 14.31,
+    "vol_pct": 16.56,
     "max_dd_pct": -23.95,
-    "sharpe": 0.94,
-    "calmar": 0.64
+    "sharpe": 0.86,
+    "calmar": 0.6
    },
    "MSCI World TR (CHF)": {
-    "rend_pct": 51.47,
-    "cagr_pct": 14.64,
-    "vol_pct": 15.95,
+    "rend_pct": 47.56,
+    "cagr_pct": 13.64,
+    "vol_pct": 16.01,
     "max_dd_pct": -22.57,
-    "sharpe": 0.92,
-    "calmar": 0.65
+    "sharpe": 0.85,
+    "calmar": 0.6
    }
   },
   "Ultimi 12 mesi": {
    "VITA 5M senza copertura": {
-    "rend_pct": 5.27,
-    "cagr_pct": 5.21,
-    "vol_pct": 17.8,
-    "max_dd_pct": -15.49,
-    "sharpe": 0.29,
-    "calmar": 0.34
+    "rend_pct": 0.72,
+    "cagr_pct": 0.72,
+    "vol_pct": 18.05,
+    "max_dd_pct": -17.36,
+    "sharpe": 0.04,
+    "calmar": 0.04
    },
    "VITA 5M con copertura (EMA 10 mesi)": {
-    "rend_pct": 5.27,
-    "cagr_pct": 5.21,
-    "vol_pct": 17.8,
-    "max_dd_pct": -15.49,
-    "sharpe": 0.29,
-    "calmar": 0.34
+    "rend_pct": 0.72,
+    "cagr_pct": 0.72,
+    "vol_pct": 18.05,
+    "max_dd_pct": -17.36,
+    "sharpe": 0.04,
+    "calmar": 0.04
    },
    "S&P 500 TR (CHF)": {
-    "rend_pct": 11.86,
-    "cagr_pct": 11.71,
-    "vol_pct": 14.15,
-    "max_dd_pct": -8.57,
-    "sharpe": 0.83,
-    "calmar": 1.37
+    "rend_pct": 7.08,
+    "cagr_pct": 6.99,
+    "vol_pct": 14.37,
+    "max_dd_pct": -10.1,
+    "sharpe": 0.49,
+    "calmar": 0.69
    },
    "MSCI World TR (CHF)": {
-    "rend_pct": 11.96,
-    "cagr_pct": 11.81,
-    "vol_pct": 14.03,
-    "max_dd_pct": -8.0,
-    "sharpe": 0.84,
-    "calmar": 1.48
+    "rend_pct": 7.52,
+    "cagr_pct": 7.43,
+    "vol_pct": 14.2,
+    "max_dd_pct": -9.32,
+    "sharpe": 0.52,
+    "calmar": 0.8
    }
   },
   "Da inizio anno": {
    "VITA 5M senza copertura": {
-    "rend_pct": 2.48,
-    "cagr_pct": 2.72,
-    "vol_pct": 18.52,
-    "max_dd_pct": -15.49,
-    "sharpe": 0.15,
-    "calmar": 0.18
+    "rend_pct": -0.76,
+    "cagr_pct": -0.83,
+    "vol_pct": 18.78,
+    "max_dd_pct": -17.36,
+    "sharpe": -0.04,
+    "calmar": -0.05
    },
    "VITA 5M con copertura (EMA 10 mesi)": {
-    "rend_pct": 2.48,
-    "cagr_pct": 2.72,
-    "vol_pct": 18.52,
-    "max_dd_pct": -15.49,
-    "sharpe": 0.15,
-    "calmar": 0.18
+    "rend_pct": -0.76,
+    "cagr_pct": -0.83,
+    "vol_pct": 18.78,
+    "max_dd_pct": -17.36,
+    "sharpe": -0.04,
+    "calmar": -0.05
    },
    "S&P 500 TR (CHF)": {
-    "rend_pct": 12.02,
-    "cagr_pct": 13.24,
-    "vol_pct": 14.55,
-    "max_dd_pct": -8.57,
-    "sharpe": 0.91,
-    "calmar": 1.54
+    "rend_pct": 8.8,
+    "cagr_pct": 9.64,
+    "vol_pct": 14.83,
+    "max_dd_pct": -10.1,
+    "sharpe": 0.65,
+    "calmar": 0.95
    },
    "MSCI World TR (CHF)": {
-    "rend_pct": 11.0,
-    "cagr_pct": 12.12,
-    "vol_pct": 14.46,
-    "max_dd_pct": -8.0,
-    "sharpe": 0.84,
-    "calmar": 1.51
+    "rend_pct": 8.14,
+    "cagr_pct": 8.91,
+    "vol_pct": 14.69,
+    "max_dd_pct": -9.32,
+    "sharpe": 0.61,
+    "calmar": 0.96
    }
   }
  },
  "stato": {
-  "data": "2026-11-25",
-  "livello": 263.55,
+  "data": "2026-11-26",
+  "livello": 255.5,
   "ema_fine_mese_precedente": 279.08,
-  "ema_stimata_fine_mese": 276.26,
-  "dist_ema_prec_pct": -5.57,
-  "dist_ema_stimata_pct": -4.6,
-  "soglia_vendita": 273.5,
-  "soglia_rientro": 279.02,
+  "ema_stimata_fine_mese": 274.79,
+  "dist_ema_prec_pct": -8.45,
+  "dist_ema_stimata_pct": -7.02,
+  "soglia_vendita": 272.05,
+  "soglia_rientro": 277.54,
   "livello_chiusura_vendita": 275.68,
   "livello_chiusura_rientro": 282.5,
   "stato_regola": "INVESTITO",
   "quota_venduta_pct": 0.0,
   "se_chiudesse_oggi": "VENDITA",
-  "variazione_necessaria_pct": 4.6,
+  "variazione_necessaria_pct": 7.9,
   "ultimo_controllo": "2026-10-30",
   "mese_in_corso": true,
   "prossimo_controllo": "2026-11-30",
-  "giorni_al_controllo": 3,
-  "frase": "Se il mese chiudesse oggi la regola venderebbe il 75% dell'azionario. Per evitarlo serve un rialzo di almeno +4,6% entro la chiusura del 30.11.2026.",
+  "giorni_al_controllo": 2,
+  "frase": "Se il mese chiudesse oggi la regola venderebbe il 75% dell'azionario. Per evitarlo serve un rialzo di almeno +7,9% entro la chiusura del 30.11.2026.",
   "avvertenza": "Prezzi di chiusura pubblici (Yahoo). Il segnale vale sulle chiusure ufficiali dell'ultima seduta del mese; confrontarle con le marcature della banca prima di eseguire.",
-  "calo_dal_massimo_12m_pct": -14.84,
+  "calo_dal_massimo_12m_pct": -17.44,
   "data_massimo_12m": "2026-10-06"
  },
  "fonti": {
